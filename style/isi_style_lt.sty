@@ -1,0 +1,119 @@
+\NeedsTeXFormat{LaTeX2e}
+
+\ProvidesPackage{style/isi_style_lt}
+
+\RequirePackage{ifthen}
+\RequirePackage{multicol}
+
+%%%%%%%
+ \newif\ifpdf
+ \ifx\pdfoutput\undefined
+ \pdffalse % we are not running PDFLaTeX
+ \else
+ \pdfoutput=1 % we are running PDFLaTeX
+ \pdftrue
+ \fi
+%%%%%%%
+ \ifpdf
+ \usepackage[pdftex]{graphicx}
+ \else
+ \usepackage{graphicx}
+ \fi
+%%%%%%%%%%%%%%%
+ \ifpdf
+ \DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+ \else
+ \DeclareGraphicsExtensions{.eps, .jpg}
+ \fi
+%%%%%%%%%%%%%%%
+
+
+\newcommand{\@materia}{?}
+\newcommand{\@titolo}{?}
+
+\newcommand{\@laureando}{?}
+\newcommand{\@parolechiave}{?}
+\newcommand{\@dedica}{?}
+\newcommand{\@sessione}{?}
+
+\newcommand{\materia}[1]{%
+  \renewcommand{\@materia}{{#1}}}
+\newcommand{\titolo}[1]{%
+  \renewcommand{\@titolo}{\uppercase{#1}}}
+
+\newcommand{\laureando}[1]{%
+  \renewcommand{\@laureando}{\uppercase{#1}}}
+
+\newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}%
+  \cleardoublepage}}
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %                                   %
+    %  Formattazione dell'intestazione  %
+    %  della tesi                       %
+    %                                   %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand\maketitle{
+
+\begin{titlepage}{
+
+\fontfamily{ptm} \selectfont
+\begin{center}
+
+\rule{14cm}{.4pt}\\\smallskip
+
+\begin{large}
+
+\vfill
+
+{
+
+\setlength{\baselineskip}{1.5\baselineskip}
+\begin{LARGE}
+\@materia
+\end{LARGE}\\
+
+\vfill
+
+\setlength{\baselineskip}{1.5\baselineskip}
+\begin{LARGE}
+\@titolo
+\end{LARGE}\\
+}
+
+\vfill
+
+\vfill
+
+\begin{normalsize}
+\emph{Presentata da}
+\end{normalsize}\\
+\@laureando
+
+\rule{14cm}{.4pt}\\\smallskip
+
+\end{large}
+\end{center}
+}
+
+\clearemptydoublepage
+\pagestyle{empty}
+
+\clearemptydoublepage
+
+\ifthenelse{\equal{\@dedica}{?}}{}{
+  \pagestyle{empty}
+  \vspace*{10ex}
+  \begin{large}
+  \begin{flushright}
+    \@dedica
+  \end{flushright}
+  \end{large}
+  \vfill
+  \clearemptydoublepage
+}
+\end{titlepage}
+
+}
+\endinput
