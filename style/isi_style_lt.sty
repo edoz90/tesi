@@ -32,6 +32,8 @@
 \newcommand{\@titolo}{?}
 
 \newcommand{\@laureando}{?}
+\newcommand{\@matricola}{?}
+\newcommand{\@annoacc}{?}
 \newcommand{\@parolechiave}{?}
 \newcommand{\@dedica}{?}
 \newcommand{\@sessione}{?}
@@ -43,6 +45,12 @@
 
 \newcommand{\laureando}[1]{%
   \renewcommand{\@laureando}{\uppercase{#1}}}
+
+\newcommand{\matricola}[1]{%
+    \renewcommand{\@matricola}{ - Matr. \emph{#1}}}
+
+\newcommand{\annoacc}[1]{%
+\renewcommand{\@annoacc}{\emph{a.a - #1}}}
 
 \newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}%
   \cleardoublepage}}
@@ -71,7 +79,6 @@
 
 {
 
-\setlength{\baselineskip}{1.5\baselineskip}
 \begin{LARGE}
 \@materia
 \end{LARGE}\\
@@ -88,12 +95,12 @@
 
 \vfill
 
-\begin{normalsize}
-\emph{Presentata da}
-\end{normalsize}\\
 \@laureando
+\@matricola
 
 \rule{14cm}{.4pt}\\\smallskip
+
+\@annoacc
 
 \end{large}
 \end{center}
