@@ -1,12 +1,11 @@
 \chapter{Crittografia}
 
-I sistemi di produzione, controllo ed interazioni con le valute hanno bisogno di alcune precauzioni per prevenire errori, frodi o furti.
-I sistemi basati su \textit{blockchain}, come quelli per le valute correnti, garantiscono decentralizzazione, sicurezza, autenticazione e confidenzialità tramite l'utilizzo di alcuni algoritmi crittografici: \textit{chiave pubblica} (o \textit{crittografia asimmetrica}), firma digitale e funzioni di \textit{hashing} crittografiche.\newline
-L'obiettivo della crittografia applicata alle criptomonete è quello di prevenire abusi e garantire che le transazioni siano effettuate senza l'impiego di servizi terzi.\newline\newline
-La \textit{crittografia}\footnote{Dal greco \textit{kryptós},``nascosto'', e \textit{graphía}, ``scrittura''.} è l'insieme delle pratiche e degli studi di tecniche per rendere sicura una comunicazione in presenza di terze parti identificate come \emph{opponenti} o \emph{avversari}\footnote{Un \textit{opponente} o \textit{avversario} è un entità malevola il cui scopo è prevenire l'uso del sistema crittografico agli utenti; quindi cercare di identificare dei dati personali, corrompere e modificare dei dati o disturbare il servizio.}.\newline
+I sistemi di produzione, controllo ed interazione con le valute hanno bisogno di alcune precauzioni per prevenire errori, frodi o furti.
+I sistemi basati su \textit{blockchain}, come quelli per le valute correnti, garantiscono sicurezza, autenticazione e confidenzialità, e in aggiunta anche decentralizzazione, tramite l'elevato utilizzo di alcuni algoritmi e tecniche crittografiche: \textit{chiave pubblica} (o \textit{crittografia asimmetrica}), firma digitale e funzioni di \textit{hashing} crittografiche.\newline
+L'obiettivo della crittografia applicata alle criptomonete è quello di prevenire abusi e garantire che le transazioni siano effettuate in tempi ristretti senza l'impiego di servizi terzi.\newline\newline
+La \textbf{crittografia}\footnote{Dal greco \textit{kryptós},``nascosto'', e \textit{graphía}, ``scrittura''.} è l'insieme delle pratiche e degli studi di tecniche per rendere sicura una comunicazione in presenza di terze parti identificate come \emph{opponenti} o \emph{avversari}\footnote{Un \textit{opponente} o \textit{avversario} è un entità malevola il cui scopo è prevenire l'uso del sistema crittografico agli utenti; quindi cercare di identificare dei dati personali, corrompere e modificare dei dati o disturbare il servizio.}.
 
 Molti aspetti della crittografia moderna sono centrali ed essenziali nella costruzione di sistemi sicuri per garantire:
-
 \begin{itemize}
     \item \textbf{confidenzialità}: limitare l'accesso o aggiungere restrizioni su alcuni tipi di informazioni affinchè solo gli utenti autorizzati ne abbiano accesso;
     \item \textbf{integrità}: nessuna entità non autorizzata può riuscire a modificare i dati;
@@ -20,7 +19,7 @@ Al contrario della crittografia a \textit{chiave simmetrica}, in cui tutte le pa
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.6]{images/simmetric.png}
-    \caption{Nel caso della crittografia a chiave simmetrica tutte le parti devono avere/conoscere la stessa chiave}
+    \caption{Nella crittografia a chiave simmetrica tutte le parti devono avere/conoscere la stessa chiave}
     \source{ss2buy.com}
 \end{figure}
 
@@ -29,7 +28,7 @@ In un sistema a chiave pubblica ogni persona può cifrare un messaggio con la ch
 \begin{figure}
     \centering
     \includegraphics[scale=0.6]{images/asymmetric.png}
-    \caption{Nel caso della crittografia a chiave asimmetrica ogni parte genera un coppia di chiavi, la parte pubblica viene utilizzata dai mittenti per cifrare il messaggio.}
+    \caption{Nella crittografia a chiave asimmetrica ogni parte genera un coppia di chiavi, la parte pubblica viene utilizzata dai mittenti per cifrare il messaggio.}
     \source{ss2buy.com}
 \end{figure}
 
@@ -37,7 +36,6 @@ Il principio alla base del sistema a crittografia a chiave pubblica risiede nell
 Nel caso della fattorizzazione dei numeri primi, ad esempio, utilizzata nella generazione di chiavi RSA\footnote{RSA è un algoritmo a chiave asimmetrica pubblicato da Rivest, Shamir e Adleman nel 1977. È \href{https://slides.com/edoardorosa/breakingrsa#/2/5}{stato calcolato} per che trovare $p$ e $q$ di un $N$ a 1024 bit sono necessari $8.02\times 10^{211}$ anni se ogni atomo dell'universo potesse eseguire $1.000.000$ di istruzioni RSA al secondo.}, si ha che dato un numero $N$, coprimo, sarà estremamente inefficiente il calcolo dei due numeri primi $p$ e $q$ il cui prodotto sia $N$.
 L'affermazione è valida in quanto non esiste un metodo conosciuto ed efficiente per fattorizzare un numero primo o più in generale un numero intero.\newline
 Un esempio di utilizzo di una comunicazione tramite crittografia a chiave asimmetrica è l'invio di un messaggio tra Bob ed Alice.
-
 \begin{enumerate}
     \item Bob genera una coppia di chiavi: una pubblica ed una privata;
     \item Alice genera una coppia di chiavi: una pubblica ed una privata;
@@ -45,33 +43,31 @@ Un esempio di utilizzo di una comunicazione tramite crittografia a chiave asimme
     \item Bob, utilizzando la chiave pubblica di Alice, cifra il messaggio;
     \item Bob invia il messaggio ad Alice; non è necessario utilizzare un canale sicuro in quanto solo Alice riuscirà a decifrare il messaggio;
     \item Alice riceve il messaggio che viene decriptato utilizzando la propria chiave privata.
-\end{enumerate}\newline
-
+\end{enumerate}
 \begin{figure}[H]
     \centering
     \includegraphics[scale=1.3]{images/confidentiality.png}
     \caption{Metodo per ottenere confidenzialità utilizzando la crittografia asimmetrica}
     \source{\href{https://sandilands.info/sgordon/teaching/css322y12s2/unprotected/CSS322Y12S2L07-Public-Key-Cryptography.pdf}{Sirindhorn International Institute of Technology Thammasat University}}
 \end{figure}
-
 Tramite questi passaggi è stata garantita la confidenzialità del messaggio ma non l'autenticazione in quanto chiunque potrebbe aver utilizzato la chiave pubblica di Alice per generare quel messaggio.\newline\newline
-Per poter garantire che un messaggio sia stato scritto da Bob e quindi garantire autenticazione è necessario che Bob \textit{firmi} il messaggio tramite una \texit{digital signature}:
+
+\subsection{Firma digitale}
+Per poter garantire che un messaggio sia stato scritto da Bob e quindi garantire autenticazione è necessario che Bob \textit{firmi} il messaggio tramite una \textit{digital signature}:
 
 \begin{enumerate}
     \item Bob genera una coppia di chiavi: una pubblica ed una privata;
     \item Alice genera una coppia di chiavi: una pubblica ed una privata;
     \item Bob ed Alice condividono, in maniera sicura ma non segreta, le proprie chiavi pubbliche;
-    \item Bob \textit{firma} il messaggio utilizzando la propria chiave privata ed invia questo output assieme al messaggio ad Alice;
+    \item Bob \textit{firma} il messaggio utilizzando la propria chiave privata ed invia la firma assieme al messaggio ad Alice;
     \item Alice riceve il messaggio, in questo caso sarà in chiaro, e tramite la chiave pubblica di Bob può verificare che la firma inviata da Bob sia valida per il messaggio ricevuto.
 \end{enumerate}
-
 \begin{figure}
     \centering
     \includegraphics[scale=0.3]{images/authentication.png}
     \caption{Metodo per ottenere autenticazione utilizzando la crittografia asimmetrica}
     \source{\href{https://sandilands.info/sgordon/teaching/css322y12s2/unprotected/CSS322Y12S2L07-Public-Key-Cryptography.pdf}{Sirindhorn International Institute of Technology Thammasat University}}
 \end{figure}
-
 È possibile definire uno schema per generare una firma digitale tramite una tripla di algoritmi \texttt{(generateKeys, sign, verify)}:
 
 \begin{itemize}
@@ -99,15 +95,16 @@ Nel caso implementato nella blockchain Bitcoin, e anche per Ethereum ed altre cr
 \textit{ECDSA} è un algoritmo progettato partendo da \texit{DSA}, uno standard del governo statunitense, combinato con \textit{crittografia ellitica} la quale permette di avere lo stesso grado di sicurezza dei sistemi tradizioni (RSA, DSA, DH) ma con chiavi di dimensione inferiore.\newline
 \begin{table}[H]
     \centering
-    \caption{Confronto lunghezza chiavi}
+    \caption{Confronto lunghezza chiavi in bit}
     \begin{tabular}{|c|c|c|}
         \hline
-        \begin{tabular}[c]{@{}c@{}}Chiave Simmetrica\\ (bit)\end{tabular} & \begin{tabular}[c]{@{}c@{}}Chive RSA e DH\\ (bit)\end{tabular} & \begin{tabular}[c]{@{}c@{}}Chiave ECC\\ (bit)\end{tabular} \\ \hline
-        80                                                                & 1024                                                           & 60                                                         \\ \hline
-        112                                                               & 2048                                                           & 224                                                        \\ \hline
-        128                                                               & 3072                                                           & 256                                                        \\ \hline
-        192                                                               & 7680                                                           & 384                                                        \\ \hline
-        256                                                               & 15360                                                          & 521                                                        \\ \hline
+        \begin{tabular}[c]{@{}c@{}}Chiave Simmetrica\end{tabular} & \begin{tabular}[c]{@{}c@{}}Chiave RSA e DH\end{tabular} & \begin{tabular}[c]{@{}c@{}}Chiave ECC\end{tabular} \\
+        \hline 80  & 1024  & 60  \\
+        \hline 112 & 2048  & 224 \\
+        \hline 128 & 3072  & 256 \\
+        \hline 192 & 7680  & 384 \\
+        \hline 256 & 15360 & 521 \\
+        \hline
     \end{tabular}
 \end{table}
 Una curva ellittica è rappresentata dall'insieme dei punti espressi dalla formula $y^2=x^3+ax+b$ con $4a^3+27b^2=0$.
@@ -208,7 +205,7 @@ Generalizzando si ha:
 Sommando, quindi, due multipli di $P$ si ottiene un multiplo di $P$. Questa proprietà dimostra che i multipli di $P$ sono un \textit{sottogruppo aciclico} del gruppo formato dalla curva ellittica.\newline\newline
 Il problema del logaritmo discreto impone di trovare $n$ in un insieme finito tale che $Q=nP$: si pone, quindi, di trovare un multiplo di $P$.\newline
 La definizione del problema come \textit{difficile} non si basa su una dimostrazione matematica ma deriva dal fatto che computazionalmente risulta essere molto inefficiente calcolare un $n$ tale che $nP=Q$ con $P$ noto.\newline
-Il numero di punti di una curva ellittica $\xi$ in un insieme finito sono $N$. Dato un punto base $P\in\xi$ e un punto $Q\in\xi$, multiplo scalare di $P$, è possibile calcolare $n*P$ per ogni intero $n$ da $1$ a $N$ e verificare l'uguaglianza. Il calcola risulta essere inefficiente in quanto $N$ è nell'ordine di $2^{256}$; anche utilizzando ottimizzazioni come il metodo \textit{double-and-add} o di \textit{Pollard} si avrà un guadagno al più di circa $2^{128}$ possibilità\footnote{Eseguendo un milione di bilioni di operazioni al secondo in un lasso di tempo che va dall'inizio dell'universo conosciuto ad oggi il numero di operazioni eseguite saranno circa $2^{98}$, ovvero, $1/1073741824$ delle possibilità.}.
+Il numero di punti di una curva ellittica $\xi$ in un insieme finito sono $N$. Dato un punto base $P\in\xi$ e un punto $Q\in\xi$, multiplo scalare di $P$, è possibile calcolare $n*P$ per ogni intero $n$ da $1$ a $N$ e verificare l'uguaglianza. Il calcolo risulta essere inefficiente in quanto $N$ è nell'ordine di $2^{256}$; anche utilizzando ottimizzazioni come il metodo \textit{double-and-add} o di \textit{Pollard} si avrà un guadagno al più di circa $2^{128}$ possibilità\footnote{Eseguendo un milione di bilioni di operazioni al secondo in un lasso di tempo che va dall'inizio dell'universo conosciuto ad oggi il numero di operazioni eseguite saranno circa $2^{98}$, ovvero, $1/1073741824$ delle possibilità.}.
 
 \subsubsection{Chiave pubblica e chiave privata}
 La generazione delle chiavi pubbliche e private tramite la crittografia a curva ellittica prende come assunto la difficoltà nel calcolare $n$ in $Q=nP$:
@@ -270,7 +267,7 @@ Cofactor:  1 (0x1)
 \end{lstlisting}
 Al fine di rendere finito lo spazio associato alla curva e rendere reversibili le operazioni di addizione e moltiplicazione viene introdotto un numero primo $p$ nella formula delle curve ellittiche: $y^2 \bmod p =(x^3+ax+b) \bmod p$.
 \begin{itemize}
-    \item il campo \textit{prime} è il numero primo $p$ e vale \texttt{11579208923731619542357098500868\\7907853269984665640564039457584007908834671663};
+    \item il campo \textit{prime} è il numero primo $p$ e vale \texttt{11579208923731619542357098\\5008687907853269984665640564039457584007908834671663};
     \item il campo \textit{generator} raccoglie le coordinate di $P$\footnote{In decimale si ha \texttt{x=32389663748221382835241416183120010358708158882271240645\\833157712002602205561} e \texttt{y=959007223919288380366650965200010306010631150705783\\755591599576399062374601912}.}: \texttt{(0479be667ef9dcbbac\\55a06295ce870b07029bfcdb2dce28d959f2815b16f8179,} \texttt{8483ada7726\\a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8)};
 \item l'ordine della curva è espresso dal campo \textit{order}: \texttt{11579208923731619542\\3570985008687907852837564279074904382605163141518161494337}.
 \end{itemize}
@@ -288,10 +285,13 @@ Una funzione di \textit{hash} generica è una funzione matematica che rispetta t
 Affinchè una funzione di \textit{hashing} possa essere considerata sicura ed utilizzabile in crittografia è necessario che rispetti altre proprietà più stringenti sulla modalità di trasformazione da input ad output:
 
 \begin{enumerate}
-    \item resistenza alla preimmagine: dato un hash $h$, è infattibile risalire ad un messaggio $m$ con hash $h$;
+    \item resistenza alla preimmagine o \textit{hiding}: dato un hash $h$, è infattibile risalire ad un messaggio $m$ con hash $h$ (nel caso $m$ sia in un insieme ristretto è possibile utilizzare un $nonce$ come input addizionale alla funzione: $H(nonce || m)$);
     \item resistenza alla seconda preimmagine: data un messaggio $m_1$ è infattibile trovare un messaggio $m_2$, diverso da $m_1$, tale che $hash(m_1)=hash(m_2)$.
-    \item resistenza alle collisioni: dati due messaggi $m_1$ e $m_2$, diversi tra loro, deve essere infattibile che $hash(m_1)=hash(m_2)$.
+    \item resistenza alle collisioni: dati due messaggi $m_1$ e $m_2$, diversi tra loro, deve essere infattibile trovare $hash(m_1)=hash(m_2)$.
 \end{enumerate}
+La resistenza alle collisioni non esclude che queste possano verificarsi in quanto lo spazio di output è limitato mentre quello in input è potenzialmente infinito: la proprietà implica solamente che trovare una collissione non deve essere computazionalmente fattibile. Ad esempio per una funzione di hashing con un output di 256 bit è possibile trovare una collisione con una possibilità del $99.8\%$ calcolando $2^{130}+1$ (per la teoria del \textit{paradosso del compleanno}) stringhe in input; tuttavia, il calcolo di ogni $2^{130}$ possibilità risulta essere impossibile con l'attuale potenza computazionale\footnote{Calcolando $10 000 H/s$ sarebbero necessari più $10^27$ anni per calcolare $2^{128}$ hash.}.
+
+Questa proprietà permette quindi di ottenere dei \textit{digest} di un messaggio di lunghezza fissa e che sono univoci per il messaggio dato in input riducendo la quantità di informazioni da memorizzare e velocizzando i controlli di integrità ed uguaglianza tra file.
 
 In base a queste proprietà le funzioni di hashing sono anche dette \textit{one-way} in quanto non sono reversibili.\newline\newline
 Esistono diverse classi di funzioni di hash crittografiche:
@@ -302,9 +302,8 @@ Esistono diverse classi di funzioni di hash crittografiche:
     \item BLAKE2
 \end{itemize}
 
-Nel protocolo della blockchain Bitcoin viene utilizzata la classe \textit{SHA-2} e l'algoritmo \textit{SHA-226} (in quanto produce un output di lunghezza 256 bit).
-
-\begin{table}[H]
+Nel protocollo della blockchain Bitcoin viene utilizzata la classe \textit{SHA-2} e l'algoritmo \textit{SHA-256} (in quanto produce un output di lunghezza 256 bit).
+\begin{table}
     \caption{Confronto tra \textit{SHA-256} di due stringhe simili}
     \centering
     \begin{tabular}{c||c}
@@ -313,16 +312,34 @@ Nel protocolo della blockchain Bitcoin viene utilizzata la classe \textit{SHA-2}
         Botcoin & 23e84b46672290e2893a7a99fa5b0d0427d7549c5384c7f3443d811307d94efe \\
     \end{tabular}
 \end{table}
+Tramite le funzioni di hashing è possibile quindi rendere noto anche l'hash di un valore segreto in quanto questo non può essere dedotto. Ad esempio è possibile generate un hash \texttt{com} di \texttt{msg} ed un \texttt{nonce}; pubblicando l'hash \texttt{com} nessuno sarà in grado di risalire al valore di \texttt{msg}. Una volta resi pubblici \texttt{msg} e \texttt{nonce} allora sarà possibile verificare che \texttt{com} sia effettivamente l'hash reso pubblico in precedenza.\newline
+Questa tecnica è utilizzata, ad esempio, per risalire alla paternità di brevetti: pubblicando \texttt{com} generato con in input alla funzione di hash il documento dell'invenzione (\texttt{msg}) ed un timestamp (\texttt{nonce}) sarà possibile, una volta reso pubblico il brevetto e la data, garantire che l'invenzione sia stata realizzata prima di un altra.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.8]{images/sha256.png}
+    \caption{Nel caso della crittografia a chiave simmetrica tutte le parti devono avere/conoscere la stessa chiave}
+    \source{ss2buy.com}
+\end{figure}
+
+\subsection{SHA-256}
+L'algoritmo di hashing \texit{SHA-256} è utilizzato come funzione di hashing nella blockchain Bitcoin e accetta in ingresso una qualunque stringa di lunghezza variabile e produce un output di 256 bit.\newline
+Il calcolo dell'hash prevede che il messaggio in input venga elaborato in modo tale che la dimensione finale sia di lunghezza fissa; queste funzioni sono dette \textit{funzioni di compressione} e nel caso di \textit{SHA-256} accettano degli input di lunghezza 768 bit.
+
+Affinchè gli input per le funzioni di compressione siano di lunghezza accettabile si utilizza la trasformazione di \texit{Merkle-Damgard} per dividere il messaggio in \textit{blocchi} di lunghezza di 512 bit.
+
+In fase di inizializzazione al messaggio viene applicato del \textit{padding} per rendere la lunghezza divisibile per 512 e successivamente ogni blocco viene dato in input alla funzione di compressione assieme all'output del precedente blocco compresso. Le funzioni di compressione sono realizzate per essere eseguite in cascata ed accettano in input il blocco del messaggio di lunghezza 512 bit e l'output del precedente blocco compresso di lunghezza 256 bit.\newline
+Il primo blocco viene compresso partendo da un \texit{vettore di inizializzazione} \textbf{IV} a 256 bit (fisso e definito dagli standard di \textit{SHA-256}) e l'output generato risulta come argomento per la funzione di compressione per il blocco successivo. L'output dell'ultimo blocco, di lunghezza 256 bit, è l'hash finale.
 
 \subsection{Firma digitale con ECDSA}
 
 La firma digitale implementata per Bitcoin ed Ethereum si basa sull'algoritmo \textit{ECDSA}: Bob vuole inviare un messaggio firmato con la propria chiave privata ($nP$) ad Alice che lo validerà utilizzando la chiave pubblica di Bob ($Q$).\newline
-In base a quanto stabilito tramite la crittografia ellittica non esistono avversari $A$ in grado di produrre una signatura valida per un messaggio $m$ non conosciuto, mentre tutti possono verificare che il messaggio sia stato firmato da Bob.\newline\newline
+In base a quanto stabilito tramite la crittografia ellittica non esistono avversari $A$ in grado di produrre una signature valida per un messaggio $m$ non conosciuto, mentre tutti possono verificare che il messaggio sia stato firmato da Bob.\newline\newline
 ECDSA utilizza delle funzioni di hash per ottenere una stringa di dimensione limitata rispetto al messaggio. L'algoritmo non specifica quale funzione utilizzare ma è fondamentale non utilizzare algoritmi che non siano considerati sicuri.\newline
-Una volta ottenuto l'hash del messaggio $m$ questo deve essere troncato in modo tale che la lunghezza in bit sia la stessa della dimensione dell'ordine del gruppo per ottenere un intero $z$. L'algoritmo di firma prevede che:
+L'hash del messaggio $m$, infine, deve essere troncato al bit corrispondente con la dimensione dell'ordine del gruppo della curva ellittica per ottere un intero $z$. L'algoritmo di firma prevede che:
 
 \begin{enumerate}
-    \item si scelga un $k$ ramdonico tra $\{1,...,N-1\}$, con $N$ il grado del gruppo;
+    \item si scelga un $k$ randomico tra $\{1,...,N-1\}$, con $N$ il grado del gruppo;
     \item si calcoli $E=kP$, con $P$ il punto base della curva ellittica;
     \item si calcoli $r$ tale che $r=x_E \bmod N$, con $x_E$ la coordinata $x$ di $E$;
     \item se $r=0$ allora ripetere i passaggi precedenti;
