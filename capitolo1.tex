@@ -23,7 +23,7 @@ Al contrario della crittografia a \textit{chiave simmetrica}, in cui tutte le pa
     \source{ss2buy.com}
 \end{figure}
 
-In un sistema a chiave pubblica ogni persona può cifrare un messaggio con la chiave pubblica del destinatario; in questo modo solo il destinatario può leggere il contenuto del messaggio in chiaro decriptandolo con la propria chiave privata e non è necessaria la creazione o l'utilizzo di un canale sicuro per lo scambio iniziale delle chiavi segrete tra le parti.
+In un sistema a chiave asimmetrica ogni persona può cifrare un messaggio con la chiave pubblica del destinatario; in questo modo solo il destinatario può leggere il contenuto del messaggio in chiaro decriptandolo con la propria chiave privata e non è necessaria la creazione o l'utilizzo di un canale sicuro per lo scambio iniziale delle chiavi segrete tra le parti.
 
 \begin{figure}
     \centering
@@ -85,8 +85,8 @@ Una firma digitale è l'equivalente della firma apposta su un documento cartaceo
     \source{\href{https://crypto.stanford.edu/~dabo/courses/OnlineCrypto/slides/13-sigs.pdf}{Cryptography Course of Standford University}}
 \end{figure}
 
-Una volta pubblicato il software il vendor genera una firma la quale verrà pubblicata dal vendor stesso; una volta che gli utilizzatori reperiscono l'applicativo possono validare il file con la firma pubblicata assieme al software. Nel caso in cui la firma non sia valita allora è possibile che qualche intermediaro abbia apportato delle modifiche al software o alla firma stessa.\newline\newline
-Il sistema di digital signature è considerato sicuro in quanto per un avversario \texttt{A} non esiste un metodo efficiente per generare un messaggio \texttt{m}, generato da \texttt{A} e con relativa signature appartenente a Bob, che possa essere verificato tramite la funzione \texttt{verify} da Alice. L'affermazione rimane valida anche se \texttt{A} è in possesso di altri messaggi e signature appartenti a Bob.\newline
+Una volta pubblicato il software, il vendor genera una firma la quale verrà pubblicata dal vendor stesso; una volta che gli utilizzatori reperiscono l'applicativo possono validare il file con la firma pubblicata assieme al software. Nel caso in cui la firma non sia valida allora è possibile che qualche intermediaro abbia apportato delle modifiche al software.\newline\newline
+Il sistema di digital signature è considerato sicuro in quanto per un avversario \texttt{A} non esiste un metodo efficiente per generare un messaggio \texttt{m} con una signature appartenente a Bob, che possa essere verificato tramite la funzione \texttt{verify} da Alice. L'affermazione rimane valida anche se \texttt{A} è in possesso di altri messaggi e signature appartenti a Bob, a patto che \texttt{m} non sia tra questi messaggi.\newline
 Riuscire a generare \texttt{m} e \texttt{sig} tale per cui \texttt{verify} viene soddisfatta significa riuscire a ricostruire la chiava privata di Bob e quindi risolvere in maniera efficiente il problema della fattorizzazione dei numeri primi.\newline\newline
 In aggiunta a quanto annotato è opportuno sottilineare che si considerano le funzioni \texttt{generateKeys} and \texttt{sign} come algoritmi randomici e privi di vulnerabilità; al contrario \texttt{verify} dovrà essere progettata per essere sempre deterministica.
 
@@ -127,7 +127,7 @@ Un campo finito consiste di un numero finito di elementi su cui sono definite du
 \begin{equation}
     y^2 \bmod p = (x^3 + ax + b) \bmod p
 \end{equation}
-Dove $p$ è un numero primo che garantisce the le operazioni di addizione e moltiplicazione siano sempre reversibili. In aggiunta l'equazione permette di ottenere dei valori interi.\newline\newline
+Dove $p$ è un numero primo che garantisce che le operazioni di addizione e moltiplicazione siano sempre reversibili. In aggiunta l'equazione permette di ottenere sempre dei valori interi e finiti.\newline\newline
 La somma di due punti $P$ e $Q$, appartenenti ad una curva ellittica $\xi$, produce un punto $R$ simmetrico all'asse $x$ dell'intersezione tra la retta passante per $PQ$ e $\xi$.
 
 \begin{figure}[H]
@@ -274,7 +274,7 @@ Al fine di rendere finito lo spazio associato alla curva e rendere reversibili l
 
 \section{Funzioni di hashing}
 
-Una funzione di \textit{hash} generica è una funzione matematica che rispetta tre proprietà:
+Una funzione di \textit{hashing} generica è una funzione matematica che rispetta tre proprietà:
 
 \begin{enumerate}
     \item è efficiente nell'effettuare la computazione da dominio a codominio.
@@ -289,7 +289,7 @@ Affinchè una funzione di \textit{hashing} possa essere considerata sicura ed ut
     \item resistenza alla seconda preimmagine: data un messaggio $m_1$ è infattibile trovare un messaggio $m_2$, diverso da $m_1$, tale che $hash(m_1)=hash(m_2)$.
     \item resistenza alle collisioni: dati due messaggi $m_1$ e $m_2$, diversi tra loro, deve essere infattibile trovare $hash(m_1)=hash(m_2)$.
 \end{enumerate}
-La resistenza alle collisioni non esclude che queste possano verificarsi in quanto lo spazio di output è limitato mentre quello in input è potenzialmente infinito: la proprietà implica solamente che trovare una collissione non deve essere computazionalmente fattibile. Ad esempio per una funzione di hashing con un output di 256 bit è possibile trovare una collisione con una possibilità del $99.8\%$ calcolando $2^{130}+1$ (per la teoria del \textit{paradosso del compleanno}) stringhe in input; tuttavia, il calcolo di ogni $2^{130}$ possibilità risulta essere impossibile con l'attuale potenza computazionale\footnote{Calcolando $10 000 H/s$ sarebbero necessari più $10^27$ anni per calcolare $2^{128}$ hash.}.
+La resistenza alle collisioni non esclude che queste possano verificarsi in quanto lo spazio di output è limitato mentre quello in input è potenzialmente infinito: la proprietà implica solamente che trovare una collissione non deve essere computazionalmente fattibile. Ad esempio per una funzione di hashing con un output di 256 bit è possibile trovare una collisione con una possibilità del $99.8\%$ calcolando $2^{130}+1$ (per la teoria del \textit{paradosso del compleanno}) stringhe in input; tuttavia, il calcolo di ogni $2^{130}$ possibilità risulta essere impossibile con l'attuale potenza computazionale\footnote{Calcolando $10 000 H/s$ sarebbero necessari più $10^{27}$ anni per calcolare $2^{128}$ hash.}.
 
 Questa proprietà permette quindi di ottenere dei \textit{digest} di un messaggio di lunghezza fissa e che sono univoci per il messaggio dato in input riducendo la quantità di informazioni da memorizzare e velocizzando i controlli di integrità ed uguaglianza tra file.
 
@@ -315,15 +315,14 @@ Nel protocollo della blockchain Bitcoin viene utilizzata la classe \textit{SHA-2
 Tramite le funzioni di hashing è possibile quindi rendere noto anche l'hash di un valore segreto in quanto questo non può essere dedotto. Ad esempio è possibile generate un hash \texttt{com} di \texttt{msg} ed un \texttt{nonce}; pubblicando l'hash \texttt{com} nessuno sarà in grado di risalire al valore di \texttt{msg}. Una volta resi pubblici \texttt{msg} e \texttt{nonce} allora sarà possibile verificare che \texttt{com} sia effettivamente l'hash reso pubblico in precedenza.\newline
 Questa tecnica è utilizzata, ad esempio, per risalire alla paternità di brevetti: pubblicando \texttt{com} generato con in input alla funzione di hash il documento dell'invenzione (\texttt{msg}) ed un timestamp (\texttt{nonce}) sarà possibile, una volta reso pubblico il brevetto e la data, garantire che l'invenzione sia stata realizzata prima di un altra.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[scale=0.8]{images/sha256.png}
-    \caption{Nel caso della crittografia a chiave simmetrica tutte le parti devono avere/conoscere la stessa chiave}
-    \source{ss2buy.com}
+    \caption{Schematizzazione della funzione di hashing \texttt{SHA-256}}
 \end{figure}
 
 \subsection{SHA-256}
-L'algoritmo di hashing \texit{SHA-256} è utilizzato come funzione di hashing nella blockchain Bitcoin e accetta in ingresso una qualunque stringa di lunghezza variabile e produce un output di 256 bit.\newline
+L'algoritmo \texit{SHA-256} è utilizzato come funzione di hashing nella blockchain Bitcoin e accetta in ingresso una qualunque stringa di lunghezza variabile e produce un output di 256 bit.\newline
 Il calcolo dell'hash prevede che il messaggio in input venga elaborato in modo tale che la dimensione finale sia di lunghezza fissa; queste funzioni sono dette \textit{funzioni di compressione} e nel caso di \textit{SHA-256} accettano degli input di lunghezza 768 bit.
 
 Affinchè gli input per le funzioni di compressione siano di lunghezza accettabile si utilizza la trasformazione di \texit{Merkle-Damgard} per dividere il messaggio in \textit{blocchi} di lunghezza di 512 bit.
