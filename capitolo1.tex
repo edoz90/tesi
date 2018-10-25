@@ -272,21 +272,23 @@ Al fine di rendere finito lo spazio associato alla curva e rendere reversibili l
 \item l'ordine della curva è espresso dal campo \textit{order}: \texttt{11579208923731619542\\3570985008687907852837564279074904382605163141518161494337}.
 \end{itemize}
 
-\section{Funzioni di hashing}
+\section{Funzioni di hashing}\label{sec:funzioni-hashing}
 
-Una funzione di \textit{hashing} generica è una funzione matematica che rispetta tre proprietà:
+Una funzione di \textit{hashing} $h$ generica è una funzione matematica che rispetta tre proprietà:
 
 \begin{enumerate}
     \item è efficiente nell'effettuare la computazione da dominio a codominio.
     \item il dominio è formato dalle stringhe di qualunque lunghezza;
-    \item produce in uscita una stringa di lunghezza fissa deterministica;
+    \item produce in uscita una stringa di lunghezza $l$ fissa e deterministica;
 \end{enumerate}
-
+\begin{equation}
+    h: \{0,1\}^* -> \{0,1\}^l
+\end{equation}
 Affinchè una funzione di \textit{hashing} possa essere considerata sicura ed utilizzabile in crittografia è necessario che rispetti altre proprietà più stringenti sulla modalità di trasformazione da input ad output:
 
 \begin{enumerate}
-    \item resistenza alla preimmagine o \textit{hiding}: dato un hash $h$, è infattibile risalire ad un messaggio $m$ con hash $h$ (nel caso $m$ sia in un insieme ristretto è possibile utilizzare un $nonce$ come input addizionale alla funzione: $H(nonce || m)$);
-    \item resistenza alla seconda preimmagine: data un messaggio $m_1$ è infattibile trovare un messaggio $m_2$, diverso da $m_1$, tale che $hash(m_1)=hash(m_2)$.
+    \item resistenza alla preimmagine (o \textit{hiding} o \textit{strong collision}): dato un hash $h$, è infattibile risalire ad un messaggio $m$ con hash $h$ (nel caso $m$ sia in un insieme ristretto è possibile utilizzare un $nonce$ come input addizionale alla funzione: $H(nonce || m)$);
+    \item resistenza alla seconda preimmagine (o \textit{weak collision}): data un messaggio $m_1$ è infattibile trovare un messaggio $m_2$, diverso da $m_1$, tale che $hash(m_1)=hash(m_2)$.
     \item resistenza alle collisioni: dati due messaggi $m_1$ e $m_2$, diversi tra loro, deve essere infattibile trovare $hash(m_1)=hash(m_2)$.
 \end{enumerate}
 La resistenza alle collisioni non esclude che queste possano verificarsi in quanto lo spazio di output è limitato mentre quello in input è potenzialmente infinito: la proprietà implica solamente che trovare una collissione non deve essere computazionalmente fattibile. Ad esempio per una funzione di hashing con un output di 256 bit è possibile trovare una collisione con una possibilità del $99.8\%$ calcolando $2^{130}+1$ (per la teoria del \textit{paradosso del compleanno}) stringhe in input; tuttavia, il calcolo di ogni $2^{130}$ possibilità risulta essere impossibile con l'attuale potenza computazionale\footnote{Calcolando $10 000 H/s$ sarebbero necessari più $10^{27}$ anni per calcolare $2^{128}$ hash.}.
