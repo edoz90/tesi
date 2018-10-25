@@ -2,203 +2,94 @@
 
 \textbf{NB: devi parlare anche della puzzle frendliness (compatibilità con i puzzle)}
 
-\newline\newline\newline\newline
-Blockchain can be thought as a distribute database that is duplicate across many computers on the network.
-The main innovation introduced by \textit{blockchains} is the specific protols used to manage transactions even on low-latency networks or low-power devices without using a specific central system achieving at the same thing data protection and reliability.\newline
+Le cryptomonete, a partire dal 2018\foot{Anno di pubblicazione del whitepaper di Satoshi Nakamoto}, hanno ricevuto molte attenzioni da coloro che sono interessati ad investirici o costruire nuovi servizi per un guadagno personale ma soprattutto è esploso l'interesse verso la vera innovazione tecnologica su cui sono basate tutte le criptomonete: la \textbf{blockchain}.
 
-Cryptocurrencies, since 2008\footnote{Year of Bitcoin's whitepaper by Sathosi Nakamoto.} has received a lot of consideration from whom is interested into investing or building products and services for a self-interest income but also has gained attentions on the underlying technology on which all cryptocurrencies are based on: \textbf{blockchain}.\newline
-\newline
-There isn't a globally accepted definition of \textit{Blockchain} due to different implementations and flavours but is possibile to delineate some key points.\newline
-A blockchain is a \textbf{fully-distributed}, \textbf{peer-to-peer network} which makes use of \textbf{cryptography} to \textbf{securely} host applications, store data and transfer digital assets; this technology can be thought as an \textbf{append-only} master ledger that is \textbf{publicly available} and is not controlled by a \textbf{central authority}.
+Una \textit{blockchain} può essere pensata come un database distribuito che è replicato in diversi computer connessi ad una rete.\newline
+La principale innovazione introdotta da questa tecnologia è nel protocollo usato per gestire transazioni anche su reti a bassa latenza o dispositivi a bassa potenza senza la necessità di un sistema centrale per garantire protezione e affidabilità.
 
-This definition is interesting since do not mention financial or particular use cases and do not specificy consensus protocols or algorithms due to the fact that blockchain's technology can be implemented to be a general purpose system and not only a mechanism to achieve electronic payments; in fact the first ever known blockchain was designed by two cryptographers in 1991: \textit{Stuart Haber} and \textit{Scott Stornetta} to digitally time-stamps documents and prevents data tampering and authentication.
+Non esiste una definizione globalmente valida di \textit{Blockchain} a causa delle differenti implementazioni e varianti ma è possibile delineare alcuni punti chiave.
+Una blockchain è una rete \textit{peer-to-peer} completamente \textit{distribuita} che fa ampio uso di crittografia per eseguire applicazioni, salvare dati, trasferire asset digitali in maniera \textit{sicura}; questa tecnologia può essere vista come un registro, pubblico e non controllato da nessuna autorità centrale in cui è solo possibile aggiungere dati (\textbf{append-only}).
 
-\section{History}
+Questa definizione è interessante in quanto non menziona nessun termine finanziaro o particolari casi d'uso e non specifica protocolli o algoritmi di consenso in quanto una blockchain può essere implementata come un sistema general purpose e non come solo meccanismo per i pagamenti elettronici; infatti, la prima blockchain è stata progettata nel 1991 da due crittografi: \texit{Stuart Haber} e \textit{Scott Stornetta} per firmare dei documenti digitali per prevenire modifiche illecite dei dati e autenticazione.
 
-The first modern blockchain using an anonymous, distributed and cryptographic payments system is the Bitcoin's blockchain that was presented by Sathosi Nakamoto in 2008 to solve the problem of building and using a decentralized protocol to implement digital currency without the need of a trusted authority or central server and avoid double-spending from malicious players.\newline
-A lot of others proposal were made before Bitcoins but they do not fully solved the problems of decentralization and consensus and were used as bases for new blockchain technologies.\newline\newline
-The first known blockchain is not the one implemented in Bitcoin's project because in 1991, cryptographers \textit{Stuart Haber} and \textit{Scott Stornetta}, wanted to implement a system where documents time-stamps could not be tampered\cite{haberstorneta}.
+\section{Storia}
 
-\subsection{Haber and Stornetta blockchain's}
+La blockchain utilizzata per i Bitcoin è la prima modera blockchain ad essere utilizzata per pagamenti elettronici sicuri, distribuiti ed anonimi ed è stata presentata da Satoshi Nakamoto nel 2008. L'esigenza di Satoshi era quella di creare un protocollo decentralizzato per coniare una moneta digitale senza il bisogno di una figura centrale di fiducia ed evitare il problema del double-spending di possibili attori malevoli.
+Molte altre proposte sono state fatte prima dei Bitcoin ma nessuna risolveva a pieno i problemi di decentralizzazione e consenso distribuito.
 
-Stornetta and Haber's idea was to certify the date a document was created or modified; for example, in intellectual property matters, it is sometimes crucial to verify the date of an inventor first patentable prototype; the solution requires to solve two problems:
+La prima blockchain conosciuta, però, non è quella implementata per Bitcoin e non è stata usata per pagamenti elettronici ma come metodo di validazione per documenti digitali nel 1991.
 
-\begin{enumerate}
-    \item the data itself should be time-stamped (not the medium);
-    \item impossibility of changing the time-stamp.
-\end{enumerate}
+\subsection{Haber e Stornetta}
 
-The solution proposed can achieve digital time-stamping of such documents so that it is infeasible for an attacker to alter the date.\newline
-The process of time-stamping a document can be solved using a family of cryptographically secure \textit{collision-free} hash functions $h: \{0,1\}^* -> \{0,1\}^l$. Those functions $h$ are easy to compute but it is computionally infeasible to find a $x^1$ such that $h(x)=h(x^1), \forall x,x^1: x \neq x^1$ (\textit{strong collision resistance})\footnote{Weak collision resistance or \textit{second preimage resistance} is optional since the solution requires that two distinct preimages hash to the same value.}.\\
+L'idea di Haber e Stornetta\cite{haberstornetta} era di certificare la data di creazione o modifica di un documento; per esempio, in materia di dispute pre la proprietà intelletuale è cruciale verificare la data di un prototipo brevettabile: la soluzione richiedere di risolvere due problemi:
+\begin{itemize}
+    \item la data e l'ora dovrebbero far parte del timestamp e non solo nel documento;
+    \item prevenire ogni modifica del timestamp e quindi del documento.
+\end{itemize}
+La soluzione proposta dai due crittografi permette di eseguire un timestamp digitale dei documenti in modo tale che sia infattibile pe un attaccante alterare questi dati.\newline
+Il processo di timestamp di un documento prevede l'utilizzo di funzioni di hashing crittografiche: $h: \{0,1\}^* -> \{0,1\}^l$.\newline
+A differenza delle funzioni di hashing presentate nel capitolo \ref{sec:funzioni-hashing} non è necessario che siano resistenti alla seconda preimmagine in quanto la soluzione richiede che da un hash non sia possibile risalire al messaggio originale.
+Utilizzando le funzioni di hashing è possibile quindi evitare di fornire l'intero documento ad un servizio per timestamp e quindi garantire la privacy del documento stesso: il contenuto intelletuale non è divulgato pubblicamente.\newline
+Una volta che l'hash del documento è stato generato è possibile applicargli una firma digitale.\newline
 
+Una prima soluzione proposta prevede l'utilizzo di servizio di terze parti (\textit{Time-Stamping Service}) per elaborare e firmare il documento ma sorge il problema della falsificazione: è necessario implementare una soluzione che sia assente da terze parti per garantire il massimo della fiducia.
 \begin{figure}
     \centering
-    \includegraphics[scale=1.2]{images/haberstornetta.png}
+    \includegraphics[width=\textwidth]{images/haberstornetta.png}
+    \caption{Linking di documenti presso un servizio di timestamp}
+    \label{fig:haberstornetta}
 \end{figure}
-
-Using hash functions is also possibile to avoid providing the entire document to some time-stamping service and thus the privacy is guaranteed: for example the content of an intellectual property is not disclosed.\newline\newline
-Once the hash of the document is calculated is possibile to generate a digital signature to identify the signer: for example is possible to appends the date, time and sign to the new compound document.
-
-The first solution proposed used a third party service (\textit{Time-Stamping Service}) to elaborate and sign the documents but the TSS service can issue false time-stamps: it is necessary to implement a solution in the absence of generally trusted parties.
-
-Two possibile solutions can be used or combined:
-
-\begin{itemize}
-    \item Use a possible untrustworthy TSS service constrained to produce genuine time-stamps in a way that false ones are difficult to generate using \textit{linking};
-    \item Distribute the required trust among the users of the service (\textit{decentralization}).
+Due possibili scenario possono essere realizzati o combinati:
+\begin{enumerate}[1.]
+    \item utilizzare un servizio di timestamp (\textit{TTS}) non fidato ma che sia obbligato a produrre timestamp genuini utilizzando il \textit{linking};
+    \item distribuire la computazione tra diversi utenti del servizio (\textit{decentralizzazione}).
 \end{itemize}
+Tramite \textit{linking} gli hash dei documenti presentati al servizio sono collegati come in figura \ref{fig:haberstornetta} e il risultato finale è reso pubblico agli utenti. La seconda soluzione prevede che alcuni utenti, scelti randomicamente, producano il timestamp dell'hash.
 
-In the first, the hashes, of documents submitted are linked togheter and certificates recording the linking of a given document are distributed to other clients both upstream and downstream from that document.\newline
-In the second solution, several clients are randomly choosen to time-stamp the hash.
-
-A practical implementation of Haber and Stornetta blockchain has been running since 1995: \textit{Surety}\footnote{\url{http://surety.com/}} company every week publish a \textit{base 16} string of the hash of all new signatures of their clients over the week on the \textit{New York Times} journal.\\
-
-\begin{figure}[!h]
+Una implementazione della blockchain di Haber e Stornetta è attiva dal 1995: l'azienda \textit{Surety}\footnote{\href{http://surety.com}{Surety}} ogni settimana pubblica una stringa in \textit{base 16} dell'hash di tutte le nuove signature dei clienti della settimana sulla rivista \textit{New York Times}.
+\begin{figure}[H]
     \centering
-    \includegraphics[scale=0.5]{images/nyt.jpg}
-    \caption{\textit{Base 16} of the hash Surety published on New York Times.}
+    \includegraphics[width=0.35\textwidth]{images/nyt.jpg}
+    \caption{Esempio del \textit{base 16} pubblicato sul New York Time da Surety}
     \source{Surety}
 \end{figure}
 
-\subsection{Blockchain as payment system}
+\subsection{Blockchain come sistema di pagamento}
+L'implementazione teorica della blockchain di Haber e Stornetta è molto simile a quella presentata nel whitepaper di Satoshi Nakamoto\cite{bitcoin}, infatti, tre degli otto paper citati nel documento \textit{Bitcoin: A Peer-to-Peer Electronic Cash System} sono scritti proprio da Haber e Stornetta\footnote{In quanto l'identità di Satoshi non è mai stata svelata questo fatto ha alimentato voci per cui proprio i due crittografi siano i creatori dei Bitcoin, vedi appendice \ref{app:satoshi}.}.\newline
+L'obiettivo di Satoshi era quello di creare un sistema di pagamento elettronico decentralizzato con un forte utilizzo della crittografia, lo stesso che ha portato alla creazione, tra gli anni '90 e 2000, di \textit{eCash}, \textit{SET}, \textit{Hashcash} e \textit{b-cash}. Tutte queste proposte hanno riscontrato dei problemi per cui non era sicuro utilizzarle ma che hanno dato spunto e suggerimenti a Nakamoto.
 
-The theoric implementation of Haber and Stornetta blockchain is very similar to the one presented in the Bitcoin Whitepaper \textit{Bitcoin: A Peer-to-Peer Electronic Cash System}\cite{bitcoin} since it was a solid technological platform used by Satoshi Nakamoto; in fact three of heights papers cited in Bitcoin's whitepaper were written by \textit{Haber} and \textit{Stornetta}.
+\section{Struttura}
+Una blockchain è un lista di record, chiamati blocchi, che sono collegati tramite l'utilizzo di tecniche crittografiche e che permette solo azioni di inserimento. Ogni record o blocco contiene la informazioni sulle transazioni effettuate tra gli utenti.
+In questo modo la lista dei blocchi rappresenta uno storico (registro) di tutte le transazioni che sono state fatte e quindi è anche possibile risalire al bilancio totale di ciascun utente.
+In quanto non esiste una definizione ed implementazione globalmente valida di blockchain verrà presentata quella utilizzata per i Bitcoin come generica.
 
-Banks should keep track of all parties balances in a ledger that is not visible by the public. Banks system rely on trust: each party should trust the bank upon every transaction and the bank can decide to reject or accept it.\\
-This centralization is the first aspect that lead to the implementation of firsts electronic payments based on cryptography techniques in 1990s and early 2000s: \textit{eCash}, \textit{SET}, \textit{Hashcash} and \textit{b-cash}.
-
-
-\section{Structure}
-
-Technically speaking a blockchain is a grown list of records, called blocks, which are linked using cryptographic techniques and widely used by cryptocurrencies.\\
-There is no actually a formal definition of blockchain technology that is generally accepted but is possible to defined it using the Bitcoin as model and its application in cryptocurrencies.\\
-
-A blockchain is commonly composed in:
+Una blockchain è generalmente composta da alcuni elementi fondamentali:
 \begin{itemize}
-    \item Blocks
-    \item Protocols
-    \item Nodes
+    \item blocco;
+    \item nodo;
+    \item transazione.
 \end{itemize}
 
-\subsection{Blocks}
-
-A block in a single record that forms the growing list of records.
-
-\includegraphics[scale=0.45]{images/blockchain_basic.png}
+\subsection{Blocco}
+Un blocco è un singolo elemento della lista formata da tutti i record componenti la blockchain.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/blockchain_basic.png}
+    \caption{Esempio di blockchain formata da tre blocchi}
+\end{figure}
+I blocchi sono connessi come una lista tramite l'utilizzo delle funzioni di hashing e quindi, per design, sono resistenti alla modifica dei dati.
+Ogni blocco contiene come dato l'hash del blocco che lo precede nella lista, un timestamp, un indice e i dati che devono essere memorizzati permanentemente.\newline
+La crittografia fornisce sia autenticazione che verifica ed è usata per garantire un sistema di computazione sicuro senza un singolo proprietario o sistema centrale.\newline
+Il primo nodo della lista è chiamato \textit{genesi} in quanto partendo da quello verrà creata la lista che compone la blockchain. Nella maggior parte delle implementazioni questo blocco è inserito nel codice sorgente, non produce o consuma dati e non è collegato a nessun precedente blocco.
 
 Blocks are linked using cryptography and by design are resistant to data modification. Cryptography provides authentication and verification and is used to conjure a secure computing environment out of many nodes without central authority or single owner.\\
-Each block contains a cryptographic hash of the previous block, a timestap and the data to store in a permanent way.
+Each block contains a cryptographic hash of the previous block, a timestamp and the data to store in a permanent way.
 
 Each block contains a cryptographic hash of the previous block,[6] a timestamp, and transaction data (generally represented as a merkle tree root hash). By design, a blockchain is resistant to modification of the data. It is "an open, distributed ledger that can record transactions between two parties efficiently and in a verifiable and permanent way".[8] For use as a distributed ledger, a blockchain is typically managed by a peer-to-peer network collectively adhering to a protocol for inter-node communication and validating new blocks. Once recorded, the data in any given block cannot be altered retroactively without alteration of all subsequent blocks, which requires consensus of the network majority.
 
 Though blockchain records are not unalterable, blockchains may be considered secure by design and exemplify a distributed computing system with high Byzantine fault tolerance. Decentralized consensus has therefore been claimed with a blockchain.[9]
 
 Blockchain was invented by Satoshi Nakamoto in 2008 to serve as the public transaction ledger of the cryptocurrency bitcoin.[1] The invention of the blockchain for bitcoin made it the first digital currency to solve the double-spending problem without the need of a trusted authority or central server. The bitcoin design has inspired other applications.[1][3]
-Qui una breve descrizione del contenuto del capitolo o, eventualmente, testo introduttivo alle sezioni che seguono
 
-\section{Prima Sezione}
-Qui il testo della prima sezione. Questa è  una parola in \textit{corsivo}, questa invece è una parola in \textbf{grassetto} e questa è una parola in \texttt{monotype}.
-
-\begin{center}
-Questo è un paragrafo centrato!
-\end{center}
-
-Dimensione del testo:\\
-
-\LARGE{Testo} \Large{Testo} \large{Testo} \normalsize{Testo} \small{Testo} \footnotesize{Testo}\\
-
-Qui una citazione bibliografica \cite{bib001}.
-
-Qui un link \url{www.google.it}
-
-
-\subsection{Prima Sottosezione}
-
-Qui l'esempio di un elenco puntato:
-
-\begin{itemize}
-\item Primo elemento,
-\item Secondo elemento,
-\item Terzo elemento.
-\end{itemize}
-
-Qui l'esempio di un elenco con un sotto-elenco:
-
-\begin{itemize}
-\item Primo elemento,
-\begin{itemize}
-\item Primo elemento del sotto-elenco
-\item Secondo elemento del sotto-elenco
-\end{itemize}
-\item Secondo elemento,
-\item Terzo elemento.
-\end{itemize}
-
-Qui infine l'esempio di un elenco numerato
-
-\begin{enumerate}
-\item Testo
-\item Testo
-\item Testo
-\end{enumerate}
-
-\section{Seconda Sezione}\label{sec:Sezione2}
-
-Qui l'esempio di una formula matematica:
-
-$ G = \gamma\dfrac{m_{1}m_{2}}{r^{2}} $
-
-\section{Terza Sezione}
-
-Qui il riferimento ad una sezione utilizzando una label: Sezione \ref{sec:Sezione2}
-
-Qui la definizione di due paragrafi con titoli.
-
-\paragraph{Titolo 1} testo del paragrafo
-
-\paragraph{Titolo 2} testo del paragrafo, con una nota a piè di pagina\footnote{Questo è il testo della nota, in cui si può \textit{utilizzare} qualunque stile di \textbf{formattazione}}
 
 % NeoTex: mainfile=main.tex:
-
-
-\chapter{Capitolo con Immagini e Codice}
-
-Introduzione al capitolo
-
-\section{Prima sezione del secondo capitolo}
-
-Qui di seguito un'immagine. Tutte le immagini devono essere inserite nella cartella \texttt{images}
-
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.8]{images/placeholder.jpg}
-\caption{Testo della didascalia}
-\label{fig:figure1}
-\end{figure}
-
-Qui invece il testo con il riferimento all'immagine: Figura \ref{fig:figure1}.
-
-Qui un'immagine con due sotto-immagini:
-
-\begin{figure}[H]
-\centering
-\begin{subfigure}[b]{0.42\textwidth}
-\includegraphics[width=\textwidth]{images/placeholder.jpg}
-\caption{Didascalia prima figura}
-\label{fig:figure2}
-\end{subfigure}
-\qquad
-\begin{subfigure}[b]{0.42\textwidth}
-\includegraphics[width=\textwidth]{images/placeholder.jpg}
-\caption{Didascalia seconda figura}
-\label{fig:figure3}
-\end{subfigure}
-\caption{Didascalia globale}
-\label{fig:figures12}
-\end{figure}
-
-Altri tipi di riferimenti: Figura \ref{fig:figures12} oppure \ref{fig:figure3}.
-
-\section{Seconda sezione con codice sorgente}
-
-Il codice sorgente può essere inserito mediante un link al file del codice sorgente, in questo caso il file con il codice va inserito nella cartella \texttt{code}.

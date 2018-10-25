@@ -18,20 +18,17 @@ La \textit{crittografia asimmetrica} è anche spesso chiamata \texit{crittografi
 Al contrario della crittografia a \textit{chiave simmetrica}, in cui tutte le parti devono conoscere la stessa chiave per cifrare o decifrare i messaggi, in questo schema è necessario che i partecipanti conoscano soltanto la chiave \texit{pubblica} del destinatario del messaggio e non è necessario trovare rimedi al problema dello scambio delle chiavi in presenza di avversari.
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.6]{images/simmetric.png}
+    \includegraphics[width=0.65\textwidth]{images/simmetric.png}
     \caption{Nella crittografia a chiave simmetrica tutte le parti devono avere/conoscere la stessa chiave}
     \source{ss2buy.com}
 \end{figure}
-
 In un sistema a chiave asimmetrica ogni persona può cifrare un messaggio con la chiave pubblica del destinatario; in questo modo solo il destinatario può leggere il contenuto del messaggio in chiaro decriptandolo con la propria chiave privata e non è necessaria la creazione o l'utilizzo di un canale sicuro per lo scambio iniziale delle chiavi segrete tra le parti.
-
 \begin{figure}
     \centering
-    \includegraphics[scale=0.6]{images/asymmetric.png}
+    \includegraphics[width=0.65\textwidth]{images/asymmetric.png}
     \caption{Nella crittografia a chiave asimmetrica ogni parte genera un coppia di chiavi, la parte pubblica viene utilizzata dai mittenti per cifrare il messaggio.}
     \source{ss2buy.com}
 \end{figure}
-
 Il principio alla base del sistema a crittografia a chiave pubblica risiede nell'utilizzo di alcuni problemi matematici come la fattorizzazione di un numero primo, il logaritmo discreto e le relazioni tra curve ellittiche per rendere altamente inefficiente la computazione di una soluzione al problema.\newline
 Nel caso della fattorizzazione dei numeri primi, ad esempio, utilizzata nella generazione di chiavi RSA\footnote{RSA è un algoritmo a chiave asimmetrica pubblicato da Rivest, Shamir e Adleman nel 1977. È \href{https://slides.com/edoardorosa/breakingrsa#/2/5}{stato calcolato} per che trovare $p$ e $q$ di un $N$ a 1024 bit sono necessari $8.02\times 10^{211}$ anni se ogni atomo dell'universo potesse eseguire $1.000.000$ di istruzioni RSA al secondo.}, si ha che dato un numero $N$, coprimo, sarà estremamente inefficiente il calcolo dei due numeri primi $p$ e $q$ il cui prodotto sia $N$.
 L'affermazione è valida in quanto non esiste un metodo conosciuto ed efficiente per fattorizzare un numero primo o più in generale un numero intero.\newline
@@ -44,13 +41,13 @@ Un esempio di utilizzo di una comunicazione tramite crittografia a chiave asimme
     \item Bob invia il messaggio ad Alice; non è necessario utilizzare un canale sicuro in quanto solo Alice riuscirà a decifrare il messaggio;
     \item Alice riceve il messaggio che viene decriptato utilizzando la propria chiave privata.
 \end{enumerate}
+Tramite questi passaggi è stata garantita la confidenzialità del messaggio ma non l'autenticazione in quanto chiunque potrebbe aver utilizzato la chiave pubblica di Alice per generare quel messaggio.
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=1.3]{images/confidentiality.png}
+    \includegraphics[width=0.9\textwidth]{images/confidentiality.png}
     \caption{Metodo per ottenere confidenzialità utilizzando la crittografia asimmetrica}
     \source{\href{https://sandilands.info/sgordon/teaching/css322y12s2/unprotected/CSS322Y12S2L07-Public-Key-Cryptography.pdf}{Sirindhorn International Institute of Technology Thammasat University}}
 \end{figure}
-Tramite questi passaggi è stata garantita la confidenzialità del messaggio ma non l'autenticazione in quanto chiunque potrebbe aver utilizzato la chiave pubblica di Alice per generare quel messaggio.\newline\newline
 
 \subsection{Firma digitale}
 Per poter garantire che un messaggio sia stato scritto da Bob e quindi garantire autenticazione è necessario che Bob \textit{firmi} il messaggio tramite una \textit{digital signature}:
@@ -64,7 +61,7 @@ Per poter garantire che un messaggio sia stato scritto da Bob e quindi garantire
 \end{enumerate}
 \begin{figure}
     \centering
-    \includegraphics[scale=0.3]{images/authentication.png}
+    \includegraphics[width=0.9\textwidth]{images/authentication.png}
     \caption{Metodo per ottenere autenticazione utilizzando la crittografia asimmetrica}
     \source{\href{https://sandilands.info/sgordon/teaching/css322y12s2/unprotected/CSS322Y12S2L07-Public-Key-Cryptography.pdf}{Sirindhorn International Institute of Technology Thammasat University}}
 \end{figure}
@@ -80,7 +77,7 @@ Una firma digitale è l'equivalente della firma apposta su un documento cartaceo
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.7]{images/digitalsignature.png}
+    \includegraphics[width=0.9\textwidth]{images/digitalsignature.png}
     \caption{Esempio di utilizzo di una digital signature}
     \source{\href{https://crypto.stanford.edu/~dabo/courses/OnlineCrypto/slides/13-sigs.pdf}{Cryptography Course of Standford University}}
 \end{figure}
@@ -110,34 +107,31 @@ Nel caso implementato nella blockchain Bitcoin, e anche per Ethereum ed altre cr
 Una curva ellittica è rappresentata dall'insieme dei punti espressi dalla formula $y^2=x^3+ax+b$ con $4a^3+27b^2=0$.
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.6]{images/elliptic_examples.png}
+    \includegraphics[width=\textwidth]{images/elliptic_examples.png}
     \caption{Esempi di curve ellittiche; come si può notare sono simmetriche rispetto all'asse $x$.}
     \source{\href{https://www.wolframalpha.com/}{WolframAlpha}}
 \end{figure}
-Nell'implementazione della blockchain per \textit{Bitcoin} ed \textit{Ethereum} viene utilizzata una curva chiamata \texttt{secp256k1}\footnote{\texttt{secp256k1} è stata scelta come base per la generazione della crittografia delle chiavi per Bitcoin ed Ethereum a causa della costruzione non randomica della curva che permette di realizzare delle computazioni molto efficienti (fino al 30\% in più rispetto ad altre curve). In aggiunta è considerata più sicura rispetto ad altre curve proposte dal \textit{NIST} per la bassa probabilità che siano state introdotte delle \textit{backdoor} nella curva di partenza.} e con equazione: $y^2=x^3+7$ con $a=0$ e $b=7$.\newline
-\begin{figure}
+Nell'implementazione della blockchain per \textit{Bitcoin} ed \textit{Ethereum} viene utilizzata una curva chiamata \texttt{secp256k1}\footnote{\texttt{secp256k1} è stata scelta come base per la generazione della crittografia delle chiavi per Bitcoin ed Ethereum a causa della costruzione non randomica della curva che permette di realizzare delle computazioni molto efficienti (fino al 30\% in più rispetto ad altre curve). In aggiunta è considerata più sicura rispetto ad altre curve proposte dal \textit{NIST} per la bassa probabilità che siano state introdotte delle \textit{backdoor} nella curva di partenza.} e con equazione: $y^2=x^3+7$ con $a=0$ e $b=7$.
+\begin{figure}[H]
     \centering
-    \includegraphics[scale=0.9]{images/secp256k1.png}
+    \includegraphics[width=0.6\textwidth]{images/secp256k1.png}
     \caption{Rappresentazione della curva \texttt{secp256k1}}
     \source{\href{https://www.desmos.com/calculator/ialhd71we3}{Desmos}}
 \end{figure}
 Il principio alla base della crittografia asimmetrica basata su curve ellittiche è simile a quello utilizzato in RSA ma anzichè utilizzare il problema della fattorizzazione di numeri primi viene utilizzato il \textit{problema del logaritmo discreto} applicato su curve ellittiche definite su un campo finito.\newline
 Un campo finito consiste di un numero finito di elementi su cui sono definite due operazioni binarie: addizione e moltiplicazione. L'equazione della curva ellittica applicata ad un campo finito è:
-
 \begin{equation}
     y^2 \bmod p = (x^3 + ax + b) \bmod p
 \end{equation}
 Dove $p$ è un numero primo che garantisce che le operazioni di addizione e moltiplicazione siano sempre reversibili. In aggiunta l'equazione permette di ottenere sempre dei valori interi e finiti.\newline\newline
 La somma di due punti $P$ e $Q$, appartenenti ad una curva ellittica $\xi$, produce un punto $R$ simmetrico all'asse $x$ dell'intersezione tra la retta passante per $PQ$ e $\xi$.
-
 \begin{figure}[H]
     \centering
-    \includegraphics{images/ECDSA.png}
+    \includegraphics[width=0.6\textwidth]{images/ECDSA.png}
     \caption{Somma di due punti: $P+Q=-R$}
     \source{\href{https://www.desmos.com/calculator/ialhd71we3}{Desmos}}
     \label{fig:ECDSA}
 \end{figure}
-
 Nel dettaglio dati due punti $P$ e $Q$ appartenenti alla curva \xi:
 
 \begin{equation}
@@ -157,12 +151,13 @@ e $(x_R,y_R)$ le coordinate del punto $R$:
         x_R = m^2 - x_P - x_Q\\
         y_R = y_P + m(x_R - x_P)\\
     \end{split}
-\end{equation}\newline\newline
+\end{equation}
 La moltiplicazione di un punto $P$ con uno scalare $n$ è il risultato di $n$ operazioni di addizione di $P$ con se stesso:
 
 \begin{equation}
     nP = \underbrace{P + P + ... + P}_\text{n volte}
 \end{equation}
+
 Metodi più efficienti possono essere usati per moltiplicare uno scalare ad un punto in una curva ellittica come il metodo \texit{double-and-add}: si voglia calcolare, ad esempio, $nP$ con $n = 132$.
 È possibile rappresentare $n$ in base binaria:
 
@@ -317,13 +312,12 @@ Nel protocollo della blockchain Bitcoin viene utilizzata la classe \textit{SHA-2
 Tramite le funzioni di hashing è possibile quindi rendere noto anche l'hash di un valore segreto in quanto questo non può essere dedotto. Ad esempio è possibile generate un hash \texttt{com} di \texttt{msg} ed un \texttt{nonce}; pubblicando l'hash \texttt{com} nessuno sarà in grado di risalire al valore di \texttt{msg}. Una volta resi pubblici \texttt{msg} e \texttt{nonce} allora sarà possibile verificare che \texttt{com} sia effettivamente l'hash reso pubblico in precedenza.\newline
 Questa tecnica è utilizzata, ad esempio, per risalire alla paternità di brevetti: pubblicando \texttt{com} generato con in input alla funzione di hash il documento dell'invenzione (\texttt{msg}) ed un timestamp (\texttt{nonce}) sarà possibile, una volta reso pubblico il brevetto e la data, garantire che l'invenzione sia stata realizzata prima di un altra.
 
-\begin{figure}[H]
+\subsection{SHA-256}
+\begin{figure}
     \centering
-    \includegraphics[scale=0.8]{images/sha256.png}
+    \includegraphics[width=0.8\textwidth]{images/sha256.png}
     \caption{Schematizzazione della funzione di hashing \texttt{SHA-256}}
 \end{figure}
-
-\subsection{SHA-256}
 L'algoritmo \texit{SHA-256} è utilizzato come funzione di hashing nella blockchain Bitcoin e accetta in ingresso una qualunque stringa di lunghezza variabile e produce un output di 256 bit.\newline
 Il calcolo dell'hash prevede che il messaggio in input venga elaborato in modo tale che la dimensione finale sia di lunghezza fissa; queste funzioni sono dette \textit{funzioni di compressione} e nel caso di \textit{SHA-256} accettano degli input di lunghezza 768 bit.
 
@@ -333,12 +327,10 @@ In fase di inizializzazione al messaggio viene applicato del \textit{padding} pe
 Il primo blocco viene compresso partendo da un \texit{vettore di inizializzazione} \textbf{IV} a 256 bit (fisso e definito dagli standard di \textit{SHA-256}) e l'output generato risulta come argomento per la funzione di compressione per il blocco successivo. L'output dell'ultimo blocco, di lunghezza 256 bit, è l'hash finale.
 
 \subsection{Firma digitale con ECDSA}
-
 La firma digitale implementata per Bitcoin ed Ethereum si basa sull'algoritmo \textit{ECDSA}: Bob vuole inviare un messaggio firmato con la propria chiave privata ($nP$) ad Alice che lo validerà utilizzando la chiave pubblica di Bob ($Q$).\newline
 In base a quanto stabilito tramite la crittografia ellittica non esistono avversari $A$ in grado di produrre una signature valida per un messaggio $m$ non conosciuto, mentre tutti possono verificare che il messaggio sia stato firmato da Bob.\newline\newline
 ECDSA utilizza delle funzioni di hash per ottenere una stringa di dimensione limitata rispetto al messaggio. L'algoritmo non specifica quale funzione utilizzare ma è fondamentale non utilizzare algoritmi che non siano considerati sicuri.\newline
 L'hash del messaggio $m$, infine, deve essere troncato al bit corrispondente con la dimensione dell'ordine del gruppo della curva ellittica per ottere un intero $z$. L'algoritmo di firma prevede che:
-
 \begin{enumerate}
     \item si scelga un $k$ randomico tra $\{1,...,N-1\}$, con $N$ il grado del gruppo;
     \item si calcoli $E=kP$, con $P$ il punto base della curva ellittica;
@@ -348,16 +340,13 @@ L'hash del messaggio $m$, infine, deve essere troncato al bit corrispondente con
     \item se $s=0$ allora scegliere un nuovo $k$;
     \item altrimenti la coppia $(r,s)$ compone la firma digitale del messaggio $m$ con hash $z$.
 \end{enumerate}
-
 L'algoritmo di verifica della firma, eseguito da Alice, prevede che:
-
 \begin{enumerate}
     \item si ricavi $z$ partendo dall'hash del messaggio;
     \item si ottenga $u_1=s^{-1}z\bmod N$;
     \item si ottenga $u_2=r^{-1}z\bmod N$;
     \item tramite $u_1$ ed $u_2$ è possibile calcolare $E=u_1P+u_2Q_B$, con $Q_B$ la chiave pubblica di Bob.
 \end{enumerate}
-
 Se $r=x_E \mod n$ allora è stata verificata l'autenticità del messaggio $m$ inviato da Bob.\newline\newline
 La randomicità del valore $k$ è fondamentale\footnote{Nel \href{https://www.bbc.com/news/technology-12116051}{2011} è stata recuperata la chiave privata di Sony utilizzata per firmare i videogiochi prodotti per la console \textit{Play Station 3}} per garantire che un possibile attaccante non riesca a ricostruire la chiave privata del mittente. Conoscendo due coppie di firme digitali $(r_1,s_1)$ e $(r_2, s_2)$, generate utilizzando lo stesso valore di $k$, è possibile calcolare prima $k$ e poi la chiave privata utilizzata per firmare il messaggio:
 
@@ -369,7 +358,7 @@ La randomicità del valore $k$ è fondamentale\footnote{Nel \href{https://www.bb
 L'ultima equazione permette di calcolare $k$ utilizzando due hash e due signature; per trovare la chiave privata è sufficiente ricavare $n_B$ dalla formula $s=k^{-1}(z+rn_B)\bmod N$
 
 \begin{equation}
-    n_B = r^{-1} (sk-z)\bmod N
+    n_B = r^{-1} (s*k-z)\bmod N
 \end{equation}
 
 % NeoTex: mainfile=main.tex:
