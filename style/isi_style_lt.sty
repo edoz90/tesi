@@ -1,9 +1,17 @@
-\NeedsTeXFormat{LaTeX2e}
-
 \ProvidesPackage{style/isi_style_lt}
 
 \RequirePackage{ifthen}
 \RequirePackage{multicol}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{caption}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+
 
 %%%%%%%
  \newif\ifpdf
@@ -26,7 +34,6 @@
  \DeclareGraphicsExtensions{.eps, .jpg}
  \fi
 %%%%%%%%%%%%%%%
-
 
 \newcommand{\@materia}{?}
 \newcommand{\@titolo}{?}
@@ -62,67 +69,51 @@
     %                                   %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\renewcommand\maketitle{
-
 \newcommand{\source}[1]{\caption*{\textit{Sorgente: {#1}} }}
 
-\begin{titlepage}{
-
-\fontfamily{ptm} \selectfont
-\begin{center}
-
-\rule{14cm}{.4pt}\\\smallskip
-
-\begin{large}
-
-\vfill
-
-{
-
-\begin{LARGE}
-\@materia
-\end{LARGE}\\
-
-\vfill
-
-\setlength{\baselineskip}{1.5\baselineskip}
-\begin{LARGE}
-\@titolo
-\end{LARGE}\\
+\def\titlep{%
+    \thispagestyle{empty}%
+    \null
+    \begin{minipage}{\textwidth}%
+        \begin{tabular}{c}%
+            \large{UNIVERSIT\`A DEGLI STUDI DI BOLOGNA}\\[3mm]%
+            \normalsize{Dipartimento di Informatica - Scienza e Ingegneria}\\[0.5mm]%
+            \normalsize{Scuola di Ingegneria e Architettura}\\[0.5mm]%
+            \normalsize{Corso di Laurea Magistrale Ingegneria e scienze informatiche}\\[0.5mm]%
+            \rule{12.0cm}{1.5pt}\\[7mm]%
+            \large{\@materia}\\%
+        \end{tabular}%
+    \end{minipage}%
+    \vfill%
+    %\begin{minipage}{\textwidth}%
+        \begin{center}%
+                \textbf{\Large\uppercase\expandafter{\@titolo}}%
+        \end{center}%
+    %\end{minipage}%
+    \vfill%
+    \begin{minipage}[t]{\textwidth}%
+        \begin{tabular}{ll}%
+            %Relatore: \hspace{65mm} & Candidato: \\%
+            %\@relatore & \@candidato\\[5mm]%
+        \end{tabular}
+        \begin{tabular}{l}%
+            \if*\@correlatori
+                \if*\@correlatore \\[27mm]
+                \else \@correlatore \\[5mm] \fi
+            \else \@correlatori \\ \fi
+        \end{tabular} \\[5mm]%
+        \centerline{\@laureando\@matricola}
+        \vspace{1mm}\centerline{\rule{6.5cm}{0.5pt}}\\%
+        \centerline{\@annoacc} %
+    \end{minipage}%
+    \null
+    \newpage
 }
 
-\vfill
-
-\vfill
-
-\@laureando
-\@matricola
-
-\rule{14cm}{.4pt}\\\smallskip
-
-\@annoacc
-
-\end{large}
-\end{center}
+\def\maketitle{
+    \pagenumbering{roman}
+    \pagestyle{empty}
+    \titlep
+    \newpage
+    \cleardoublepage
 }
-
-\clearemptydoublepage
-\pagestyle{empty}
-
-\clearemptydoublepage
-
-\ifthenelse{\equal{\@dedica}{?}}{}{
-  \pagestyle{empty}
-  \vspace*{10ex}
-  \begin{large}
-  \begin{flushright}
-    \@dedica
-  \end{flushright}
-  \end{large}
-  \vfill
-  \clearemptydoublepage
-}
-\end{titlepage}
-
-}
-\endinput
