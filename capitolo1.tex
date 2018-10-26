@@ -303,11 +303,11 @@ Nel protocollo della blockchain Bitcoin viene utilizzata la classe \textit{SHA-2
 \begin{table}
     \caption{Confronto tra \textit{SHA-256} di due stringhe simili}
     \centering
-    \begin{tabular}{c||c}
+    \resizebox{\textwidth}{!}{\begin{tabular}{c||c}
         Bitcoin & b4056df6691f8dc72e56302ddad345d65fead3ead9299609a826e2344eb63aa4 \\
         \cline{1-2}
         Botcoin & 23e84b46672290e2893a7a99fa5b0d0427d7549c5384c7f3443d811307d94efe \\
-    \end{tabular}
+    \end{tabular}}
 \end{table}
 Tramite le funzioni di hashing è possibile quindi rendere noto anche l'hash di un valore segreto in quanto questo non può essere dedotto. Ad esempio è possibile generate un hash \texttt{com} di \texttt{msg} ed un \texttt{nonce}; pubblicando l'hash \texttt{com} nessuno sarà in grado di risalire al valore di \texttt{msg}. Una volta resi pubblici \texttt{msg} e \texttt{nonce} allora sarà possibile verificare che \texttt{com} sia effettivamente l'hash reso pubblico in precedenza.\newline
 Questa tecnica è utilizzata, ad esempio, per risalire alla paternità di brevetti: pubblicando \texttt{com} generato con in input alla funzione di hash il documento dell'invenzione (\texttt{msg}) ed un timestamp (\texttt{nonce}) sarà possibile, una volta reso pubblico il brevetto e la data, garantire che l'invenzione sia stata realizzata prima di un altra.
