@@ -1,10 +1,7 @@
 \chapter{Blockchain}
-
-\textbf{NB: devi parlare anche della puzzle frendliness (compatibilità con i puzzle)}
-
 Le cryptomonete, a partire dal 2018\foot{Anno di pubblicazione del whitepaper di Satoshi Nakamoto}, hanno ricevuto molte attenzioni da coloro che sono interessati ad investirici o costruire nuovi servizi per un guadagno personale ma soprattutto è esploso l'interesse verso la vera innovazione tecnologica su cui sono basate tutte le criptomonete: la \textbf{blockchain}.
 
-Una \textit{blockchain} può essere pensata come un database distribuito che è replicato in diversi computer connessi ad una rete.\newline
+Una \textit{blockchain} può essere pensata come un database distribuito e replicato in diversi computer connessi ad una rete.\newline
 La principale innovazione introdotta da questa tecnologia è nel protocollo usato per gestire transazioni anche su reti a bassa latenza o dispositivi a bassa potenza senza la necessità di un sistema centrale per garantire protezione e affidabilità.
 
 Non esiste una definizione globalmente valida di \textit{Blockchain} a causa delle differenti implementazioni e varianti ma è possibile delineare alcuni punti chiave.
@@ -13,14 +10,12 @@ Una blockchain è una rete \textit{peer-to-peer} completamente \textit{distribui
 Questa definizione è interessante in quanto non menziona nessun termine finanziaro o particolari casi d'uso e non specifica protocolli o algoritmi di consenso in quanto una blockchain può essere implementata come un sistema general purpose e non come solo meccanismo per i pagamenti elettronici; infatti, la prima blockchain è stata progettata nel 1991 da due crittografi: \texit{Stuart Haber} e \textit{Scott Stornetta} per firmare dei documenti digitali per prevenire modifiche illecite dei dati e autenticazione.
 
 \section{Storia}
-
 La blockchain utilizzata per i Bitcoin è la prima modera blockchain ad essere utilizzata per pagamenti elettronici sicuri, distribuiti ed anonimi ed è stata presentata da Satoshi Nakamoto nel 2008. L'esigenza di Satoshi era quella di creare un protocollo decentralizzato per coniare una moneta digitale senza il bisogno di una figura centrale di fiducia ed evitare il problema del double-spending di possibili attori malevoli.
 Molte altre proposte sono state fatte prima dei Bitcoin ma nessuna risolveva a pieno i problemi di decentralizzazione e consenso distribuito.
 
 La prima blockchain conosciuta, però, non è quella implementata per Bitcoin e non è stata usata per pagamenti elettronici ma come metodo di validazione per documenti digitali nel 1991.
 
 \subsection{Haber e Stornetta}
-
 L'idea di Haber e Stornetta\cite{haberstornetta} era di certificare la data di creazione o modifica di un documento; per esempio, in materia di dispute pre la proprietà intelletuale è cruciale verificare la data di un prototipo brevettabile: la soluzione richiedere di risolvere due problemi:
 \begin{itemize}
     \item la data e l'ora dovrebbero far parte del timestamp e non solo nel documento;
@@ -66,8 +61,8 @@ In quanto non esiste una definizione ed implementazione globalmente valida di bl
 Una blockchain è generalmente composta da alcuni elementi fondamentali:
 \begin{itemize}
     \item blocco;
-    \item nodo;
-    \item transazione.
+    \item data;
+    \item rete.
 \end{itemize}
 
 \subsection{Blocco}
@@ -77,19 +72,311 @@ Un blocco è un singolo elemento della lista formata da tutti i record component
     \includegraphics[width=\textwidth]{images/blockchain_basic.png}
     \caption{Esempio di blockchain formata da tre blocchi}
 \end{figure}
-I blocchi sono connessi come una lista tramite l'utilizzo delle funzioni di hashing e quindi, per design, sono resistenti alla modifica dei dati.
-Ogni blocco contiene come dato l'hash del blocco che lo precede nella lista, un timestamp, un indice e i dati che devono essere memorizzati permanentemente.\newline
+I blocchi sono connessi come una lista tramite l'utilizzo di funzioni di hashing e quindi, per design, sono resistenti alla modifica dei dati. Ogni blocco è formato da un header, contenente un indice, un timestamp, l'hash del blocco che lo precede nella lista e l'hash del contenuto del blocco, e i dati che formano il contenuto del blocco che devono essere memorizzati permanentemente.\newline
 La crittografia fornisce sia autenticazione che verifica ed è usata per garantire un sistema di computazione sicuro senza un singolo proprietario o sistema centrale.\newline
-Il primo nodo della lista è chiamato \textit{genesi} in quanto partendo da quello verrà creata la lista che compone la blockchain. Nella maggior parte delle implementazioni questo blocco è inserito nel codice sorgente, non produce o consuma dati e non è collegato a nessun precedente blocco.
+Il primo nodo della lista è chiamato \textbf{genesi} in quanto da questo verrà creata la lista che compone la blockchain. Nella maggior parte delle implementazioni questo blocco è inserito nel codice sorgente, non produce o consuma dati e non è collegato a nessun precedente blocco.
+\begin{table}[H]
+    \caption{Blocco \textit{genesi} della blockchain per i Bitcoin, il timestamp corrisponde alla data di Sabato 3 Gennaio 2009 alle ore 18:15:05}
+    \centering
+    \resizebox{\textwidth}{!}{\begin{tabular}{|r|l|}
+        \hline
+        index & 1\\
+        timestamp & 1231006505\\
+        data & 0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b\\
+        hash & 0x000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f\\
+        previousHash & 0000000000000000000000000000000000000000000000000000000000000000\\
+        \hline
+    \end{tabular}}
+\end{table}
+Il blocco successivo a quello di genesi avrà un hash diverso in quanto sia il timestamp che l'indice saranno diversi ed il \textit{linking} avviene inserendo l'hash dell'header del blocco precedente nel campo \texttt{previousHash} del nuovo blocco.\newline
+Procedendo con questo metodo è possibile realizzare una lista di blocchi indefinitamente lunga e che permette di salvare, senza possibilità di modifica, dei dati. Dato un blocco, già inserito nella blockchain, una eventuale modifica dello stesso comporta la necessità di modificare tutti i blocchi che lo succedono al fine di avere un lista integra con il linking degli hash.\newline
+Modificando un blocco $x$ con indice $x_i$ in una blockchain di lunghezza $l$ (con $l\ge x_i$) significa modificare l'hash $h(x)$ e quindi dover aggiornare tutti i \texttt{previousHash} dei blocchi $\{x_{i+1},\dots,x_l\}$. Di conseguenza la difficoltà nell'eseguire questa operazione è direttamente proporzionale al numero dei blocchi da aggiornare a differenza della modifica di un singolo elemento in una normale lista.\newline
+In aggiunta, al fine di rendere più computazionalmente difficile la modifica dei singoli blocchi è stato introdotto un valore, \textit{nonce}, che deve essere calcolato per ogni nuovo blocco affinchè venga considerato valido e possa essere inserito nella lista. Questo è possibile grazie ad una proprietà delle funzioni di hashing garantendo che la creazione di nuovo blocco sia regolata da determinate tempistiche e parametri imposti dalla blockchain e dalla rete: \textit{puzzle friendliness}. Affinchè un blocco sia considerato valido deve essere trovato un valore $x$ tale che $h(x||k)$ abbia determinate caratteristiche.\newline
+Genericamente, risolvere un \textit{puzzle} tramite funzione di hashing, significa trovare un valore $x$ tale per cui $h(x||k)\in Y$ con $k$ scelto in una distribuzione ad alta entropia minima e $Y$ l'insieme dei valori di output accettabili.\footnote{L'entropia minima è data dai bit del risultato prodotto nell'evento a minor probabilità; l'entropia minima è calcolata da $-log_2(p)$. Una distribuzione ad altra entropia minima significa che la possibilità che si verifichi un evento sia molto bassa ma equalmente possibile.}\newline
+Nel caso della blockchain per i Bitcoin si tratta di un puzzle di ricerca di un valore $x$ tale per cui $h(k||x)<T$ con $T$ il valore del target fissato come un numero a 256 bit e $k$ l'hash del blocco.\\
+Una volta trovato un valore di $x$ valido allora il blocco è accettato ed è aggiunto alla lista. Il valore di $x$ è un numero a 32 bit che per le proprietà delle funzioni di hashing non risulta possibile prevedere o calcolare efficientemente per la proprietà della resistenza alla preimmagine.\newline
+Il target $T$ attuale (Ottobre 2018) è:
+\begin{equation}
+    000000000000000000272fbd0000000000000000000000000000000000000000
+\end{equation}
+quindi per aggiungere un nuovo blocco alla lista è necessario che $h(x||k)$ sia un valore minore di $T$. Al diminuire del valore di $T$ aumenta la complessità per la ricerca di $x$.\newline\newline
+Una volta inserito un nuovo blocco nella blockchain risulta evidente che la difficoltà nel validarlo è molto bassa grazie alle proprietà delle funzioni di hashing: la computazione di un hash deve essere efficiente e deterministica.\newline
+Partendo, infatti, dal blocco genesi è possibile calcolare in maniera efficiente tutti gli hash dei blocchi successivi e controllare che l'hash prodotto corrisponda con quello riportato dal blocco successivo come \texttt{previousHash} e che il \textit{nonce} trovato abbia prodotto un valore accettabile.\newline
+Al fine di ottimizzare questo tipo di calcolo è possibile evitare di partire dal blocco di indice $0$ e dare per assodato che i primi $x$ blocchi, con $x$ considerato sicuro, siano validi.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/block.png}
+    \caption{Struttura del blocco $547953$ in formato JSON.}
+\end{figure}
 
-Blocks are linked using cryptography and by design are resistant to data modification. Cryptography provides authentication and verification and is used to conjure a secure computing environment out of many nodes without central authority or single owner.\\
-Each block contains a cryptographic hash of the previous block, a timestamp and the data to store in a permanent way.
+\subsection{Data}
+L'obiettivo della blockchain è permettere che delle informazioni vengano salvate all'interno dei blocchi permanentemente e senza possibilità di modifica se non con un aggiornamento successivo referenziato in nuovo blocco (storicità del dato).\newline
+Nel caso dei Bitcoin i dati fondametali salvati all'interno dei blocchi riguardano le \textbf{transazioni} che sono avvenute tra i vari utilizzatori della blockchain; in questo modo è possibile creare una storicizzazione dei vari scambi e conoscere gli effettivi saldi di ciascun utente.\newline
+Al contrario dei classici sistemi bancari o di alcune blockchain come Ethereum, Bitcoin utilizza un modello di tracciamento degli asset non consumati (\textbf{UTXO}: \textit{unspent transaction output}): il bilancio di un utente corrisponde al totale delle transazioni ricevute nel corso della progressione della blockchain e non esiste un ammontare aggiornato ad ogni movimento.\newline
+Un utente può effettuare una transazione di $x$ BTC soltanto se il totale $t$ delle transazioni \textit{UTXO} è sufficiente da coprire la spesa; nel caso in cui $x$ sia minore del bilancio totale allora vengono create due transazioni in quanto una UTXO non è spendibile due volte:
+\begin{itemize}
+    \item una transazione di $x$ BTC verso il destinatario
+    \item una transazione UTXO di ritorno di $t-x$
+\end{itemize}
+La seconda transazione è detta di \textit{cambio} in quanto dalla transazione UTXO di partenza è necessario rimuovere i $x$ BTC spesi; in questo modo, assieme alle altre accumulate, andrà a diminuire il valore totale del conto dell'utente.\newline
+Ogni transazione è composta da almeno un input ed un solo output. Ogni input implica uno movimento di valuta da un output di una transazione precedente (UTXO), gli output sono visti come depositi in attesa di che una transazione in input li spenda. Infatti, in totale degli asset posseduti da un utente è la somma degli output delle transazioni ricevute all'interno della blockchain.
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{./images/tx-schema.png}
+    \caption{Esempio di due transazioni tra Bob, Alice e Dave.}
+    \label{fig:tx}
+\end{figure}
+Per poter inviare o ricevere valuta digitale è necessario che le parti creino le coppie di chiavi asimmetriche e quindi abbiano un \textbf{wallet}: solitamente si tratta di un software che permette di creare, salvare le chiavi private e condividere le chiavi pubbliche dell'utente. I wallet forniscono delle funzionalità ad alto livello per poter effettuare transazioni facilmente e tener traccia del saldo dell'utente analizzando tutta la blockchain alla ricerca di transazioni UTXO che sono associate alla chiave pubblica dell'utente e quindi utilizzabili.\newline
+Una volta che le parti hanno accesso ai wallet e quindi alle proprie chiavi, è necessario che si condividano i propri indirizzi per poter ricevere denaro; l'indirizzo del wallet corrisponde alla digital signature della chiave pubblica dell'utente in formato base 58.\newline
+Un indirizzo di esempio è:
+\begin{itemize}
+    \centering
+    \texttt{1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa}
+\end{itemize}
+questo indirizzo è associato al blocco di genesi ed è stato il primo a ricevere Bitcoin\footnote{L'indirizzo molto probabilmente appartiene a Satoshi Nakamoto}.\newline
+Utilizzando gli indirizzi ed i wallet non è necessario l'uso di un sistema centrale che generi o associ delle identità agli utenti ma è possibile creare una chiave pubblica ogni volta che lo si ritiene necessario (virtualmente per ogni transazione).\newline
+Una volta creati gli indirizzi per poter ricevere Bitcoin è necessario comunicare il proprio indirizzo; per le proprietà delle funzioni di hashing saranno univoci e sicuri (è computazionalmente inefficiente riuscire a calcolare la chiave privata). Una volta che una parte ha ricevuto l'indirizzo del destinario è possibile creare una transazione che se aggiunta ad un blocco inserito nella blockchain permetterà all'utente di utilizzare l'output di quella transazione come input per altri movimenti.\newline
+Al fine di garantire che esclusivamente il destinario della transazione possa accedere ai fondi inviati è fondamentale che nella transazione venga inserito uno script di controllo: chi possiede la chiave privata associata alla pubblica utilizzata nella transazione può utilizzare l'output di quella transazione.
 
-Each block contains a cryptographic hash of the previous block,[6] a timestamp, and transaction data (generally represented as a merkle tree root hash). By design, a blockchain is resistant to modification of the data. It is "an open, distributed ledger that can record transactions between two parties efficiently and in a verifiable and permanent way".[8] For use as a distributed ledger, a blockchain is typically managed by a peer-to-peer network collectively adhering to a protocol for inter-node communication and validating new blocks. Once recorded, the data in any given block cannot be altered retroactively without alteration of all subsequent blocks, which requires consensus of the network majority.
+\subsubsection{Transazioni P2PKH}
+Una transazione \textbf{P2PKH} (\textit{Pay-2-Public-Key Hash}) è la modalità più comune di trasaferimento di denaro all'interno della rete Bitcoin.
+Una transazione è un insieme di byte che vengono pubblicati nella rete \textit{p2p} e affinchè possa essere accettata è necessario che il blocco in cui viene inserita sia valido e inserito nella blockchain.
+Ogni transazione è composta da almeno un input ed un output; gli input derivano da transazioni \texit{UTXO} dell'utente che vuole effettuare l'operazione; gli output verrano trattati come transazioni UTXO dell'utente destinario.\newline
+L'aggiunta di un blocco alla blockcahin risulta essere molto dispendioso è, quindi, non è efficiente utilizzare un blocco per ogni operazione ma ogni blocco raccoglie diverse transazioni (in media 2000). Per una facile gestione del blocco e della sua validazione le transazioni vengono salvate in una struttura dati chiamata \textbf{Merkle Tree} all'interno del blocco e solo l'hash della radice della struttura viene salvato nell'header.\newline
+La struttura \textit{Merkle Tree} sfrutta le funzioni di hashing per creare una albero binario contenente tuttle le transazioni del blocco.\newline
+L'albero è costruito partendo dalle foglie: le transazioni, inserite nel blocco in ordine di arrivo, sono raggrupate in coppie e per ogni gruppo ne viene calcolato l'hash. Gli hash creati costituiscono il nuovo livello dell'albero che a loro volta vengono divisi in gruppi di due e, calcolati i rispettivi hash, formeranno il livello sucessivo.
+Le operazioni vengono ripetute finchè non si ottiene un singolo hash come radice dell'albero.\newline
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{./images/merkle.png}
+    \caption{In un albero \textit{Merkle} i blocchi di dati sono raggrupati in coppie e l'hash di ciascuno è salvato nel nodo padre. I nodi padre sono valutati in coppie e i loro hash sono salvati nel livello dell'albero superiore fino alla radice.}
+    \label{fig:merkle}
+\end{figure}
+In questo modo si ha la certezza che i dati non vengano cambiati: non è possibile cambiare una transazione una volta resa pubblica in quanto è necessario aggiornare l'albero di Merkle e quindi l'header del blocco.
+Un altro vantaggio dato dalla struttura dati al albero è l'efficienza nel provare che una transazione appartenga a quel blocco e quindi al Merkle Tree: dati $n$ nodi in un albero è necessario conoscere $log(n)$ valori per poter provare la presenza di una transazione.\newline
+Per dimostrare, ad esempio, la presenza della transazione $T_C$ nella Figura \ref{fig:merkle} è sufficiente conoscere $T_C$, $H_{(C||D)}$ e $H_{(A||B||C||D)}$; in questo modo in tempo  $log(n)$ è possibile calcolare e validare i singoli hash.\newline
+Ogni transazione $P2PKH$ è composta in diversi passaggi:
+\begin{enumerate}[1.]
+    \item Identificare una precedente transazione che contiene UTXO che l'utente controlla (valuta spendibile);
+    \item Creare i gli input della nuova transazione referenziando la transazione UTXO;
+    \item Creare gli output della nuova transazione utilizzando il codice \textt{scriptPubKey} per crare una transazione UTXO: \textit{locking script};
+    \item Creare le condizioni di sblocco in base alle condizioni imposte dal precedente \texit{locking script}.
+\end{enumerate}
+Una transazione è composta da diversi campi che sono di dimensione fissa in modo tale che sia facile comprederne le caratteristiche, in particolare è composta da:
+\begin{itemize}
+    \item numero di versione: per distinguere eventuali modifiche nel protocollo
+    \item input della transazione; se le condizioni dell'output della transazione UTXO sono valide allora è possibile spenderlo
+        \begin{itemize}
+            \item numero delle transazioni UTXO consumate (è possibile utilizzare diverse UTXO)
+            \item puntatore alle transazioni precedenti che possono essere consumate
+            \item indice dell'output della precedenti transazioni UTXO
+        \end{itemize}
+    \item script di sblocco \texttt{scriptSig}: signature dell'utente che crea la transazione (mittente) e la chiave pubblica dell'utente che riceve i Bitcoin
+    \item numero di sequenza
+    \item output della transazione
+        \begin{itemize}
+            \item numero degli output
+            \item ammontare dell'output consumato
+            \item lo script di \textit{locking} o \texttt{scriptPubKey}: definisce le condizioni per cui l'output può essere consumato (solo l'utente con la signature corretta può accedere ai fondi)
+        \end{itemize}
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./images/example-tx.png}
+    \caption{L'utente crea una transazione $1$ utilizzando gli output non spesi della transazione $0$.}
+    \source{bitcoin.org}
+\end{figure}
+Un esempio di transazione è:
+\begin{table}[H]
+    \begin{tabular}{l}
+        \texttt{01000000019c2e0f24a03e72002a96acedb12a632e72b6b74c05dc3ceab1fe78237f886c48}\\
+        \texttt{010000006a47304402203da9d487be5302a6d69e02a861acff1da472885e43d7528ed9b1b5}\\
+        \texttt{37a8e2cac9022002d1bca03a1e9715a99971bafe3b1852b7a4f0168281cbd27a220380a01b}\\
+        \texttt{3307012102c9950c622494c2e9ff5a003e33b690fe4832477d32c2d256c67eab8bf613b34e}\\
+        \texttt{ffffffff02b6f50500000000001976a914bdf63990d6dc33d705b756e13dd135466c06b3b5}\\
+        \texttt{88ac845e0201000000001976a9145fb0e9755a3424efd2ba0587d20b1e98ee29814a88ac00}\\
+        \texttt{000000}
+    \end{tabular}
+\end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./images/tx.png}
+    \caption{Struttura di una transazione di $0.00390582$ BTC.}
+    \label{fig:tx}
+\end{figure}
+Dalla Figura \ref{fig:tx} è possibile vedere che la transazione presa in esame ha un solo input: una UTXO dell'indirizzo \texttt{19iy8HKpG5EbsqB2GUNVPUDbQxiTrPXpsx} con un valore di $17373066$ Satoshi ($0.17373066$ BTC); e due output: uno destinato a diventare una UTXO per l'indirizzo \texttt{1JKRgG4F7k1b7PbAhQ7heEuV5aTJDpK9TS} con un valore di $390582$ Satoshi ($0.00390582$ BTC), l'altro è dato da una transazione di \textit{cambio} verso l'indirizzo sorgente per generare una UTXO con i Satoshi non spesi ($16932484$ Satoshi, $0.16932484$ BTC).
+La differenza tra il totale in input ed in output è stata spesa come \texit{fee} (tassa) per aggiungere la transazioni al blocco ed essere validata dalla rete.\newline
+Lo script di \textit{locking} o \texttt{scriptPubKey} è del codice espresso come \texttt{Bitcoin~Script}: un linguaggio Turing-incompleto stateless basato su stack che permette di eseguire alcune operazioni base sulle transazioni tramite diversi \texttt{OP\_CODES}.\newline
+Affinchè la transazione abbia successo è necessario che gli script di \texit{locking} e di sblocco eseguano correttamente:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|l|l}
+        Locking Script & Unlocking Script & Script\\
+        \hline
+        \texttt{OP\_DUP}         & \texttt{<signature>} & \texttt{<signature>}\\
+        \texttt{OP\_HASH160}     & \texttt{<publicKey>} & \texttt{<publicKey>}\\
+        \texttt{<pubKeyHash?>}   &                      & \texttt{OP\_DUP}\\
+        \texttt{OP\_EQUALVERIFY} &                      & \texttt{OP\_HASH160}\\
+        \texttt{OP\_CHECKSIG}    &                      & \texttt{<pubKeyHash?>}\\
+                                 &                      & \texttt{OP\_HASH160}\\
+                                 &                      & \texttt{<pubKeyHash?>}\\
+    \end{tabular}
+\end{table}
+Essendo una architettura basata su stack le operazioni da eseguire e i dati utilizzano una pila e sono inseriti e rimossi in ordine \textit{First-In-First-Out}.\newline
+L'esecuzione dello scrip avviene tramite alcuni passaggi:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{p{3cm}|p{7.7cm}|p{3cm}}
+        Script & Stack & Eseguite\\
+        \hline
+        \texttt{\textbf{<signature>}} & &\\
+        \texttt{<publicKey>}          & &\\
+        \texttt{OP\_DUP}              & &\\
+        \texttt{OP\_HASH160}          & &\\
+        \texttt{<pubKeyHash?>}        & &\\
+        \texttt{OP\_EQUALVERIFY}      & &\\
+        \texttt{OP\_CHECKSIG}         & 304402203da9\dots281cbd27a220380a01b330701 & \\
+    \end{tabular}
+    \caption{La signature del mittente della transazione è inserito nello stack}
+\end{table}
 
-Though blockchain records are not unalterable, blockchains may be considered secure by design and exemplify a distributed computing system with high Byzantine fault tolerance. Decentralized consensus has therefore been claimed with a blockchain.[9]
+\begin{table}[H]
+    \centering
+    \begin{tabular}{p{3cm}|p{7.7cm}|p{3cm}}
+        Script & Stack & Eseguite\\
+        \hline
+        \texttt{<signature>}          & &\\
+        \texttt{\textbf{<publicKey>}} & &\\
+        \texttt{OP\_DUP}              & &\\
+        \texttt{OP\_HASH160}          & &\\
+        \texttt{<pubKeyHash?>}        & &\\
+        \texttt{OP\_EQUALVERIFY}      & 02c9950c6224\dots7d32c2d256c67eab8bf613b34 &\\
+        \texttt{OP\_CHECKSIG}         & 304402203da9\dots281cbd27a220380a01b330701 & \texttt{<signature>}\\
+    \end{tabular}
+    \caption{La chiave pubblica del mittente della transazione è inserita nello stack}
+\end{table}
 
-Blockchain was invented by Satoshi Nakamoto in 2008 to serve as the public transaction ledger of the cryptocurrency bitcoin.[1] The invention of the blockchain for bitcoin made it the first digital currency to solve the double-spending problem without the need of a trusted authority or central server. The bitcoin design has inspired other applications.[1][3]
+\begin{table}[H]
+    \centering
+    \begin{tabular}{p{3cm}|p{7.7cm}|p{3cm}}
+        Script & Stack & Eseguite\\
+        \hline
+        \texttt{<signature>}          & &\\
+        \texttt{<publicKey>}          & &\\
+        \texttt{\textbf{OP\_DUP}}     & &\\
+        \texttt{OP\_HASH160}          & &\\
+        \texttt{<pubKeyHash?>}        & 02c9950c6224\dots7d32c2d256c67eab8bf613b34 &\\
+        \texttt{OP\_EQUALVERIFY}      & 02c9950c6224\dots7d32c2d256c67eab8bf613b34 & \texttt{<publicKey>}\\
+        \texttt{OP\_CHECKSIG}         & 304402203da9\dots281cbd27a220380a01b330701 & \texttt{<signature>}\\
+    \end{tabular}
+    \caption{\texttt{OP\_DUP} duplica la testa dello stack}
+\end{table}
 
+\begin{table}[H]
+    \centering
+    \begin{tabular}{p{3cm}|p{7.7cm}|p{3cm}}
+        Script & Stack & Eseguite\\
+        \hline
+        \texttt{<signature>}          & &\\
+        \texttt{<publicKey>}          & &\\
+        \texttt{OP\_DUP}              & &\\
+        \texttt{\textbf{OP\_HASH160}} & &\\
+        \texttt{<pubKeyHash?>}        &                                            & \texttt{OP\_DUP}\\
+        \texttt{OP\_EQUALVERIFY}      & 02c9950c6224\dots7d32c2d256c67eab8bf613b34 & \texttt{<publicKey>}\\
+        \texttt{OP\_CHECKSIG}         & 304402203da9\dots281cbd27a220380a01b330701 & \texttt{<signature>}\\
+    \end{tabular}
+    \caption{\texttt{OP\_HASH160} toglie il primo elemento dello stack per eseguire un'operazione di SHA256 e \texttt{RIPEMD-160} sul valore}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{p{3cm}|p{7.7cm}|p{3cm}}
+        Script & Stack & Eseguite\\
+        \hline
+        \texttt{<signature>}            & &\\
+        \texttt{<publicKey>}            & &\\
+        \texttt{OP\_DUP}                & &\\
+        \texttt{\textbf{OP\_HASH160}}   & &\\
+        \texttt{<pubKeyHash?>}          & bdf63990d6dc\dots705b756e13dd135466c06b3b5 & \texttt{OP\_DUP}\\
+        \texttt{OP\_EQUALVERIFY}        & 02c9950c6224\dots7d32c2d256c67eab8bf613b34 & \texttt{<publicKey>}\\
+        \texttt{OP\_CHECKSIG}           & 304402203da9\dots281cbd27a220380a01b330701 & \texttt{<signature>}\\
+    \end{tabular}
+    \caption{\texttt{OP\_HASH160} dopo aver eseguito inserisce il risultato nello stack.}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{p{3cm}|p{7.7cm}|p{3cm}}
+        Script & Stack & Eseguite\\
+        \hline
+        \texttt{<signature>}            & &\\
+        \texttt{<publicKey>}            & &\\
+        \texttt{OP\_DUP}                & &\\
+        \texttt{OP\_HASH160}            & bdf63990d6dc\dots705b756e13dd135466c06b3b5 & \texttt{OP\_HASH160}\\
+        \texttt{\textbf{<pubKeyHash?>}} & bdf63990d6dc\dots705b756e13dd135466c06b3b5 & \texttt{OP\_DUP}\\
+        \texttt{OP\_EQUALVERIFY}        & 02c9950c6224\dots7d32c2d256c67eab8bf613b34 & \texttt{<publicKey>}\\
+        \texttt{OP\_CHECKSIG}           & 304402203da9\dots281cbd27a220380a01b330701 & \texttt{<signature>}\\
+    \end{tabular}
+    \caption{Viene inserito nello stack l'hash della chiave pubblica.}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{p{3cm}|p{7.7cm}|p{3cm}}
+        Script & Stack & Eseguite\\
+        \hline
+        \texttt{<signature>}              & &\\
+        \texttt{<publicKey>}              & &\\
+        \texttt{OP\_DUP}                  &                                            & \texttt{<pubKeyHash?>}\\
+        \texttt{OP\_HASH160}              &                                            & \texttt{OP\_HASH160}\\
+        \texttt{<pubKeyHash?>}            &                                            & \texttt{OP\_DUP}\\
+        \texttt{\textbf{OP\_EQUALVERIFY}} & 02c9950c6224\dots7d32c2d256c67eab8bf613b34 & \texttt{<publicKey>}\\
+        \texttt{OP\_CHECKSIG}             & 304402203da9\dots281cbd27a220380a01b330701 & \texttt{<signature>}\\
+    \end{tabular}
+    \caption{\texttt{OP\_EQUALVERIFY} prende i due elementi in testi allo stack e se non sono uguali termina l'esecuzione dello script in quanto la transazione non è valida e l'utente non può accedere a quella transazione.}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{p{3cm}|p{7.7cm}|p{3cm}}
+        Script & Stack & Eseguite\\
+        \hline
+        \texttt{<signature>}              &  &\\
+        \texttt{<publicKey>}              &  & \texttt{OP\_EQUALVERIFY}\\
+        \texttt{OP\_DUP}                  &  & \texttt{<pubKeyHash?>}\\
+        \texttt{OP\_HASH160}              &  & \texttt{OP\_HASH160}\\
+        \texttt{<pubKeyHash?>}            &  & \texttt{OP\_DUP}\\
+        \texttt{OP\_EQUALVERIFY}          &  & \texttt{<publicKey>}\\
+        \texttt{\textbf{OP\_CHECKSIG}}    &  & \texttt{<signature>}\\
+    \end{tabular}
+    \caption{\texttt{OP\_CHECKSIG} prende due elementi dallo stack e controlla che la signature della transazione sia valida utilizzando l'hash della chiave pubblica: se è valida allora la transazione può procedere.}
+\end{table}
+
+\subsubsection{Transazioni coinbase}
+In aggiunta alle transazioni tra utenti con diversi input ed output esistono alcune transazioni che non sono associate a nessuna precedente UTXO e hanno un solo input ed un solo output, queste transazioni sono chiamate \textbf{coinbase}.\newline
+Le transazioni coinbase producono nuova valuta: sono formate dalla ricompensa dell'inserimento del blocco nella blockchain con relativa validazione e il totale delle \textit{fee} di ciascuna transazione inserita nel blocco. Ogni blocco quindi ha, quindi, almeno una transazione ed è la prima che viene inserita nell'albero binari di Merkle.\newline
+Le transazioni coinbase hanno un formato diverso da quelle tradizionali in quanto hanno un solo input ed output, l'input è un puntatore nulla in quanto non è collegato a nessuna transazione precedente, il valore dell'output è di $12.5$ BTC più le fee per ogni transazione inserita ed un parametro "coinbase" arbitrario in cui è possibile inserire qualsiasi tipo di dato. Non è presente nessun \texttt{scriptSig} per l'input in quanto non è necessario sbloccare nessuna transazione precedente.\newline
+Un esempio di transazione coinbase in formato esadecimale è:
+\begin{table}[H]
+    \begin{tabular}{l}
+        \texttt{0100000000010100000000000000000000000000000000000000000000000000000}\\
+        \texttt{00000000000ffffffff5c03715c08f6ec5e1a4eaa471c791bee3b70d3e31cfbd99d}\\
+        \texttt{131d1a335546c0005ae281223cfabe6d6d53e19e42d0ced39aa5479a05794596786}\\
+        \texttt{ba145047aa089cff311bde2231cb7fb01000000000000000059b711515100000000}\\
+        \texttt{0000ffffffff027e2fe04c000000001976a9141d947ef376af110754e93af431039}\\
+        \texttt{6c421238a9b88ac0000000000000000266a24aa21a9ed601a75edf6a3019c105bd8}\\
+        \texttt{6c9c742c98fef1f9446f3e84d42d4b88e342079c480120000000000000000000000}\\
+        \texttt{000000000000000000000000000000000000000000000000000}
+    \end{tabular}
+\end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/coinbasetx.png}
+    \caption{Struttura di una transazione coinbase per il blocco $547955$ di $1289760638$ Satoshi ($12.89760638$ BTC) all'indirizzo \texttt{13hQVEstgo4iPQZv9C7VELnLWF7UWtF4Q3}.}
+\end{figure}
+
+\subsection{Rete}
+La rete Bitcoin è una rete peer-2-peer con topologia randomica e senza gerarchie tra i vari nodi è la chiave per raggiungere decentralizzazione e consenso distribuito.\newline
+Un nodo all'interno della rete peer-2-peer di Bitcoin comunica con gli altri tramite protocollo TCP in modo tale da ricevere informazioni e comunicarle agli altri nodi tramite algoritmi di \textit{gossip}. In quanto si tratta di una topologia altamente dinamica è necessario che i nodi aggiornino frequentemente la lista degli altri nodi con cui comunicare: ad esempio molti software di wallet considerano un nodo offline quando non ci sono comunicazione per più di tre ore.
 
 % NeoTex: mainfile=main.tex:
