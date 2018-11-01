@@ -7,11 +7,10 @@ La principale innovazione introdotta da questa tecnologia è nel protocollo del 
 Non esiste una definizione globalmente valida di \textit{blockchain} a causa delle differenti implementazioni e varianti ma è possibile delineare alcuni punti chiave.\newline
 Una blockchain è una rete \textit{peer-to-peer} completamente \textit{distribuita} che fa ampio uso di crittografia per eseguire applicazioni, salvare dati, trasferire asset digitali in maniera \textit{sicura}; questa tecnologia può essere vista come un registro pubblico e non controllato da nessuna autorità centrale in cui è solo possibile aggiungere dati (\textbf{append-only}).
 
-Questa definizione è interessante in quanto non menziona nessun termine finanziaro o particolari casi d'uso e non specifica protocolli o algoritmi di consenso in quanto una blockchain può essere implementata come un sistema general purpose e non come solo meccanismo per i pagamenti elettronici; infatti, la prima blockchain è stata progettata nel 1991 da due crittografi: \texit{Stuart Haber} e \textit{Scott Stornetta} per firmare dei documenti digitali per prevenire modifiche illecite dei dati e autenticazione.\newline
-La blockchain utilizzata nei Bitcoin è stata progettata e pensata per supportare i pagamenti e le transazioni tra i vari partecipanti.
+Questa definizione è interessante in quanto non menziona nessun termine finanziaro o particolari casi d'uso e non specifica protocolli o algoritmi di consenso in quanto una blockchain può essere implementata come un sistema general purpose e non come solo meccanismo per i pagamenti elettronici; infatti, la prima blockchain è stata progettata nel 1991 da due crittografi: \textit{Stuart Haber} e \textit{Scott Stornetta} per firmare dei documenti digitali per prevenire modifiche illecite dei dati e autenticazione.\newline
 
 \section{Storia}
-La blockchain utilizzata per i Bitcoin è la prima modera blockchain ad essere utilizzata per pagamenti elettronici sicuri, distribuiti ed anonimi ed è stata presentata da Satoshi Nakamoto nel 2008. L'esigenza di Satoshi era quella di creare un protocollo decentralizzato per coniare una moneta digitale senza il bisogno di una figura centrale di fiducia ed evitare il problema del \texit{double-spending} di possibili attori malevoli.
+La blockchain utilizzata per i Bitcoin è la prima moderna blockchain ad essere utilizzata per pagamenti elettronici sicuri, distribuiti ed anonimi ed è stata presentata da Satoshi Nakamoto nel 2008. L'esigenza di Satoshi era quella di creare un protocollo decentralizzato per coniare una moneta digitale senza il bisogno di una figura centrale di fiducia ed evitare il problema del \textit{double-spending} di possibili attori malevoli.
 Molte altre proposte sono state fatte prima dei Bitcoin ma nessuna risolveva a pieno i problemi di decentralizzazione e consenso distribuito.
 \begin{figure}
     \centering
@@ -22,15 +21,15 @@ Molte altre proposte sono state fatte prima dei Bitcoin ma nessuna risolveva a p
 La prima blockchain conosciuta, però, non è quella implementata per Bitcoin e non è stata usata per pagamenti elettronici ma come metodo di validazione per documenti digitali nel 1991.
 
 \subsection{Haber e Stornetta}
-L'idea di Haber e Stornetta\cite{haberstornetta} era di certificare la data di creazione o modifica di un documento; per esempio, in materia di dispute pre la proprietà intelletuale è cruciale verificare la data di un prototipo brevettabile: la soluzione richiedere di risolvere due problemi:
+L'idea di Haber e Stornetta\cite{haberstornetta} era di certificare la data di creazione o modifica di un documento; per esempio, in materia di dispute per la proprietà intellettuale è cruciale verificare la data di un prototipo brevettabile: la soluzione richiede di risolvere due problemi.
 \begin{itemize}
-    \item la data e l'ora dovrebbero far parte del timestamp e non solo nel documento;
+    \item la data e l'ora devono far parte del timestamp e non solo nel documento;
     \item prevenire ogni modifica del timestamp e quindi del documento.
 \end{itemize}
-La soluzione proposta dai due crittografi permette di eseguire un timestamp digitale dei documenti in modo tale che sia infattibile pe un attaccante alterare questi dati.\newline
+La soluzione proposta dai due crittografi permette di eseguire un timestamp digitale dei documenti in modo tale che sia infattibile per un attaccante alterare questi dati.\newline
 Il processo di timestamp di un documento prevede l'utilizzo di funzioni di hashing crittografiche: $h: \{0,1\}^* -> \{0,1\}^l$.\newline
 A differenza delle funzioni di hashing presentate nel capitolo \ref{sec:funzioni-hashing} non è necessario che siano resistenti alla seconda preimmagine in quanto la soluzione richiede che da un hash non sia possibile risalire al messaggio originale.
-Utilizzando le funzioni di hashing è possibile quindi evitare di fornire l'intero documento ad un servizio per timestamp e quindi garantire la privacy del documento stesso: il contenuto intelletuale non è divulgato pubblicamente.\newline
+Utilizzando le funzioni di hashing è possibile quindi evitare di fornire l'intero documento ad un servizio per timestamp e quindi garantire la privacy del documento stesso: il contenuto intellettuale non è divulgato pubblicamente.\newline
 Una volta che l'hash del documento è stato generato è possibile applicargli una firma digitale.\newline
 Una prima soluzione proposta prevede l'utilizzo di un servizio di terze parti (\textit{Time-Stamping Service}) per elaborare e firmare il documento ma sorge il problema della falsificazione: è necessario implementare una soluzione che sia assente da terze parti per garantire il massimo della fiducia.
 \begin{figure}
@@ -55,9 +54,9 @@ Una implementazione della blockchain di Haber e Stornetta è attiva dal 1995: l'
 
 \subsection{Blockchain come sistema di pagamento}
 L'implementazione teorica della blockchain di Haber e Stornetta è molto simile a quella presentata nel whitepaper di Satoshi Nakamoto\cite{bitcoin}, infatti, tre degli otto paper citati nel documento \textit{Bitcoin: A Peer-to-Peer Electronic Cash System} sono scritti proprio dai due crittografi\footnote{In quanto l'identità di Satoshi non è mai stata svelata questo fatto ha alimentato voci per cui proprio i due crittografi siano i creatori dei Bitcoin, vedi appendice \ref{app:satoshi}.}.\newline
-L'obiettivo di Satoshi era quello di creare un sistema di pagamento elettronico decentralizzato con un forte utilizzo della crittografia, lo stesso che ha portato alla creazione, tra gli anni '90 e 2000, di \textit{eCash}, \textit{SET} e \textit{b-cash}. Tutte queste proposte hanno riscontrato dei problemi per cui non era sicuro utilizzarle ma che hanno dato spunto e suggerimenti a Nakamoto.
-L'implementazione della blockchain di Nakamoto permette di utilizzarla come infrastruttura per effettuare delle \textit{transazioni} di Bitcoin tra utenti senza necessità di utilizzare terze parti. Gli utenti che intendono utilizzare questa criptomoneta possono convertire, tramite specializzati servizi, la propria valuta in token Bitcoin (\textit{BTC}) secondo il valore in corso della criptomoneta.\newline
-In quanto i Bitcoin, come ogni altro mercato, sono soggetti a fluttuazioni di valore dovute sia al rapporto di domanda e offerta sia al numero di utilizzatori che investono e ripongono la proprio fiducia nel protocollo della criptomoneta si hanno frequenti e notevoli sbalzi di valore.
+L'obiettivo di Satoshi era quello di creare un sistema di pagamento elettronico decentralizzato con un forte utilizzo della crittografia, lo stesso che ha portato alla creazione, tra gli anni '90 e 2000, di \textit{eCash}, \textit{SET} e \textit{b-cash}. Tutte queste proposte hanno riscontrato dei problemi per cui non era sicuro metterle in pratica ma hanno dato spunto e suggerimenti a Nakamoto.
+L'implementazione di Nakamoto permette di utilizzare la blockchain come infrastruttura per effettuare delle \textit{transazioni} di Bitcoin tra utenti senza necessità di utilizzare terze parti. Gli utenti che intendono utilizzare questa criptomoneta possono convertire, tramite specializzati servizi, la propria valuta in token Bitcoin (\textit{BTC}) secondo il valore in corso della criptomoneta.\newline
+I Bitcoin sono soggetti a fluttuazioni di valore come ogni altro mercato; ciò avviene a causa del rapporto domanda e offerta ma anche dal numero di utilizzatori che ripongono la propria fiducia nel protocollo della criptomoneta.
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{images/bitcoinchart.png}
@@ -66,8 +65,8 @@ In quanto i Bitcoin, come ogni altro mercato, sono soggetti a fluttuazioni di va
 \end{figure}
 
 \section{Struttura}
-Una blockchain è un lista di record, chiamati blocchi, che sono collegati tramite l'utilizzo di tecniche crittografiche e che permette solo azioni di inserimento. Ogni record o blocco contiene la informazioni sulle transazioni effettuate tra gli utenti.
-In questo modo la lista dei blocchi rappresenta uno storico (registro) di tutte i movimenti che sono stati effettuati e quindi è anche possibile risalire al bilancio totale di ciascun utente.
+Una blockchain è un lista di record, chiamati blocchi, collegati tramite l'utilizzo di tecniche crittografiche che permette solo azioni di inserimento. Ogni record o blocco contiene le informazioni sulle transazioni effettuate tra gli utenti.
+In questo modo la lista dei blocchi rappresenta uno storico (registro) di tutti i movimenti che sono stati effettuati e quindi è anche possibile risalire al bilancio totale di ciascun utente.
 In quanto non esiste una definizione ed implementazione globalmente valida di blockchain verrà presentata quella utilizzata per i Bitcoin come generica.\newline
 Una blockchain è generalmente composta da alcuni elementi fondamentali:
 \begin{itemize}
@@ -151,15 +150,15 @@ Un indirizzo di esempio è:
 \end{itemize}
 questo indirizzo è associato al blocco di genesi ed è stato il primo a ricevere Bitcoin\footnote{L'indirizzo molto probabilmente appartiene a Satoshi Nakamoto}.\newline
 Utilizzando gli indirizzi ed i wallet non è necessario l'uso di un sistema centrale che generi o associ delle identità agli utenti ma è possibile creare una chiave pubblica ogni volta che lo si ritiene necessario (virtualmente per ogni transazione).\newline
-Una volta creati gli indirizzi per poter ricevere Bitcoin è necessario comunicare il proprio indirizzo; per le proprietà delle funzioni di hashing saranno univoci e sicuri (è computazionalmente inefficiente riuscire a calcolare la chiave privata). Una volta che una parte ha ricevuto l'indirizzo del destinario è possibile creare una transazione che, se aggiunta ad un blocco inserito nella blockchain, permetterà all'utente di utilizzare l'output di quella transazione come input per altri movimenti.\newline
-Al fine di garantire che esclusivamente il destinario della transazione possa accedere ai fondi inviati è fondamentale che nella transazione venga inserito uno script di controllo: chi possiede la chiave privata associata alla pubblica utilizzata nella transazione può utilizzare l'output di quella transazione.
+Una volta creati gli indirizzi per poter ricevere Bitcoin è necessario comunicare il proprio indirizzo; per le proprietà delle funzioni di hashing saranno univoci e sicuri (è computazionalmente inefficiente riuscire a calcolare la chiave privata). Una volta che una parte ha ricevuto l'indirizzo del destinatario è possibile creare una transazione che, se aggiunta ad un blocco inserito nella blockchain, permetterà all'utente di utilizzare l'output di quella transazione come input per altri movimenti.\newline
+Al fine di garantire che esclusivamente il destinatario della transazione possa accedere ai fondi inviati è fondamentale che nella transazione venga inserito uno script di controllo: chi possiede la chiave privata associata alla pubblica utilizzata nella transazione può utilizzare l'output di quella transazione.
 
 \subsubsection{Transazioni P2PKH}\label{sec:transazione}
 Una transazione \textbf{P2PKH} (\textit{Pay-2-Public-Key Hash}) è la modalità più comune di trasferimento di denaro all'interno della rete Bitcoin.
 Una transazione è un insieme di byte che vengono pubblicati nella rete \textit{p2p} e affinchè possa essere accettata è necessario che il blocco in cui viene inserita sia valido e inserito nella blockchain.
-Ogni transazione è composta da almeno un input ed un output; gli input derivano da transazioni \texit{UTXO} dell'utente che vuole effettuare l'operazione; gli output verrano trattati come transazioni UTXO dell'utente destinatario.\newline
-L'aggiunta di un blocco alla blockchain risulta essere molto dispendioso è, quindi, non è efficiente utilizzare un blocco per ogni operazione ma ogni blocco raccoglie diverse transazioni (in media 2000). Per una facile gestione del blocco e della sua validazione le transazioni vengono salvate in una struttura dati chiamata \textbf{Merkle Tree} all'interno del blocco e solo l'hash della radice dell'albero viene salvato nell'header.\newline
-La struttura \textit{Merkle Tree} sfrutta le funzioni di hashing per creare una albero binario contenente tuttle le transazioni del blocco.\newline
+Ogni transazione è composta da almeno un input ed un output; gli input derivano da transazioni \textit{UTXO} dell'utente che vuole effettuare l'operazione; gli output verranno trattati come transazioni UTXO dell'utente destinatario.\newline
+L'aggiunta di un blocco alla blockchain risulta essere molto dispendiosa e, quindi, non è efficiente utilizzare un blocco per ogni operazione ma ogni blocco raccoglie diverse transazioni (in media 2000). Per una facile gestione del blocco e della sua validazione le transazioni vengono salvate in una struttura dati chiamata \textbf{Merkle Tree} all'interno del blocco e solo l'hash della radice dell'albero viene salvato nell'header.\newline
+La struttura \textit{Merkle Tree} sfrutta le funzioni di hashing per creare un albero binario contenente tutte le transazioni del blocco.\newline
 L'albero è costruito partendo dalle foglie: le transazioni, inserite nel blocco in ordine di arrivo, sono raggrupate in coppie e per ogni gruppo ne viene calcolato l'hash. Gli hash creati costituiscono il nuovo livello dell'albero che a loro volta vengono divisi in gruppi di due e, calcolati i rispettivi hash, formeranno il livello sucessivo.
 Le operazioni vengono ripetute finchè non si ottiene un singolo hash come radice dell'albero.\newline
 \begin{figure}
@@ -169,16 +168,16 @@ Le operazioni vengono ripetute finchè non si ottiene un singolo hash come radic
     \label{fig:merkle}
 \end{figure}
 In questo modo si ha la certezza che i dati non vengano cambiati: non è possibile cambiare una transazione una volta resa pubblica in quanto è necessario aggiornare l'albero di Merkle e quindi l'header del blocco.
-Un altro vantaggio dato dalla struttura dati al albero è l'efficienza nel provare che una transazione appartenga a quel blocco e quindi al Merkle Tree: dati $n$ nodi in un albero è necessario conoscere $log(n)$ valori per poter provare la presenza di una transazione.\newline
+Un altro vantaggio dato dalla struttura dati ad albero è l'efficienza nel provare che una transazione appartenga a quel blocco e quindi al Merkle Tree: dati $n$ nodi in un albero è necessario conoscere $log(n)$ valori per poter provare la presenza di una transazione.\newline
 Per dimostrare, ad esempio, la presenza della transazione $T_C$ nella Figura \ref{fig:merkle} è sufficiente conoscere $T_C$, $H_{(C||D)}$ e $H_{(A||B||C||D)}$; in questo modo in tempo  $log(n)$ è possibile calcolare e validare i singoli hash.\newline
 Ogni transazione $P2PKH$ è composta in diversi passaggi:
 \begin{enumerate}[1.]
     \item identificare una precedente transazione che contiene UTXO che l'utente controlla (valuta spendibile);
     \item creare i gli input della nuova transazione referenziando la transazione UTXO;
-    \item creare gli output della nuova transazione utilizzando il codice \textt{scriptPubKey} per crare una transazione UTXO: \textit{locking script};
-    \item creare le condizioni di sblocco in base alle condizioni imposte dal precedente \texit{locking script}.
+    \item creare gli output della nuova transazione utilizzando il codice \texttt{scriptPubKey} per crare una transazione UTXO: \textit{locking script};
+    \item creare le condizioni di sblocco in base alle condizioni imposte dal precedente \textit{locking script}.
 \end{enumerate}
-Una transazione è composta da diversi campi che sono di dimensione fissa in modo tale che sia facile comprederne le caratteristiche, in particolare è composta da:
+Una transazione è composta da diversi campi che sono di dimensione fissa in modo tale che sia facile comprederne le caratteristiche. In particolare è composta da:
 \begin{itemize}
     \item numero di versione: per distinguere eventuali modifiche nel protocollo
     \item input della transazione; se le condizioni dell'output della transazione UTXO sono valide allora è possibile spenderlo
@@ -220,10 +219,10 @@ Un esempio di transazione è:
     \caption{Struttura di una transazione di $0.00390582$ BTC.}
     \label{fig:tx}
 \end{figure}
-Dalla Figura \ref{fig:tx} è possibile vedere che la transazione presa in esame ha un solo input: una UTXO dell'indirizzo \texttt{19iy8HKpG5EbsqB2GUNVPUDbQxiTrPXpsx} con un valore di $17373066$ Satoshi ($0.17373066$ BTC); e due output: uno destinato a diventare una UTXO per l'indirizzo \texttt{1JKRgG4F7k1b7PbAhQ7heEuV5aTJDpK9TS} con un valore di $390582$ Satoshi ($0.00390582$ BTC), l'altro è dato da una transazione di \textit{cambio} verso l'indirizzo sorgente per generare una UTXO con i Satoshi non spesi ($16932484$ Satoshi, $0.16932484$ BTC).
-La differenza tra il totale in input ed in output è stata spesa come \texit{fee} (tassa) per aggiungere la transazione al blocco ed essere validata dalla rete.\newline
+Dalla Figura \ref{fig:tx} è possibile vedere che la transazione presa in esame ha un solo input: una UTXO dell'indirizzo \texttt{19iy8HKpG5EbsqB2GUNVPUDbQxiTrPXpsx} con un valore di $17373066$ Satoshi ($0.17373066$ BTC); due output: uno destinato a diventare una UTXO per l'indirizzo \texttt{1JKRgG4F7k1b7PbAhQ7heEuV5aTJDpK9TS} con un valore di $390582$ Satoshi ($0.00390582$ BTC), l'altro è dato da una transazione di \textit{cambio} verso l'indirizzo sorgente per generare una UTXO con i Satoshi non spesi ($16932484$ Satoshi, $0.16932484$ BTC).
+La differenza tra il totale in input ed in output è stata spesa come \textit{fee} (tassa) per aggiungere la transazione al blocco ed essere validata dalla rete.\newline
 Lo script di \textit{locking} o \texttt{scriptPubKey} è del codice espresso come \texttt{Bitcoin~Script}: un linguaggio Turing-incompleto stateless basato su stack che permette di eseguire alcune operazioni base sulle transazioni tramite diversi \texttt{OP\_CODES}.\newline
-Affinchè la transazione abbia successo è necessario che gli script di \texit{locking} e di sblocco eseguano correttamente:
+Affinchè la transazione abbia successo è necessario che gli script di \textit{locking} e di sblocco eseguano correttamente:
 \begin{table}[H]
     \centering
     \begin{tabular}{l|l|l}
@@ -238,8 +237,8 @@ Affinchè la transazione abbia successo è necessario che gli script di \texit{l
                                  &                      & \texttt{<pubKeyHash?>}\\
     \end{tabular}
 \end{table}
-Essendo una architettura basata su stack le operazioni da eseguire e i dati utilizzano una pila e sono inseriti e rimossi in ordine \textit{First-In-First-Out}.\newline
-L'esecuzione dello scrip avviene tramite alcuni passaggi:
+Essendo una architettura basata su stack le operazioni da eseguire e i dati utilizzano una struttura dati in cui sono inseriti e rimossi in ordine \textit{First-In-First-Out}.\newline
+L'esecuzione dello script avviene tramite alcuni passaggi:
 \begin{table}[H]
     \centering
     \begin{tabular}{p{3cm}|p{7.7cm}|p{3cm}}
@@ -371,7 +370,7 @@ L'esecuzione dello scrip avviene tramite alcuni passaggi:
 \subsubsection{Transazioni coinbase}
 In aggiunta alle transazioni tra utenti con diversi input ed output esistono alcune transazioni che non sono associate a nessuna precedente UTXO e hanno un solo input ed un solo output, queste transazioni sono chiamate \textbf{coinbase}.\newline
 Le transazioni coinbase producono nuova valuta: sono formate dalla ricompensa dell'inserimento del blocco nella blockchain con relativa validazione e il totale delle \textit{fee} di ciascuna transazione inserita nel blocco. Ogni blocco quindi ha, quindi, almeno una transazione ed è la prima che viene inserita nell'albero binari di Merkle.\newline
-Le transazioni coinbase hanno un formato diverso da quelle tradizionali in quanto hanno un solo input ed output, l'input è un puntatore nulla in quanto non è collegato a nessuna transazione precedente, il valore dell'output è di $12.5$ BTC più le fee per ogni transazione inserita ed un parametro "coinbase" arbitrario in cui è possibile inserire qualsiasi tipo di dato. Non è presente nessun \texttt{scriptSig} per l'input in quanto non è necessario sbloccare nessuna transazione precedente.\newline
+Le transazioni coinbase hanno un formato diverso da quelle tradizionali in quanto hanno un solo input ed output, l'input è un puntatore nulla in quanto non è collegato a nessuna transazione precedente, il valore dell'output è di $12.5$ BTC più le \textit{fee} per ogni transazione inserita ed un parametro "coinbase" arbitrario in cui è possibile inserire qualsiasi tipo di dato. Non è presente nessun \texttt{scriptSig} per l'input in quanto non è necessario sbloccare nessuna transazione precedente.\newline
 Un esempio di transazione coinbase in formato esadecimale è:
 \begin{table}[H]
     \begin{tabular}{l}
@@ -392,9 +391,9 @@ Un esempio di transazione coinbase in formato esadecimale è:
 \end{figure}
 
 \subsection{Rete}
-La rete Bitcoin è una rete peer-2-peer con topologia randomica e senza gerarchie tra i vari nodi ed è la chiave per raggiungere decentralizzazione e consenso distribuito.\newline
+La rete Bitcoin è una rete \textit{peer-2-peer} con topologia randomica e senza gerarchie tra i vari nodi ed è la chiave per raggiungere decentralizzazione e consenso distribuito.\newline
 Un nodo all'interno della rete peer-2-peer di Bitcoin comunica con gli altri tramite protocollo TCP (porta di default $8883$) per ricevere informazioni e comunicarle agli altri nodi tramite algoritmi di \textit{gossip}. In quanto si tratta di una topologia altamente dinamica è necessario che i nodi aggiornino frequentemente la lista degli altri nodi con cui comunicare: ad esempio molti software di wallet considerano un nodo offline quando non ci sono comunicazione per più di tre ore.\newline
-La rete Bitcoin è utilizzata per diffondere le transazioni tramite algoritmi di \texit{flooding} per gossip. Ad esempio per una transazione tra Alice e Bob:
+La rete Bitcoin è utilizzata per diffondere le transazioni tramite algoritmi di \textit{flooding} per gossip. Ad esempio per una transazione tra Alice e Bob:
 \begin{enumerate}
     \item Alice crea la transazione come visto in \ref{sec:transazione};
     \item la transazione viene inoltrata ai peer connessi ad Alice;
@@ -435,13 +434,13 @@ Un nodo full node si occupa quindi di:
 \end{itemize}
 I nodi \textit{lightweight} invece non hanno bisogno di conoscere l'intera blockchain ma solo le transazioni a cui sono interessati. Ad esempio la maggior parte dei software per wallet sono nodi SPV che scaricano solo i blocchi e le transazioni associate alla chiave privata del wallet.\newline
 I nodi SPV non contribuiscono in maniera attiva alla sicurezza della rete Bitcoin in quanto non validano tutte le transazioni ed i blocchi ma fanno affidamento sui full node per utilizzare dei dati considerati sicuri. Questo concetto è molto importante in quanto non va ad influire sulla sicurezza della rete stessa in quanto è altamente improbabile che dei full node diffondano dei blocchi non validi con il rischio di essere rifiutati e non percepire la ricompensa per il \textbf{mining} del blocco.\newline
-Un full node è l'unico modo per utilizzare la rete Bitcoin in maniera ``trustless'': validando ogni transazione e blocco è possibile controllare che tutte le regole del protocollo sono rispettate, per esempio, non ci siano transazioni di Bitcoin da utenti che non posseggono valuta. In aggiunta è anche il metodo consigliato per utilizzare Bitcoin in maniera privata ed affidabile: non è necessario pubblicare il proprio indirizzo (i client SPV devono richiedere i blocchi associati ad un wallet), non sono soggetti ad alcuni attachi per nodi lightweight e permettono di contribuire attivamente alla rete a discapito di consumo di risorse.
+Un full node è l'unico modo per utilizzare la rete Bitcoin in maniera ``trustless'': validando ogni transazione e blocco è possibile controllare che tutte le regole del protocollo siano rispettate, per esempio che non ci siano transazioni di Bitcoin da utenti che non posseggono valuta. In aggiunta è anche il metodo consigliato per utilizzare Bitcoin in maniera privata ed affidabile: non è necessario pubblicare il proprio indirizzo (i client SPV devono richiedere i blocchi associati ad un wallet), non sono soggetti ad alcuni attachi per nodi lightweight e permettono di contribuire attivamente alla rete a discapito di consumo di risorse.
 
 \section{Mining}
 Affinchè un blocco possa essere inserito nella blockchain è necessario che sia validato e che sia dimostrato di aver trovato un \textit{nonce} $x$ tale per cui $h(k||x)<T$; con $T$ il valore del target fissato (un numero a $256$ bit) e $k$ l'hash del blocco. Questo processo è chiamato \textit{prova di Bernoulli} o \textbf{mining}.\newline
 Questa operazione è quella che richiede più tempo e risorse di computazione e che permette ai \textit{miner} di ricevere una ricompensa.\newline
-La ricompensa è utilizzata come incentivo a mantenere attiva la rete e per creare nuovi token Bitcoin tramite una transazione coinbase. Assieme al valore della ricompensa i miner ricevono tutte le fee delle transazioni che sono state aggiunte al blocco: una transazione con una fee maggiore avrà molta più probabilità di essere inserita nel blocco più immediato. Ad esempio con una fee pari a $0.63\$$ la transazione è accettata e inserita nella blockchain come valida dopo circa 10 minuti, per $0.60\$$ invece il tempo medio di attesa è di circa 1 ora.\newline
-Una volta trovato il nonce e pubblicato il blocco non è certo che esso venga inserito come blocco nella blockchain: il blocco deve essere valido, gli altri miner devono accettarlo aggiungendolo alla proprio blockchain ed iniziare la costruzione di un nuovo blocco partendo da quest'ultimo. Se due blocchi, validi ma diversi, vengono propagati sulla rete solamente uno di essi verrà inserito nella blockchain. Quando un peer aggiunge un blocco $b$ alla propria blockchain essa sarà quella più aggiornata e di dimensione maggiore rispetto a quella degli altri peer. Nel frangente di tempo in cui il nuovo blocco $b$ è distribuito sulla rete è possibile che un altro peer aggiunga alla propria blockchain un blocco $b^'$, diverso da $b$. I peer che ricevono dalla rete il blocco $b^'$ dopo $b$ lo rifiuteranno in quanto invalido (il campo $previousHash$ non è valido); di conseguenza tutte le transazioni che non sono inserite in $b$ non faranno parte della blockchain. Il concetto alla base per cui viene rifiutato è che la blockchain valida è quella di lunghezza maggiore; in altre parole la topologia della rete e la latenza tra i peer ha un peso importante nel ricavo della ricompensa. È però necessario specificare che la possbilità che una transazione sia nel blocco $b^'$ e non nel blocco $b$ è molto bassa in quanto una volta propagata la transazione nella rete p2p è altamente improbabile che il nodo che ha pubblicato il blocco $b$ non abbia ricevuto il messaggio.\newline\newline
+La ricompensa è utilizzata come incentivo a mantenere attiva la rete e per creare nuovi token Bitcoin tramite una transazione coinbase. Assieme al valore della ricompensa i miner ricevono tutte le \textit{fee} delle transazioni che sono state aggiunte al blocco: una transazione con una fee maggiore avrà molta più probabilità di essere inserita nel blocco più immediato. Ad esempio con una fee pari a $0.63\$$ la transazione è accettata e inserita nella blockchain come valida dopo circa 10 minuti, per $0.60\$$ invece il tempo medio di attesa è di circa 1 ora.\newline
+Una volta trovato il nonce e pubblicato il blocco non è certo che esso venga inserito come blocco nella blockchain: il blocco deve essere valido, gli altri miner devono accettarlo aggiungendolo alla propria blockchain ed iniziare la costruzione di un nuovo blocco partendo da quest'ultimo. Se due blocchi, validi ma diversi, vengono propagati sulla rete solamente uno di essi verrà inserito nella blockchain. Quando un peer aggiunge un blocco $b$ alla propria blockchain essa sarà quella più aggiornata e di dimensione maggiore rispetto a quella degli altri peer. Nel frangente di tempo in cui il nuovo blocco $b$ è distribuito sulla rete è possibile che un altro peer aggiunga alla propria blockchain un blocco $b^'$, diverso da $b$. I peer che ricevono dalla rete il blocco $b^'$ dopo $b$ lo rifiuteranno in quanto invalido (il campo $previousHash$ non è valido); di conseguenza tutte le transazioni che non sono inserite in $b$ non faranno parte della blockchain. Il concetto alla base per cui viene rifiutato è che la blockchain valida è quella di lunghezza maggiore; in altre parole la topologia della rete e la latenza tra i peer ha un peso importante nel ricavo della ricompensa. È però necessario specificare che la possbilità che una transazione sia nel blocco $b^'$ e non nel blocco $b$ è molto bassa in quanto una volta propagata la transazione nella rete p2p è altamente improbabile che il nodo che ha pubblicato il blocco $b$ non abbia ricevuto il messaggio.\newline\newline
 Un full node, una volta creato il nuovo blocco con l'header che punta al nodo precedente e creato l'albero delle transazioni, tramite l'algoritmo di hashing \textbf{Hashcash} esegue queste operazioni:
 \begin{enumerate}
     \item all'interno dell'header viene inserito il campo \textit{nonce} inizializzato a 0;
@@ -457,7 +456,7 @@ Un full node, una volta creato il nuovo blocco con l'header che punta al nodo pr
     \source{BitMain}
 \end{figure}
 Queste operazioni sono molto onerose dal punto di vista computazionale ed per questo che molti miner e produttori sono alla ricerca di hardware sempre più specializzato ed efficiente per ottenere dei guadagni maggiori. Nonostante la potenza di calcolo abbia un ruolo molto importante non è scontato che il miner più veloce ottenga per primo un nonce valido: i blocchi su cui i miner lavorano sono sempre diversi e per le proprietà delle funzioni di hashing non è possibile prevedere quale nonce sia corretto prima di calcolarlo\footnote{Per assurdo è possibile che un miner scelga randomicamente un nonce corretto dall'inizio senza bisogno di iterazioni.}. L'operazione di verifica invece risulta immediata in quanto conoscendo il nonce è molto efficiente controllarne la correttezza.\newline
-La \textbf{difficoltà} e, di conseguenza il target, regolano la frequenza con cui i blocchi sono calcolati ed aggiunti alla blockchain in base alla totale potenza di calcolo della rete. La difficoltà viene aggiornata ogni $2016$ blocchi (circa due settimane o $20160$ minuti) al fine di avere un nuovo blocco ogni circa 10 minuti; in quanto il timestamp è leggibile per ciascun blocco ogni nodo saprà quale sarà la nuova difficoltà secondo la formula:
+La \textbf{difficoltà} e, di conseguenza, il target regolano la frequenza con cui i blocchi sono calcolati ed aggiunti alla blockchain in base alla totale potenza di calcolo della rete. La difficoltà viene aggiornata ogni $2016$ blocchi (circa due settimane o $20160$ minuti) al fine di avere un nuovo blocco ogni circa 10 minuti; in quanto il timestamp è leggibile per ciascun blocco ogni nodo saprà quale sarà la nuova difficoltà secondo la formula:
 \begin{equation}
      difficulty = original\_target / target
 \end{equation}
@@ -507,11 +506,11 @@ Considerando ad esempio un attacco chiamato \textit{double-spending} in cui un n
 \begin{figure}
     \centering
     \includegraphics[width=0.75\textwidth]{images/forkingattack.png}
-    \caption{Schematizzazione di un \texit{forking attack}.}
+    \caption{Schematizzazione di un \textit{forking attack}.}
     \source{acolyer.org}
 \end{figure}
 L'obiettivo dell'attaccante è sviluppare la branch con la seconda transazione in modo tale che diventi la più lunga e prevalga sull'altra. Una volta che la branch dell'attaccante riesce a prevalere (lunghezza maggiore) ogni nuovo blocco con la transazione verso Bob risulterà invalido e non farà parte della blockchain.\newline
-In quanto entrambe le transazioni, prese singolarmente sono valide questo attacco è possibile che abbia successo solamente se l'attaccante possiede la maggioranza della potenza di calcolo in modo tale da dirottare il consenso sulla branch secondaria; la probabilità che l'attacco abbia successo aumentano all'umentare della potenza di calcolo in possesso dal nodo malevolo.
+In quanto entrambe le transazioni, prese singolarmente sono valide questo attacco è possibile che abbia successo solamente se l'attaccante possiede la maggioranza della potenza di calcolo in modo tale da dirottare il consenso sulla branch secondaria; la probabilità che l'attacco abbia successo aumentano all'aumentare della potenza di calcolo in possesso dal nodo malevolo.
 
 Teoricamente è sufficiente che l'attaccante abbia il $51\%$ dell'intera potenza di calcolo della rete ma a causa della latenza della rete, delle compontenti randomiche non è possibile definire una soglia precisa.\newline
 \begin{figure}
@@ -520,6 +519,6 @@ Teoricamente è sufficiente che l'attaccante abbia il $51\%$ dell'intera potenza
     \caption{Suddivisione della potenza di hashing tra i vari pool ad Ottobre 2018.}
     \source{acolyer.org}
 \end{figure}
-Attualmente la potenza di calcolo della rete è di $55$ milioni di Terahash/s, un attacco del $51\%$ implica un notevole investimento da parte dell'attaccante nel raggiungere questa elevata potenza di calcolo e non avere nessuna certezza di successo in quanto la rete, in presenza di un attore con una elevata potenza di calcolo, potrebbe reagire e contrastarlo. Nel caso in cui però si verifichino alcune criticità l'intero ecosistema Bitcoin nè subirà le conseguenze: venendo a mancare la fiducia nella rete e nel protocollo i tassi di cambio scenderranno portando all'abbandono della criptomoneta.
+Attualmente la potenza di calcolo della rete è di $55$ milioni di Terahash/s, un attacco del $51\%$ implica un notevole investimento da parte dell'attaccante nel raggiungere questa elevata potenza di calcolo e non avere nessuna certezza di successo in quanto la rete, in presenza di un attore con una elevata potenza di calcolo, potrebbe reagire e contrastarlo. Nel caso in cui però si verifichino alcune criticità l'intero ecosistema Bitcoin nè subirà le conseguenze: venendo a mancare la fiducia nella rete e nel protocollo i tassi di cambio scenderanno portando all'abbandono della criptomoneta.
 
 % NeoTex: mainfile=main.tex:
