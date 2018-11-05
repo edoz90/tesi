@@ -54,7 +54,7 @@ Una implementazione della blockchain di Haber e Stornetta è attiva dal 1995: l'
 
 \subsection{Blockchain come sistema di pagamento}
 L'implementazione teorica della blockchain di Haber e Stornetta è molto simile a quella presentata nel whitepaper di Satoshi Nakamoto\cite{bitcoin}, infatti, tre degli otto paper citati nel documento \textit{Bitcoin: A Peer-to-Peer Electronic Cash System} sono scritti proprio dai due crittografi\footnote{In quanto l'identità di Satoshi non è mai stata svelata questo fatto ha alimentato voci per cui proprio i due crittografi siano i creatori dei Bitcoin, vedi appendice \ref{app:satoshi}.}.\newline
-L'obiettivo di Satoshi era quello di creare un sistema di pagamento elettronico decentralizzato con un forte utilizzo della crittografia, lo stesso che ha portato alla creazione, tra gli anni '90 e 2000, di \textit{eCash}, \textit{SET} e \textit{b-cash}. Tutte queste proposte hanno riscontrato dei problemi per cui non era sicuro metterle in pratica ma hanno dato spunto e suggerimenti a Nakamoto.
+L'obiettivo di Satoshi era quello di creare un sistema di pagamento elettronico decentralizzato con un forte utilizzo della crittografia, lo stesso che ha portato alla creazione, tra gli anni '90 e 2000, di \textit{eCash}, \textit{SET}, \textit{Bit Gold} e \textit{b-cash}. Tutte queste proposte hanno riscontrato dei problemi per cui non era sicuro metterle in pratica ma hanno dato spunto e suggerimenti a Nakamoto.
 L'implementazione di Nakamoto permette di utilizzare la blockchain come infrastruttura per effettuare delle \textit{transazioni} di Bitcoin tra utenti senza necessità di utilizzare terze parti. Gli utenti che intendono utilizzare questa criptomoneta possono convertire, tramite specializzati servizi, la propria valuta in token Bitcoin (\textit{BTC}) secondo il valore in corso della criptomoneta.\newline
 I Bitcoin sono soggetti a fluttuazioni di valore come ogni altro mercato; ciò avviene a causa del rapporto domanda e offerta ma anche dal numero di utilizzatori che ripongono la propria fiducia nel protocollo della criptomoneta.
 \begin{figure}
@@ -392,9 +392,45 @@ Un esempio di transazione coinbase in formato esadecimale è:
 
 \subsubsection{Transazioni \textit{multi-signature} o \textit{Pay-to-Script Hash}}
 In aggiunta alle transazioni tra due parti è anche possibile utilizzare alcune varianti che permettono di includere diverse parti alla stessa transazione; ad esempio, per dividere le responsabilità su un quantativo di Bitcoin in possesso. Queste transazioni sono deete \textit{multi-signature} o \texttt{multisig} e richiedono che più di una chiave privata per autorizzare una transazione Bitcoin. Le transazioni supportato tramite \texttt{multisig} possono essere intraprese con l'approvazione non unilaterale, ovvero anche con $M$-su-$N$ parti la transazione è accettata: l'idea di base è di impedire che una singola parte controlli le transazioni. Le transazioni multi-signature quindi richiedono cooperazione tra le parti; queste parti possono essere persone, organizzazioni, istituzioni o programmi.\newline
-Un esempio di scenario per transazioni multi-signature è il seguente: data un'azienda che accetta Bitcoin come metodo di pagamento per i propri servizi è fondamentale, per ragioni di sicurezza, che il wallet non sia accessibile da un singolo impiegato. In quanto al mittente della transazione non sarà presentato un indirizzo del wallet dell'azienda ma l'hash dello script che regola le policy della gestione del wallet le transazioni vengono anche chiamate \textit{Pay-to-Script Hash} (o \textit{P2SH}). L'azienda per riscattare i Bitcoin inviati nella transazione dovrà conoscere lo script che ha generato l'hash e che l'esecuzione dello stesso abbia esito positivo.
+Un esempio di scenario per transazioni multi-signature è il seguente: data un'azienda che accetta Bitcoin come metodo di pagamento per i propri servizi è fondamentale, per ragioni di sicurezza, che il wallet non sia accessibile da un singolo impiegato. L'azienda per riscattare i Bitcoin inviati nella transazione dovrà conoscere lo script che ha generato l'hash e che l'esecuzione dello stesso abbia esito positivo.
 L'utilizzo del wallet quindi può essere regolamentato tramite l'utilizzo del \texttt{multisig} e l'istruzione \texttt{OP\_CHECKMULTISIG}.\newline
-L'istruzione \texttt{OP\_CHECKMULTISIG}\footnote{Nell'implementazione dell'instruzione \texttt{OP\_CHECKMULTISIG} è presente un bug che causa la rimozione dallo stack di un valore aggiuntivo ma che non viene utilizzato. In quanto la risoluzione del bug comporta notevoli costi è normale inserire un elemento nullo in questo tipo di transazioni} richiede $n$ chiavi pubbliche da verifichare e un soglia $t$. L'esecuzione è valida se almeno $t$ su $n$ chiavi pubbliche sono valide per la transazione.\newline
+Il template per una transazione \textit{multi-signature} compone l'output script come:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c|c|c}
+        \texttt{<t>} & \texttt{<pubKey 1>} & \dots & \texttt{<pubkKey n>} & \texttt{<n>} & \texttt{OP\_CHECKMULTISIG}
+    \end{tabular}
+\end{table}
+e lo script di input:
+\begin{table}[H]
+    \caption{\texttt{OP\_0} inserisce $0$ nello stack}
+    \centering
+    \begin{tabular}{c|c|c|c}
+        \texttt{OP\_0} & \texttt{<signature 1>} & \dots & \texttt{<signature t>}
+    \end{tabular}
+\end{table}
+L'istruzione \texttt{OP\_CHECKMULTISIG}\footnote{Nell'implementazione dell'istruzione \texttt{OP\_CHECKMULTISIG} è presente un bug che causa la rimozione dallo stack di un valore aggiuntivo ma che non viene utilizzato. In quanto la risoluzione del bug comporta notevoli costi è normale inserire un elemento nullo in questo tipo di transazioni} richiede $n$ chiavi pubbliche da verifichare e un soglia $t$. L'esecuzione è valida se almeno $t$ su $n$ chiavi pubbliche sono valide per la transazione.\newline
+L'esecuzione della dell'istruzione avviene tramite una serie di passi:
+\begin{enumerate}
+    \item un valore è rimosso dallo stack ed interpretato come numero di chiavi pubbliche;
+    \item due o più valori sono inseriti nello stack come lista delle chiavi pubbliche;
+    \item un valore è rimosso dallo stack come numero delle signature da controllare;
+    \item tutte le signature sono rimosse dallo stack;
+    \item l'elemento nullo aggiuntivo viene rimosso dallo stack.
+\end{enumerate}
+Il risultato è la creazione di due liste di chiavi pubbliche e di signature: la verifica comporta il tentivo di validare le signature con le chiavi pubbliche.\newline Per facilitare la verifica della transazione \textit{multi-signature} è possibile utilizzare, anzichè l'hash del wallet del destinatario, l'hash dello script Bitcoin che viene eseguito chiamato \textit{Pay-to-Script Hash} (o \textit{P2SH}). \textit{P2SH} delega la fase di autenticazione ad uno script che definisce le condizioni di successo.\\
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c}
+        \texttt{OP\_HASH160} & \texttt{<redemption script hash>} & \texttt{<OP\_EQUAL>}
+    \end{tabular}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+        \texttt{<data 1>} & \dots & \texttt{<data n>} & \texttt{<redemption script>}
+    \end{tabular}
+\end{table}
 
 \subsection{Rete}
 La rete Bitcoin è una rete \textit{peer-2-peer} con topologia randomica e senza gerarchie tra i vari nodi ed è la chiave per raggiungere decentralizzazione e consenso distribuito.\newline
