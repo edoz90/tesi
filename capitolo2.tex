@@ -528,7 +528,9 @@ L'incremento della difficoltà è dovuto alla crescente popolarità dei Bitcoin 
 
 \subsection{Hashcash e Proof-Of-Work}
 L'algoritmo \textit{Hashcash} utilizzato per generare l'hash target per ciascun blocco della blockchain Bitcoin si basa sulla proprietà crittografica delle funzioni di hashing per cui risulta essere computazionalmente inefficiente il calcolo di $x$ conoscendo $y=H(x)$. Il totale dei tentativi necessari a trovare $x$ ha come difficoltà $O(2^k)$ con $k=256$ nel caso di SHA-256 (utilizzato come algoritmo di mining per Bitcoin).\newline
-L'algoritmo di Hashcash proposto da Satoshi Nakamoto prevede che non si possano riutilizzare degli hash già visti o che i vari tentativi di mining vengano riutilizzati per questo viene applicato due volte SHA-256 a valori estremamente variabili: $SHA256(SHA256(s,x,c))<2^{256-k}$; con $s$ i dati all'interno della transazione coinbase, $x$ l'hash dell'header del blocco, $c$ il nonce aggiornato ad ogni iterazione e $k$ il numero di bit a $0$ dell'hash target.
+Inizialmente \textit{Hashcash} fu proposto nel 1997 da \textit{Adam Black} come sistema per bloccare le email di spam o attacchi di \textit{Denial of Service} (\textit{DoS}) tramite un computazione di SHA1 per ogni messaggio o richiesta effettuata; in questo modo, per uno spammer, ad esempio, non risulta efficiente l'invio di molte mail.\newline
+L'algoritmo di \textit{Hashcash} proposto da Satoshi Nakamoto prevede che gli hash gia computati non possano essere riutilizzati in modo tale che i vari tentativi di mining non vengano riutilizzati; per questo viene applicato due volte SHA-256 a valori estremamente variabili. L'algoritmo prevede l'applicazione della formula: $SHA256(SHA256(s,x,c))<2^{256-k}$; con $s$ il valore inserito all'interno della transazione coinbase, $x$ l'hash dell'header del blocco, $c$ il nonce aggiornato ad ogni iterazione e $k$ il numero di bit a $0$ dell'hash target.\newline
+La semplicità dell'algoritmo ha portato allo sviluppo di hardware specializzato progettato per garantire il massimo dell'efficienza dei calcoli. I miner, infatti, sono passati dall'utilizzo delle CPU general purpose ai coprocessori utilizzati nelle GPU (tramite ad esempio l'utilizzo di \textit{CUDA}) a \textit{FPGA} e \textit{ASIC} (\textit{application-specific integrated circuit}) per aumentare le possibilità di successo di costruzione di un blocco.\newline
 \begin{lstlisting}[caption=Pseudocodice dell'algoritmo di mining per Hashcash]
 TARGET = (65535 << 208) / DIFFICULTY
 coinbase_nonce = 0
@@ -547,7 +549,7 @@ Il tempo occupato dai vari miner della rete per trovare il nonce e pubblicare il
 Considerando ad esempio un attacco chiamato \textit{double-spending} in cui un nodo, malevolo, pubblica nella rete un blocco con all'interno una transazione per un pagamento di un servizio verso Bob. Una volta ricevuta la conferma del pagamento da Bob, l'attaccante crea ed inizia a lavorare ad un nuovo blocco, dello stesso indice del precedente, ma al posto della transazione verso Bob viene inserita una transazione contrastante (ad esempio una transazione per il pagamento di un altro servizio o verso un altro wallet dell'attaccante). Così facendo l'attaccante tenta di dividere la blockchain (\textit{fork}): una branch della catena, più lunga, contiene la transazione verso Bob, l'altra branch contiene il blocco con la transazione a favore dell'attaccante.\newline
 \begin{figure}
     \centering
-    \includegraphics[width=0.75\textwidth]{images/forkingattack.png}
+    \includegraphics[width=0.6\textwidth]{images/forkingattack.png}
     \caption{Schematizzazione di un \textit{forking attack}.}
     \source{acolyer.org}
 \end{figure}
@@ -555,12 +557,13 @@ L'obiettivo dell'attaccante è sviluppare la branch con la seconda transazione i
 In quanto entrambe le transazioni, prese singolarmente sono valide questo attacco è possibile che abbia successo solamente se l'attaccante possiede la maggioranza della potenza di calcolo in modo tale da dirottare il consenso sulla branch secondaria; la probabilità che l'attacco abbia successo aumentano all'aumentare della potenza di calcolo in possesso dal nodo malevolo.
 
 Teoricamente è sufficiente che l'attaccante abbia il $51\%$ dell'intera potenza di calcolo della rete ma a causa della latenza della rete, delle compontenti randomiche non è possibile definire una soglia precisa.\newline
-\begin{figure}
+Attualmente la potenza di calcolo della rete è di $55$ milioni di Terahash/s, un attacco del $51\%$ implica un notevole investimento da parte dell'attaccante nel raggiungere questa elevata potenza di calcolo e non avere nessuna certezza di successo in quanto la rete, in presenza di un attore con una elevata potenza di calcolo, potrebbe reagire e contrastarlo. Nel caso in cui però si verifichino alcune criticità l'intero ecosistema Bitcoin nè subirà le conseguenze: venendo a mancare la fiducia nella rete e nel protocollo i tassi di cambio scenderanno portando all'abbandono della criptomoneta.
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{images/hashratedistribution.png}
+    \includegraphics[width=0.8\textwidth]{images/hashratedistribution.png}
     \caption{Suddivisione della potenza di hashing tra i vari pool ad Ottobre 2018.}
     \source{acolyer.org}
 \end{figure}
-Attualmente la potenza di calcolo della rete è di $55$ milioni di Terahash/s, un attacco del $51\%$ implica un notevole investimento da parte dell'attaccante nel raggiungere questa elevata potenza di calcolo e non avere nessuna certezza di successo in quanto la rete, in presenza di un attore con una elevata potenza di calcolo, potrebbe reagire e contrastarlo. Nel caso in cui però si verifichino alcune criticità l'intero ecosistema Bitcoin nè subirà le conseguenze: venendo a mancare la fiducia nella rete e nel protocollo i tassi di cambio scenderanno portando all'abbandono della criptomoneta.
+Le maggiori potenze di hashing rilevate sono tutte associate a dei \textit{pool} di mining: anzichè tentare di trovare un nonce valido con le proprie capacità computazionali i miner si aggregano per dividere il carico di lavoro e ad aumentare le possibilità di guadagno. I \texit{pool} permettono di suddividere la ricerca del nonce tra i vari miner; in questo modo la potenza computazionale totale sarà sufficiente da risolvere il puzzle in un tempo molto minore rispetto ad un singolo miner. Una volta che all'indirizzo del \texit{pool} viene accreditata la ricompensa per il mining questa sarà suddivisa internamente tra i vari utenti in percentuale alla loro potenza di calcolo o equamente.
 
 % NeoTex: mainfile=main.tex:
