@@ -14,8 +14,8 @@ Molti aspetti della crittografia moderna sono centrali ed essenziali nella costr
 \end{itemize}
 
 \section{Crittografia asimmetrica}
-La \textit{crittografia asimmetrica} è anche spesso chiamata \texit{crittografia a chiave pubblica} in quanto il sistema utilizza una coppia di chiavi, una pubblica ed una privata, per garantire autenticazione e confidenzialità.
-Al contrario della crittografia a \textit{chiave simmetrica}, in cui tutte le parti devono conoscere la stessa chiave per cifrare o decifrare i messaggi, in questo schema è necessario che i partecipanti conoscano soltanto la chiave \texit{pubblica} del destinatario del messaggio e non è necessario trovare rimedi al problema dello scambio delle chiavi in presenza di avversari.
+La \textit{crittografia asimmetrica} è anche spesso chiamata \textit{crittografia a chiave pubblica} in quanto il sistema utilizza una coppia di chiavi, una pubblica ed una privata, per garantire autenticazione e confidenzialità.
+Al contrario della crittografia a \textit{chiave simmetrica}, in cui tutte le parti devono conoscere la stessa chiave per cifrare o decifrare i messaggi, in questo schema è necessario che i partecipanti conoscano soltanto la chiave \textit{pubblica} del destinatario del messaggio e non è necessario trovare rimedi al problema dello scambio delle chiavi in presenza di avversari.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.65\textwidth]{images/simmetric.png}
@@ -88,8 +88,8 @@ Riuscire a generare \texttt{m} e \texttt{sig} tale per cui \texttt{verify} viene
 In aggiunta a quanto annotato è opportuno sottilineare che si considerano le funzioni \texttt{generateKeys} and \texttt{sign} come algoritmi randomici e privi di vulnerabilità; al contrario \texttt{verify} dovrà essere progettata per essere sempre deterministica.
 
 \subsection{Crittografia ellittica}
-Nel caso implementato nella blockchain Bitcoin, e anche per Ethereum ed altre criptomonete, viene utilizzato l'algoritmo \textit{Elliptic Curve Digital Signature Algorithm} (\texit{ECDSA}) per generare una digital signature per la validazione delle operazioni.\newline\newline
-\textit{ECDSA} è un algoritmo progettato partendo da \texit{DSA}, uno standard del governo statunitense, combinato con \textit{crittografia ellitica} la quale permette di avere lo stesso grado di sicurezza dei sistemi tradizioni (RSA, DSA, DH) ma con chiavi di dimensione inferiore.\newline
+Nel caso implementato nella blockchain Bitcoin, e anche per Ethereum ed altre criptomonete, viene utilizzato l'algoritmo \textit{Elliptic Curve Digital Signature Algorithm} (\textit{ECDSA}) per generare una digital signature per la validazione delle operazioni.\newline\newline
+\textit{ECDSA} è un algoritmo progettato partendo da \textit{DSA}, uno standard del governo statunitense, combinato con \textit{crittografia ellitica} la quale permette di avere lo stesso grado di sicurezza dei sistemi tradizioni (RSA, DSA, DH) ma con chiavi di dimensione inferiore.\newline
 \begin{table}[H]
     \centering
     \caption{Confronto lunghezza chiavi in bit}
@@ -132,7 +132,7 @@ La somma di due punti $P$ e $Q$, appartenenti ad una curva ellittica $\xi$, prod
     \source{\href{https://www.desmos.com/calculator/ialhd71we3}{Desmos}}
     \label{fig:ECDSA}
 \end{figure}
-Nel dettaglio dati due punti $P$ e $Q$ appartenenti alla curva \xi:
+Nel dettaglio dati due punti $P$ e $Q$ appartenenti alla curva $\xi$:
 
 \begin{equation}
     P + Q = -R
@@ -158,7 +158,7 @@ La moltiplicazione di un punto $P$ con uno scalare $n$ è il risultato di $n$ op
     nP = \underbrace{P + P + ... + P}_\text{n volte}
 \end{equation}
 
-Metodi più efficienti possono essere usati per moltiplicare uno scalare ad un punto in una curva ellittica come il metodo \texit{double-and-add}: si voglia calcolare, ad esempio, $nP$ con $n = 132$.
+Metodi più efficienti possono essere usati per moltiplicare uno scalare ad un punto in una curva ellittica come il metodo \textit{double-and-add}: si voglia calcolare, ad esempio, $nP$ con $n = 132$.
 È possibile rappresentare $n$ in base binaria:
 
 \begin{equation}
@@ -295,7 +295,7 @@ Esistono diverse classi di funzioni di hash crittografiche:
 \begin{itemize}
     \item Secure Hashing Algorithm (\textit{SHA-2} e \textit{SHA-3});
     \item RACE Integrity Primitive  Evaluation Message Digest (\textit{RIPEMD});
-    \item Message Digest Algorithm 5 (\texit{MD5});
+    \item Message Digest Algorithm 5 (\textit{MD5});
     \item BLAKE2
 \end{itemize}
 
@@ -318,13 +318,13 @@ Questa tecnica è utilizzata, ad esempio, per risalire alla paternità di brevet
     \includegraphics[width=0.8\textwidth]{images/sha256.png}
     \caption{Schematizzazione della funzione di hashing \texttt{SHA-256}}
 \end{figure}
-L'algoritmo \texit{SHA-256} è utilizzato come funzione di hashing nella blockchain Bitcoin e accetta in ingresso una qualunque stringa di lunghezza variabile e produce un output di 256 bit.\newline
+L'algoritmo \textit{SHA-256} è utilizzato come funzione di hashing nella blockchain Bitcoin e accetta in ingresso una qualunque stringa di lunghezza variabile e produce un output di 256 bit.\newline
 Il calcolo dell'hash prevede che il messaggio in input venga elaborato in modo tale che la dimensione finale sia di lunghezza fissa; queste funzioni sono dette \textit{funzioni di compressione} e nel caso di \textit{SHA-256} accettano degli input di lunghezza 768 bit.
 
-Affinchè gli input per le funzioni di compressione siano di lunghezza accettabile si utilizza la trasformazione di \texit{Merkle-Damgard} per dividere il messaggio in \textit{blocchi} di lunghezza di 512 bit.
+Affinchè gli input per le funzioni di compressione siano di lunghezza accettabile si utilizza la trasformazione di \textit{Merkle-Damgard} per dividere il messaggio in \textit{blocchi} di lunghezza di 512 bit.
 
 In fase di inizializzazione al messaggio viene applicato del \textit{padding} per rendere la lunghezza divisibile per 512 e successivamente ogni blocco viene dato in input alla funzione di compressione assieme all'output del precedente blocco compresso. Le funzioni di compressione sono realizzate per essere eseguite in cascata ed accettano in input il blocco del messaggio di lunghezza 512 bit e l'output del precedente blocco compresso di lunghezza 256 bit.\newline
-Il primo blocco viene compresso partendo da un \texit{vettore di inizializzazione} \textbf{IV} a 256 bit (fisso e definito dagli standard di \textit{SHA-256}) e l'output generato risulta come argomento per la funzione di compressione per il blocco successivo. L'output dell'ultimo blocco, di lunghezza 256 bit, è l'hash finale.
+Il primo blocco viene compresso partendo da un \textit{vettore di inizializzazione} \textbf{IV} a 256 bit (fisso e definito dagli standard di \textit{SHA-256}) e l'output generato risulta come argomento per la funzione di compressione per il blocco successivo. L'output dell'ultimo blocco, di lunghezza 256 bit, è l'hash finale.
 
 \subsection{Firma digitale con ECDSA}
 La firma digitale implementata per Bitcoin ed Ethereum si basa sull'algoritmo \textit{ECDSA}: Bob vuole inviare un messaggio firmato con la propria chiave privata ($nP$) ad Alice che lo validerà utilizzando la chiave pubblica di Bob ($Q$).\newline

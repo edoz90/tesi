@@ -42,7 +42,7 @@ Due possibili scenari possono essere realizzati o combinati:
 \begin{enumerate}[1.]
     \item utilizzare un servizio di timestamp (\textit{TTS}) non fidato ma che sia obbligato a produrre timestamp genuini utilizzando il \textit{linking};
     \item distribuire la computazione tra diversi utenti del servizio (\textit{decentralizzazione}).
-\end{itemize}
+\end{enumerate}
 Tramite \textit{linking} gli hash dei documenti presentati al servizio sono collegati come in Figura \ref{fig:haberstornetta} e il risultato finale è reso pubblico agli utenti. La seconda soluzione prevede che alcuni utenti, scelti randomicamente, producano il timestamp dell'hash in modo tale da non centralizzare il servizio.\newline
 Una implementazione della blockchain di Haber e Stornetta è attiva dal 1995: l'azienda \textit{Surety}\footnote{\href{http://surety.com}{Surety}} ogni settimana pubblica una stringa in \textit{base 16} dell'hash di tutte le nuove signature dei clienti della settimana sulla rivista \textit{New York Times}.
 \begin{figure}[H]
@@ -138,15 +138,14 @@ Affinchè una transazione possa essere considerata valida deve essere stata inse
     \centering
     \includegraphics[width=\textwidth]{./images/tx-schema.png}
     \caption{Esempio di due transazioni tra Bob, Alice e Dave.}
-    \label{fig:tx}
 \end{figure}
 Per poter inviare o ricevere valuta digitale è necessario che le parti creino le coppie di chiavi asimmetriche e quindi abbiano un \textbf{wallet}: solitamente si tratta di un software che permette di creare, salvare le chiavi private e condividere le chiavi pubbliche dell'utente.\newline
 I wallet forniscono delle funzionalità ad alto livello per poter effettuare transazioni facilmente e tener traccia del saldo dell'utente analizzando tutta la blockchain alla ricerca di transazioni UTXO che sono associate alla chiave pubblica dell'utente e quindi utilizzabili.\newline
 Una volta che le parti hanno accesso ai wallet e quindi alle proprie chiavi, è necessario che si condividano gli indirizzi per poter ricevere denaro; l'indirizzo del wallet corrisponde alla digital signature della chiave pubblica dell'utente in formato base 58.\newline
 Un indirizzo di esempio è:
-\begin{itemize}
+\begin{itemize}[]
     \centering
-    \texttt{1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa}
+    \item \texttt{1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa}
 \end{itemize}
 questo indirizzo è associato al blocco di genesi ed è stato il primo a ricevere Bitcoin\footnote{L'indirizzo molto probabilmente appartiene a Satoshi Nakamoto}.\newline
 Utilizzando gli indirizzi ed i wallet non è necessario l'uso di un sistema centrale che generi o associ delle identità agli utenti ma è possibile creare una chiave pubblica ogni volta che lo si ritiene necessario (virtualmente per ogni transazione).\newline
@@ -387,7 +386,7 @@ Un esempio di transazione coinbase in formato esadecimale è:
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{images/coinbasetx.png}
-    \caption{Struttura di una transazione coinbase per il blocco $547955$ di $1289760638$ Satoshi ($12.89760638$ BTC) all'indirizzo \texttt{13hQVEstgo4iPQZv9C7VELnLWF7UWtF4Q3}.}
+    \caption{Transazione coinbase per il blocco 547955 di $12.89760638$ BTC all'indirizzo \texttt{13hQVEstgo4iPQZv9C7VELnLWF7UWtF4Q3}.}
 \end{figure}
 
 \subsubsection{Transazioni \textit{multi-signature} o \textit{Pay-to-Script Hash}}
@@ -482,7 +481,7 @@ Un full node è l'unico modo per utilizzare la rete Bitcoin in maniera ``trustle
 Affinchè un blocco possa essere inserito nella blockchain è necessario che sia validato e che sia dimostrato di aver trovato un \textit{nonce} $x$ tale per cui $h(k||x)<T$; con $T$ il valore del target fissato (un numero a $256$ bit) e $k$ l'hash del blocco. Questo processo è chiamato \textit{prova di Bernoulli} o \textbf{mining}.\newline
 Questa operazione è quella che richiede più tempo e risorse di computazione e che permette ai \textit{miner} di ricevere una ricompensa.\newline
 La ricompensa è utilizzata come incentivo a mantenere attiva la rete e per creare nuovi token Bitcoin tramite una transazione coinbase. Assieme al valore della ricompensa i miner ricevono tutte le \textit{fee} delle transazioni che sono state aggiunte al blocco: una transazione con una fee maggiore avrà molta più probabilità di essere inserita nel blocco più immediato. Ad esempio con una fee pari a $0.63\$$ la transazione è accettata e inserita nella blockchain come valida dopo circa 10 minuti, per $0.60\$$ invece il tempo medio di attesa è di circa 1 ora.\newline
-Una volta trovato il nonce e pubblicato il blocco non è certo che esso venga inserito come blocco nella blockchain: il blocco deve essere valido, gli altri miner devono accettarlo aggiungendolo alla propria blockchain ed iniziare la costruzione di un nuovo blocco partendo da quest'ultimo. Se due blocchi, validi ma diversi, vengono propagati sulla rete solamente uno di essi verrà inserito nella blockchain. Quando un peer aggiunge un blocco $b$ alla propria blockchain essa sarà quella più aggiornata e di dimensione maggiore rispetto a quella degli altri peer. Nel frangente di tempo in cui il nuovo blocco $b$ è distribuito sulla rete è possibile che un altro peer aggiunga alla propria blockchain un blocco $b^'$, diverso da $b$. I peer che ricevono dalla rete il blocco $b^'$ dopo $b$ lo rifiuteranno in quanto invalido (il campo $previousHash$ non è valido); di conseguenza tutte le transazioni che non sono inserite in $b$ non faranno parte della blockchain. Il concetto alla base per cui viene rifiutato è che la blockchain valida è quella di lunghezza maggiore; in altre parole la topologia della rete e la latenza tra i peer ha un peso importante nel ricavo della ricompensa. È però necessario specificare che la possbilità che una transazione sia nel blocco $b^'$ e non nel blocco $b$ è molto bassa in quanto una volta propagata la transazione nella rete p2p è altamente improbabile che il nodo che ha pubblicato il blocco $b$ non abbia ricevuto il messaggio.\newline\newline
+Una volta trovato il nonce e pubblicato il blocco non è certo che esso venga inserito come blocco nella blockchain: il blocco deve essere valido, gli altri miner devono accettarlo aggiungendolo alla propria blockchain ed iniziare la costruzione di un nuovo blocco partendo da quest'ultimo. Se due blocchi, validi ma diversi, vengono propagati sulla rete solamente uno di essi verrà inserito nella blockchain. Quando un peer aggiunge un blocco $b$ alla propria blockchain essa sarà quella più aggiornata e di dimensione maggiore rispetto a quella degli altri peer. Nel frangente di tempo in cui il nuovo blocco $b$ è distribuito sulla rete è possibile che un altro peer aggiunga alla propria blockchain un blocco $b^{'}$, diverso da $b$. I peer che ricevono dalla rete il blocco $b^{'}$ dopo $b$ lo rifiuteranno in quanto invalido (il campo $previousHash$ non è valido); di conseguenza tutte le transazioni che non sono inserite in $b$ non faranno parte della blockchain. Il concetto alla base per cui viene rifiutato è che la blockchain valida è quella di lunghezza maggiore; in altre parole la topologia della rete e la latenza tra i peer ha un peso importante nel ricavo della ricompensa. È però necessario specificare che la possbilità che una transazione sia nel blocco $b^{'}$ e non nel blocco $b$ è molto bassa in quanto una volta propagata la transazione nella rete p2p è altamente improbabile che il nodo che ha pubblicato il blocco $b$ non abbia ricevuto il messaggio.\newline\newline
 Un full node, una volta creato il nuovo blocco con l'header che punta al nodo precedente e creato l'albero delle transazioni, tramite l'algoritmo di hashing \textbf{Hashcash} esegue queste operazioni:
 \begin{enumerate}
     \item all'interno dell'header viene inserito il campo \textit{nonce} inizializzato a 0;
@@ -564,6 +563,6 @@ Attualmente la potenza di calcolo della rete è di $55$ milioni di Terahash/s, u
     \caption{Suddivisione della potenza di hashing tra i vari pool ad Ottobre 2018.}
     \source{acolyer.org}
 \end{figure}
-Le maggiori potenze di hashing rilevate sono tutte associate a dei \textit{pool} di mining: anzichè tentare di trovare un nonce valido con le proprie capacità computazionali i miner si aggregano per dividere il carico di lavoro e ad aumentare le possibilità di guadagno. I \texit{pool} permettono di suddividere la ricerca del nonce tra i vari miner; in questo modo la potenza computazionale totale sarà sufficiente da risolvere il puzzle in un tempo molto minore rispetto ad un singolo miner. Una volta che all'indirizzo del \texit{pool} viene accreditata la ricompensa per il mining questa sarà suddivisa internamente tra i vari utenti in percentuale alla loro potenza di calcolo o equamente.
+Le maggiori potenze di hashing rilevate sono tutte associate a dei \textit{pool} di mining: anzichè tentare di trovare un nonce valido con le proprie capacità computazionali i miner si aggregano per dividere il carico di lavoro e ad aumentare le possibilità di guadagno. I \textit{pool} permettono di suddividere la ricerca del nonce tra i vari miner; in questo modo la potenza computazionale totale sarà sufficiente da risolvere il puzzle in un tempo molto minore rispetto ad un singolo miner. Una volta che all'indirizzo del \textit{pool} viene accreditata la ricompensa per il mining questa sarà suddivisa internamente tra i vari utenti in percentuale alla loro potenza di calcolo o equamente.
 
 % NeoTex: mainfile=main.tex:
