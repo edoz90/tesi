@@ -1,9 +1,9 @@
+\documentclass[11pt,a4paper,oneside]{report}
 %\documentclass[11pt,a4paper,twoside]{report}
-\documentclass[11pt,a4paper,singleside]{report}
 
 \usepackage[italian]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage{bold-extra}
+\usepackage{geometry}
 \usepackage{style/isi_style_lt}
 \input{style/settings.tex}
 
@@ -18,8 +18,14 @@
 
 \begin{document}
 
-%\frontmatter
+\frontmatter
+
+\newgeometry{centering}
+\begin{titlepage}
 \maketitle
+\end{titlepage}
+\restoregeometry
+
 \tableofcontents
 \listoffigures
 \listoftables
@@ -28,11 +34,7 @@
 
 \input{introduzione}
 
-%\mainmatter
-
-\pagestyle{fancy}
-\fancyhead[LE,RO]{\thepage}
-\fancyfoot{}
+\mainmatter
 
 \iniziatesto
 \input{capitolo1}

@@ -7,7 +7,7 @@ La \textbf{crittografia}\footnote{Dal greco \textit{kryptós},``nascosto'', e \t
 
 Molti aspetti della crittografia moderna sono centrali ed essenziali nella costruzione di sistemi sicuri per garantire:
 \begin{itemize}
-    \item \textbf{confidenzialità}: limitare l'accesso o aggiungere restrizioni su alcuni tipi di informazioni affinchè solo gli utenti autorizzati ne abbiano accesso;
+    \item \textbf{confidenzialità}: limitare l'accesso o aggiungere restrizioni su alcuni tipi di informazioni affinché solo gli utenti autorizzati ne abbiano accesso;
     \item \textbf{integrità}: nessuna entità non autorizzata può riuscire a modificare i dati;
     \item \textbf{autenticazione}: confermare l'attendibilità dei dati dichiarati come veri da una entità;
     \item \textbf{non ripudio}: l'impossibilità di contestare la paternità o la validità di un dato.
@@ -18,14 +18,14 @@ La \textit{crittografia asimmetrica} è anche spesso chiamata \textit{crittograf
 Al contrario della crittografia a \textit{chiave simmetrica}, in cui tutte le parti devono conoscere la stessa chiave per cifrare o decifrare i messaggi, in questo schema è necessario che i partecipanti conoscano soltanto la chiave \textit{pubblica} del destinatario del messaggio e non è necessario trovare rimedi al problema dello scambio delle chiavi in presenza di avversari.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.65\textwidth]{images/simmetric.png}
+    \includegraphics[width=0.5\textwidth]{images/simmetric.png}
     \caption{Nella crittografia a chiave simmetrica tutte le parti devono avere/conoscere la stessa chiave}
     \source{ss2buy.com}
 \end{figure}
 In un sistema a chiave asimmetrica ogni persona può cifrare un messaggio con la chiave pubblica del destinatario; in questo modo solo il destinatario può leggere il contenuto del messaggio in chiaro decriptandolo con la propria chiave privata e non è necessaria la creazione o l'utilizzo di un canale sicuro per lo scambio iniziale delle chiavi segrete tra le parti.
 \begin{figure}
     \centering
-    \includegraphics[width=0.65\textwidth]{images/asymmetric.png}
+    \includegraphics[width=0.5\textwidth]{images/asymmetric.png}
     \caption{Nella crittografia a chiave asimmetrica ogni parte genera un coppia di chiavi, la parte pubblica viene utilizzata dai mittenti per cifrare il messaggio.}
     \source{ss2buy.com}
 \end{figure}
@@ -44,14 +44,13 @@ Un esempio di utilizzo di una comunicazione tramite crittografia a chiave asimme
 Tramite questi passaggi è stata garantita la confidenzialità del messaggio ma non l'autenticazione in quanto chiunque potrebbe aver utilizzato la chiave pubblica di Alice per generare quel messaggio.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{images/confidentiality.png}
+    \includegraphics[width=0.8\textwidth]{images/confidentiality.png}
     \caption{Metodo per ottenere confidenzialità utilizzando la crittografia asimmetrica}
     \source{\href{https://sandilands.info/sgordon/teaching/css322y12s2/unprotected/CSS322Y12S2L07-Public-Key-Cryptography.pdf}{Sirindhorn International Institute of Technology Thammasat University}}
 \end{figure}
 
 \subsection{Firma digitale}
 Per poter garantire che un messaggio sia stato scritto da Bob e quindi garantire autenticazione è necessario che Bob \textit{firmi} il messaggio tramite una \textit{digital signature}:
-
 \begin{enumerate}
     \item Bob genera una coppia di chiavi: una pubblica ed una privata;
     \item Alice genera una coppia di chiavi: una pubblica ed una privata;
@@ -59,9 +58,9 @@ Per poter garantire che un messaggio sia stato scritto da Bob e quindi garantire
     \item Bob \textit{firma} il messaggio utilizzando la propria chiave privata ed invia la firma assieme al messaggio ad Alice;
     \item Alice riceve il messaggio, in questo caso sarà in chiaro, e tramite la chiave pubblica di Bob può verificare che la firma inviata da Bob sia valida per il messaggio ricevuto.
 \end{enumerate}
-\begin{figure}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{images/authentication.png}
+    \includegraphics[width=0.8\textwidth]{images/authentication.png}
     \caption{Metodo per ottenere autenticazione utilizzando la crittografia asimmetrica}
     \source{\href{https://sandilands.info/sgordon/teaching/css322y12s2/unprotected/CSS322Y12S2L07-Public-Key-Cryptography.pdf}{Sirindhorn International Institute of Technology Thammasat University}}
 \end{figure}
@@ -72,25 +71,22 @@ Per poter garantire che un messaggio sia stato scritto da Bob e quindi garantire
     \item \texttt{sig := sign(sk, message)} il metodo \texttt{sign} genera una firma \texttt{sig} utilizzando una chiave privata \texttt{sk} ed un messaggio da firmare \texttt{message}.
     \item \texttt{isValid := verify(pk, message, sig)} verifica che una firma \texttt{sig} sia valida per un messaggio \texttt{message} firmato tramite la corrispettiva chiave privata di \texttt{pk}.
 \end{itemize}
-
 Una firma digitale è l'equivalente della firma apposta su un documento cartaceo e quindi garantisce che quel documento è stato validato dal firmante. Un esempio concreto dell'utilizzo della firma digitale è dato dal rilascio di aggiornamenti o applicativi da parte di un vendor tramite dei siti di hosting non affiliati.
-
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{images/digitalsignature.png}
-    \caption{Esempio di utilizzo di una digital signature}
+    \caption{Esempio di utilizzo di una digital signature nel rilascio di software}
     \source{\href{https://crypto.stanford.edu/~dabo/courses/OnlineCrypto/slides/13-sigs.pdf}{Cryptography Course of Standford University}}
 \end{figure}
-
-Una volta pubblicato il software, il vendor genera una firma la quale verrà pubblicata dal vendor stesso; una volta che gli utilizzatori reperiscono l'applicativo possono validare il file con la firma pubblicata assieme al software. Nel caso in cui la firma non sia valida allora è possibile che qualche intermediaro abbia apportato delle modifiche al software.\newline\newline
+Una volta pubblicato il software, il vendor genera una firma la quale verrà pubblicata dal vendor stesso; una volta che gli utilizzatori reperiscono l'applicativo possono validare il file con la firma pubblicata assieme al software. Nel caso in cui la firma non sia valida allora è possibile che qualche intermediario abbia apportato delle modifiche al software.\newline\newline
 Il sistema di digital signature è considerato sicuro in quanto per un avversario \texttt{A} non esiste un metodo efficiente per generare un messaggio \texttt{m} con una signature appartenente a Bob, che possa essere verificato tramite la funzione \texttt{verify} da Alice. L'affermazione rimane valida anche se \texttt{A} è in possesso di altri messaggi e signature appartenti a Bob, a patto che \texttt{m} non sia tra questi messaggi.\newline
 Riuscire a generare \texttt{m} e \texttt{sig} tale per cui \texttt{verify} viene soddisfatta significa riuscire a ricostruire la chiava privata di Bob e quindi risolvere in maniera efficiente il problema della fattorizzazione dei numeri primi.\newline\newline
-In aggiunta a quanto annotato è opportuno sottilineare che si considerano le funzioni \texttt{generateKeys} and \texttt{sign} come algoritmi randomici e privi di vulnerabilità; al contrario \texttt{verify} dovrà essere progettata per essere sempre deterministica.
+In aggiunta a quanto annotato è opportuno sottolineare che si considerano le funzioni \texttt{generateKeys} and \texttt{sign} come algoritmi randomici e privi di vulnerabilità; al contrario \texttt{verify} dovrà essere progettata per essere sempre deterministica.
 
 \subsection{Crittografia ellittica}
 Nel caso implementato nella blockchain Bitcoin, e anche per Ethereum ed altre criptomonete, viene utilizzato l'algoritmo \textit{Elliptic Curve Digital Signature Algorithm} (\textit{ECDSA}) per generare una digital signature per la validazione delle operazioni.\newline\newline
 \textit{ECDSA} è un algoritmo progettato partendo da \textit{DSA}, uno standard del governo statunitense, combinato con \textit{crittografia ellitica} la quale permette di avere lo stesso grado di sicurezza dei sistemi tradizioni (RSA, DSA, DH) ma con chiavi di dimensione inferiore.\newline
-\begin{table}[H]
+\begin{table}
     \centering
     \caption{Confronto lunghezza chiavi in bit}
     \begin{tabular}{|c|c|c|}
@@ -111,21 +107,21 @@ Una curva ellittica è rappresentata dall'insieme dei punti espressi dalla formu
     \caption{Esempi di curve ellittiche; come si può notare sono simmetriche rispetto all'asse $x$.}
     \source{\href{https://www.wolframalpha.com/}{WolframAlpha}}
 \end{figure}
-Nell'implementazione della blockchain per \textit{Bitcoin} ed \textit{Ethereum} viene utilizzata una curva chiamata \texttt{secp256k1}\footnote{\texttt{secp256k1} è stata scelta come base per la generazione della crittografia delle chiavi per Bitcoin ed Ethereum a causa della costruzione non randomica della curva che permette di realizzare delle computazioni molto efficienti (fino al 30\% in più rispetto ad altre curve). In aggiunta è considerata più sicura rispetto ad altre curve proposte dal \textit{NIST} per la bassa probabilità che siano state introdotte delle \textit{backdoor} nella curva di partenza.} e con equazione: $y^2=x^3+7$ con $a=0$ e $b=7$.
-\begin{figure}[H]
+Nell'implementazione della blockchain per \textit{Bitcoin} ed \textit{Ethereum} viene utilizzata una curva chiamata \texttt{secp256k1}\footnote{\texttt{secp256k1} è stata scelta come base per la generazione della crittografia delle chiavi per Bitcoin ed Ethereum a causa della costruzione non randomica della curva che permette di realizzare delle computazioni molto efficienti (fino al 30\% in più rispetto ad altre curve). In aggiunta è considerata più sicura rispetto ad altre curve proposte dal \textit{NIST} per la bassa probabilità che siano state introdotte delle \textit{backdoor} nella curva di partenza.} e con equazione: $y^2=x^3+7$ con $a=0$ e $b=7$.\newline
+\begin{figure}
     \centering
     \includegraphics[width=0.6\textwidth]{images/secp256k1.png}
     \caption{Rappresentazione della curva \texttt{secp256k1}}
     \source{\href{https://www.desmos.com/calculator/ialhd71we3}{Desmos}}
 \end{figure}
-Il principio alla base della crittografia asimmetrica basata su curve ellittiche è simile a quello utilizzato in RSA ma anzichè utilizzare il problema della fattorizzazione di numeri primi viene utilizzato il \textit{problema del logaritmo discreto} applicato su curve ellittiche definite su un campo finito.\newline
+Il principio alla base della crittografia asimmetrica basata su curve ellittiche è simile a quello utilizzato in RSA ma anziché utilizzare il problema della fattorizzazione di numeri primi viene utilizzato il \textit{problema del logaritmo discreto} applicato su curve ellittiche definite su un campo finito.\newline
 Un campo finito consiste di un numero finito di elementi su cui sono definite due operazioni binarie: addizione e moltiplicazione. L'equazione della curva ellittica applicata ad un campo finito è:
 \begin{equation}
     y^2 \bmod p = (x^3 + ax + b) \bmod p
 \end{equation}
 Dove $p$ è un numero primo che garantisce che le operazioni di addizione e moltiplicazione siano sempre reversibili. In aggiunta l'equazione permette di ottenere sempre dei valori interi e finiti.\newline\newline
 La somma di due punti $P$ e $Q$, appartenenti ad una curva ellittica $\xi$, produce un punto $R$ simmetrico all'asse $x$ dell'intersezione tra la retta passante per $PQ$ e $\xi$.
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.6\textwidth]{images/ECDSA.png}
     \caption{Somma di due punti: $P+Q=-R$}
@@ -286,7 +282,7 @@ Affinchè una funzione di \textit{hashing} possa essere considerata sicura ed ut
     \item resistenza alla seconda preimmagine (o \textit{weak collision}): data un messaggio $m_1$ è infattibile trovare un messaggio $m_2$, diverso da $m_1$, tale che $hash(m_1)=hash(m_2)$.
     \item resistenza alle collisioni: dati due messaggi $m_1$ e $m_2$, diversi tra loro, deve essere infattibile trovare $hash(m_1)=hash(m_2)$.
 \end{enumerate}
-La resistenza alle collisioni non esclude che queste possano verificarsi in quanto lo spazio di output è limitato mentre quello in input è potenzialmente infinito: la proprietà implica solamente che trovare una collissione non deve essere computazionalmente fattibile. Ad esempio per una funzione di hashing con un output di 256 bit è possibile trovare una collisione con una possibilità del $99.8\%$ calcolando $2^{130}+1$ (per la teoria del \textit{paradosso del compleanno}) stringhe in input; tuttavia, il calcolo di ogni $2^{130}$ possibilità risulta essere impossibile con l'attuale potenza computazionale\footnote{Calcolando $10 000 H/s$ sarebbero necessari più $10^{27}$ anni per calcolare $2^{128}$ hash.}.
+La resistenza alle collisioni non esclude che queste possano verificarsi in quanto lo spazio di output è limitato mentre quello in input è potenzialmente infinito: la proprietà implica solamente che trovare una collisione non deve essere computazionalmente fattibile. Ad esempio per una funzione di hashing con un output di 256 bit è possibile trovare una collisione con una possibilità del $99.8\%$ calcolando $2^{130}+1$ (per la teoria del \textit{paradosso del compleanno}) stringhe in input; tuttavia, il calcolo di ogni $2^{130}$ possibilità risulta essere impossibile con l'attuale potenza computazionale\footnote{Calcolando $10 000 H/s$ sarebbero necessari più $10^{27}$ anni per calcolare $2^{128}$ hash.}.
 
 Questa proprietà permette quindi di ottenere dei \textit{digest} di un messaggio di lunghezza fissa e che sono univoci per il messaggio dato in input riducendo la quantità di informazioni da memorizzare e velocizzando i controlli di integrità ed uguaglianza tra file.
 
@@ -321,7 +317,7 @@ Questa tecnica è utilizzata, ad esempio, per risalire alla paternità di brevet
 L'algoritmo \textit{SHA-256} è utilizzato come funzione di hashing nella blockchain Bitcoin e accetta in ingresso una qualunque stringa di lunghezza variabile e produce un output di 256 bit.\newline
 Il calcolo dell'hash prevede che il messaggio in input venga elaborato in modo tale che la dimensione finale sia di lunghezza fissa; queste funzioni sono dette \textit{funzioni di compressione} e nel caso di \textit{SHA-256} accettano degli input di lunghezza 768 bit.
 
-Affinchè gli input per le funzioni di compressione siano di lunghezza accettabile si utilizza la trasformazione di \textit{Merkle-Damgard} per dividere il messaggio in \textit{blocchi} di lunghezza di 512 bit.
+Affinché gli input per le funzioni di compressione siano di lunghezza accettabile si utilizza la trasformazione di \textit{Merkle-Damgard} per dividere il messaggio in \textit{blocchi} di lunghezza di 512 bit.
 
 In fase di inizializzazione al messaggio viene applicato del \textit{padding} per rendere la lunghezza divisibile per 512 e successivamente ogni blocco viene dato in input alla funzione di compressione assieme all'output del precedente blocco compresso. Le funzioni di compressione sono realizzate per essere eseguite in cascata ed accettano in input il blocco del messaggio di lunghezza 512 bit e l'output del precedente blocco compresso di lunghezza 256 bit.\newline
 Il primo blocco viene compresso partendo da un \textit{vettore di inizializzazione} \textbf{IV} a 256 bit (fisso e definito dagli standard di \textit{SHA-256}) e l'output generato risulta come argomento per la funzione di compressione per il blocco successivo. L'output dell'ultimo blocco, di lunghezza 256 bit, è l'hash finale.
@@ -330,7 +326,7 @@ Il primo blocco viene compresso partendo da un \textit{vettore di inizializzazio
 La firma digitale implementata per Bitcoin ed Ethereum si basa sull'algoritmo \textit{ECDSA}: Bob vuole inviare un messaggio firmato con la propria chiave privata ($nP$) ad Alice che lo validerà utilizzando la chiave pubblica di Bob ($Q$).\newline
 In base a quanto stabilito tramite la crittografia ellittica non esistono avversari $A$ in grado di produrre una signature valida per un messaggio $m$ non conosciuto, mentre tutti possono verificare che il messaggio sia stato firmato da Bob.\newline\newline
 ECDSA utilizza delle funzioni di hash per ottenere una stringa di dimensione limitata rispetto al messaggio. L'algoritmo non specifica quale funzione utilizzare ma è fondamentale non utilizzare algoritmi che non siano considerati sicuri.\newline
-L'hash del messaggio $m$, infine, deve essere troncato al bit corrispondente con la dimensione dell'ordine del gruppo della curva ellittica per ottere un intero $z$. L'algoritmo di firma prevede che:
+L'hash del messaggio $m$, infine, deve essere troncato al bit corrispondente con la dimensione dell'ordine del gruppo della curva ellittica per ottenere un intero $z$. L'algoritmo di firma prevede che:
 \begin{enumerate}
     \item si scelga un $k$ randomico tra $\{1,...,N-1\}$, con $N$ il grado del gruppo;
     \item si calcoli $E=kP$, con $P$ il punto base della curva ellittica;
