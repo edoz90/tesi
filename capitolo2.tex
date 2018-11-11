@@ -466,7 +466,30 @@ La rete Bitcoin è utilizzata per diffondere le transazioni tramite algoritmi di
     \item una volta inserita la transazione nel blocco, i peer inoltrano la richiesta agli altri nodi connessi;
 \end{enumerate}
 In quanto si tratta di una rete peer-2-peer è possibile che ci siano delle latenze e che l'ordine delle transazioni non sia lo stesso con cui sono state pubblicate o che si creino situazioni di \textit{race condition}: nel caso Alice voglia tentare di inviare lo stesso ammontare di Bitcoin a Bob e Charlie (double spending) solamente la prima transazione che verrà inserita nel blocco e successivamente nella blockchain sarà accettata; tutte gli altri peer che avranno aggiunto nel loro albero di transazioni l'altra transazione la elimineranno in quanto ritenuta invalida.\newline
-Esistono due tipi di nodi connessi alla rete Bitcoin:
+L'assenza di una struttura nelle reti \textit{p2p} ne facilita la gestione ma al costo non ottimale per la distribuzione dei messaggi: non è possibile prevedere ad esempio gli esatti destinatari di un messaggio senza incorrere un ripetizioni.\newline
+In una rete non strutturata i collegamenti tra i nodi sono effettuati arbitrariamente e localmente (di \textit{peer} in \textit{peer}).\newline
+Al fine di garantire che tutti i \textit{peer} ricevano il messaggio è necessario costruire un sistema di diffusione che permetta di coprire l'intera rete con una probabilità molto alta. Uno dei principali algoritmi di diffusione utilizzati in reti non strutturate è il protocollo \textbf{gossip}.
+L'algoritmo viene utilizzato in ambienti come sistemi ad-hoc, multicast, giochi multiplayer online, sistemi distribuiti virtuali, reti di sensori, reti opportunistiche, sistemi publish-subscribe, query su dati XML, scoperta e gestione delle risorse in ambienti di cloud computing e sistemi distribuiti, social network, etc. Ad esempio \textit{Amazon S3} utilizza il protocollo gossip per inviare le informazioni sullo stato dei server nel sistema, in Facebook è stato sviluppato \textit{Cassandra} come sistema di storage distribuito utilizzando una strategia gossip (\textit{Scuttlebutt}) per la gestione e l'invio dei messaggi di controllo degli stati.\newline
+Anche la rete Bitcoin utilizza una variante del protocollo \textit{gossip} per diffondere nella rete le informazioni come transazioni e i blocchi. Bitcoin utilizza il protocollo \textit{Dandelion}\footnote{Tramite \textit{BIP 156} (\textit{Bitcoin Improvement Proposal}) è stato proposto un aggiornamento per garantire maggiore anonimità rispetto alla precedente versione; il nuovo protocollo verrà chiamato \textit{Dandelion++} ed è in attesa di approvazione ed integrazione.} che permette agli utilizzatori una maggiore privacy rispetto ai protocolli originali. Utilizzando il normale algoritmo di gossip è possibile, nella rete Bitcoin, creare una mappatura delle transazioni, in quanto pubbliche, ed indirizzi IP. Quando un nodo crea una transazione questa viene inviata in \textit{broadcast} a tutti i peer connessi; questi, successivamente, aggiornano i propri peer con la stessa transazione seguendo uno schema di \textit{infezione} o reazione a catena. In media entro i 10 secondi il messaggio, ovvero la transazione, ha raggiunto una copertura quasi totale della rete.
+Controllando però un numero sufficiente di nodi nella rete è possibile risalire all'indirizzo IP del nodo che l'ha pubblicata per la prima volta. Osservando pattern, dove e quando il messaggio viene ricevuto è possibile fare una stima della porzione di rete e di indirizzi IP che l'hanno generato\footnote{Uno \href{https://arxiv.org/abs/1405.7418}{studio} della \textit{Cornell University} ha indicato che è possibile avere una precisione che oscilla dal $11\%$ al $60\%$.}.\newline
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/gossip_attack.png}
+    \caption{Capacità di identificazione degli IP con protocollo \textit{gossip} su rete Bitcoin}
+    \source{\href{https://github.com/bitcoin/bips/blob/master/bip-0156.mediawiki}{BIP 156}}
+\end{figure}
+Il nuovo protocollo, \textit{Dandelion} e la sua evoluzione \textit{Dandelion++}, modificano la metodologia di comunicazione e diffusione dei messaggi dei client con gli altri. La comunicazione avviene tramite due fasi: 
+\begin{itemize}
+    \item fase \textbf{stem}: il client invia ad un singolo nodo la transazione; i nodo destinatario procede con la stessa tecnica (\textit{1-1})
+    \item fase \textbf{fluff}: dopo un tempo aleatorio la transazione viene inviata nella rete tramite \textit{broadcast}.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/dandelion.png}
+    \caption{Fasi del protocollo \textit{Dandelion} e \textit{Dandelion++} proposto da Giulia Fanti}
+    \source{\href{https://github.com/bitcoin/bips/blob/master/bip-0156.mediawiki}{BIP 156}}
+\end{figure}
+I \textit{peer} connessi alla rete Bitcoin possono essere di due tipi:
 \begin{itemize}
     \item completi (\textit{full node})
     \item parziali (\textit{lightweight} o \textit{Simple Payment Verification})
@@ -499,7 +522,7 @@ Un full node è l'unico modo per utilizzare la rete Bitcoin in maniera ``trustle
 Affinchè un blocco possa essere inserito nella blockchain è necessario che sia validato e che sia dimostrato di aver trovato un \textit{nonce} $x$ tale per cui $h(k||x)<T$; con $T$ il valore del target fissato (un numero a $256$ bit) e $k$ l'hash del blocco. Questo processo è chiamato \textit{prova di Bernoulli} o \textbf{mining}.\newline
 Questa operazione è quella che richiede più tempo e risorse di computazione e che permette ai \textit{miner} di ricevere una ricompensa.\newline
 La ricompensa è utilizzata come incentivo a mantenere attiva la rete e per creare nuovi token Bitcoin tramite una transazione coinbase. Assieme al valore della ricompensa i miner ricevono tutte le \textit{fee} delle transazioni che sono state aggiunte al blocco: una transazione con una \textti{fee} maggiore avrà molta più probabilità di essere inserita nel blocco più immediato. Ad esempio con una fee pari a $0.63\$$ la transazione è accettata e inserita nella blockchain come valida dopo circa 10 minuti, per $0.60\$$ invece il tempo medio di attesa è di circa 1 ora.\newline
-Una volta trovato il nonce e pubblicato il blocco non è certo che esso venga inserito come blocco nella blockchain: il blocco deve essere valido, gli altri miner devono accettarlo aggiungendolo alla propria blockchain ed iniziare la costruzione di un nuovo blocco partendo da quest'ultimo. Se due blocchi, validi ma diversi, vengono propagati sulla rete solamente uno di essi verrà inserito nella blockchain. Quando un peer aggiunge un blocco $b$ alla propria blockchain essa sarà quella più aggiornata e di dimensione maggiore rispetto a quella degli altri peer. Nel frangente di tempo in cui il nuovo blocco $b$ è distribuito sulla rete è possibile che un altro peer aggiunga alla propria blockchain un blocco $b^{'}$, diverso da $b$. I peer che ricevono dalla rete il blocco $b^{'}$ dopo $b$ lo rifiuteranno in quanto invalido (il campo $previousHash$ non è valido); di conseguenza tutte le transazioni che non sono inserite in $b$ non faranno parte della blockchain. Il concetto alla base per cui viene rifiutato è che la blockchain valida è quella di lunghezza maggiore; in altre parole la topologia della rete e la latenza tra i peer ha un peso importante nel ricavo della ricompensa. È però necessario specificare che la possibilità che una transazione sia nel blocco $b^{'}$ e non nel blocco $b$ è molto bassa in quanto una volta propagata la transazione nella rete p2p è altamente improbabile che il nodo che ha pubblicato il blocco $b$ non abbia ricevuto il messaggio.\newline\newline
+Una volta trovato il nonce e pubblicato il blocco non è certo che esso venga inserito come blocco nella blockchain: il blocco deve essere valido, gli altri miner devono accettarlo aggiungendolo alla propria blockchain ed iniziare la costruzione di un nuovo blocco partendo da quest'ultimo. Se due blocchi, validi ma diversi, vengono propagati sulla rete solamente uno di essi verrà inserito nella blockchain. Quando un peer aggiunge un blocco $b$ alla propria blockchain essa sarà quella più aggiornata e di dimensione maggiore rispetto a quella degli altri peer. Nel frangente di tempo in cui il nuovo blocco $b$ è distribuito sulla rete è possibile che un altro peer aggiunga alla propria blockchain un blocco $b^{'}$, diverso da $b$. I peer che ricevono dalla rete il blocco $b^{'}$ dopo $b$ lo rifiuteranno in quanto invalido (il campo $previousHash$ non è valido); di conseguenza tutte le transazioni che non sono inserite in $b$ non faranno parte della blockchain. Il concetto alla base per cui viene rifiutato è che la blockchain valida è quella di lunghezza maggiore; in altre parole la topologia della rete e la latenza tra i peer ha un peso importante nel ricavo della ricompensa. È però necessario specificare che la possibilità che una transazione sia nel blocco $b^{'}$ e non nel blocco $b$ è molto bassa in quanto una volta propagata la transazione nella rete p2p è altamente improbabile che il nodo che ha pubblicato il blocco $b$ non abbia ricevuto il messaggio.\newline
 Un full node, una volta creato il nuovo blocco con l'header che punta al nodo precedente e creato l'albero delle transazioni, tramite l'algoritmo di hashing \textbf{Hashcash} esegue queste operazioni:
 \begin{enumerate}
     \item all'interno dell'header viene inserito il campo \textit{nonce} inizializzato a 0;
@@ -515,6 +538,11 @@ Un full node, una volta creato il nuovo blocco con l'header che punta al nodo pr
     \source{BitMain}
 \end{figure}
 Queste operazioni sono molto onerose dal punto di vista computazionale ed per questo che molti miner e produttori sono alla ricerca di hardware sempre più specializzato ed efficiente per ottenere dei guadagni maggiori. Nonostante la potenza di calcolo abbia un ruolo molto importante non è scontato che il miner più veloce ottenga per primo un nonce valido: i blocchi su cui i miner lavorano sono sempre diversi e per le proprietà delle funzioni di hashing non è possibile prevedere quale nonce sia corretto prima di calcolarlo\footnote{Per assurdo è possibile che un miner scelga randomicamente un nonce corretto dall'inizio senza bisogno di iterazioni.}. L'operazione di verifica invece risulta immediata in quanto conoscendo il nonce è molto efficiente controllarne la correttezza.\newline
+\begin{figure}
+    \includegraphics[width=\textwidth]{images/bitcoin_watt.png}
+    \caption{Consumo stimato in \textit{TWh} dedicato al mining di Bitcoin da Febbraio 2017 a Novembre 2018.}
+    \source{Digiconomist}
+\end{figure}
 La \textbf{difficoltà} e, di conseguenza, il target regolano la frequenza con cui i blocchi sono calcolati ed aggiunti alla blockchain in base alla totale potenza di calcolo della rete. La difficoltà viene aggiornata ogni $2016$ blocchi (circa due settimane o $20160$ minuti) al fine di avere un nuovo blocco ogni circa 10 minuti; in quanto il timestamp è leggibile per ciascun blocco ogni nodo saprà quale sarà la nuova difficoltà secondo la formula:
 \begin{equation}
      difficulty = original\_target / target
@@ -532,7 +560,7 @@ L'attuale valore di difficoltà della rete è di $7182852313938$ volte maggiore 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{images/diffvshash.png}
-    \caption{Andamento hash rage/difficoltà degli ultimi due mesi (Ottobre, 2018).}
+    \caption{Andamento hashrate/difficoltà degli ultimi due mesi (Ottobre, 2018).}
     \source{bitcoinwisdom.com}
 \end{figure}
 L'incremento della difficoltà è dovuto alla crescente popolarità dei Bitcoin che porta maggiori utenti a credere nel progetto di Satoshi e quindi a farne aumentare il valore in termini di cambio BTC/\$. Un maggior valore di cambio comporta anche una maggior partecipazione dei miner che, apportando nuova potenza di calcolo alla rete, influenzano il valore della difficoltà.
@@ -542,12 +570,12 @@ L'incremento della difficoltà è dovuto alla crescente popolarità dei Bitcoin 
     \caption{Tempo di calcolo di un blocco (Ottobre, 2018).}
     \source{bitcoinwisdom.com}
 \end{figure}
-In aggiunta la presenza di un limite massimo di Bitcoin in circolazione e il dimezzamento costante della \textit{reward} dato dalle attività di \texit{mining} comporta un notevole incentivo ad investire nella moneta. Satoshi non ha mai esplicitamente dichiarato il perché di un limite massimo nella produzione di Bitcoin ma è possibile affermare che si tratti di un valore abbastanza vicino alla rappresentazione dei numeri utilizzando 64-bit e per evitare che la moneta sia inflazionata. In aggiunta un limite massimo comporta una speculazione maggiore e quindi un aumento di valore più rapido.\newline
-Il calcolo del limite è effettuato tenendo conto che ogni blocco viene aggiunto alla blockchain in media ogni 10 minuti e che la minima unità spendibile è di $0.00000001$ (ovvero $1$ Satoshi) con un dimezzamento ogni $210000$ blocchi.
+In aggiunta la presenza di un limite massimo di Bitcoin in circolazione e il dimezzamento costante della \textit{reward} dato dalle attività di \texit{mining} comporta un notevole incentivo ad investire nella moneta. Satoshi non ha mai esplicitamente dichiarato il perché di un limite massimo nella produzione di Bitcoin ma è possibile giustificarlo come il valore massimo e abbastanza vicino alla rappresentazione dei numeri utilizzando una notazione a 64-bit e per evitare che la moneta venga inflazionata. In aggiunta un limite massimo comporta una speculazione maggiore tra miner ed investitori e quindi un aumento di valore più rapido.\newline
+Il calcolo del limite è effettuato tenendo conto che ogni blocco viene aggiunto alla blockchain in media ogni 10 minuti e che la minima unità spendibile è di $0.00000001$ (ovvero $1$ Satoshi) con un dimezzamento ogni $210000$ blocchi. Partendo quindi dal \textit{reward} iniziale di $50$ BTC è possibile continuare a dimezzarlo fino ad arrivare ad un numero di Bitcoin che non è possibile spendere e quindi ricevere tramite una transazione coinbase.
 \begin{equation}\label{eq:maxbtc}
     50 * 210000 + 50/2 * 210000 + 50/4 * 210000 + \dots + 50/n * 210000
 \end{equation}
-Una volta raggiunto $n$ per cui il \textit{reward} per il mining sarà minore di un Satoshi il totale della somma \ref{eq:maxbtc} compone il totale di Bitcoin possibili: $20999999.9769$ (arrotondato per la rappresentazione a virgola mobile).
+Una volta raggiunto $n$ per cui il \textit{reward} per il mining sarà minore di un Satoshi, il totale della somma \ref{eq:maxbtc} compone il totale di Bitcoin disponibili: $20999999.9769$ (arrotondato per la rappresentazione a virgola mobile).
 
 \subsection{Hashcash e Proof-Of-Work}
 L'algoritmo \textit{Hashcash} utilizzato per generare l'hash target per ciascun blocco della blockchain Bitcoin si basa sulla proprietà crittografica delle funzioni di hashing per cui risulta essere computazionalmente inefficiente il calcolo di $x$ conoscendo $y=H(x)$. Il totale dei tentativi necessari a trovare $x$ ha come difficoltà $O(2^k)$ con $k=256$ nel caso di SHA-256 (utilizzato come algoritmo di mining per Bitcoin).\newline
