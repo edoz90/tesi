@@ -45,29 +45,16 @@
  \fi
 %%%%%%%%%%%%%%%
 
-\newcommand{\@materia}{?}
-\newcommand{\@titolo}{?}
-
-\newcommand{\@laureando}{?}
-\newcommand{\@matricola}{?}
-\newcommand{\@annoacc}{?}
-\newcommand{\@parolechiave}{?}
-\newcommand{\@dedica}{?}
-\newcommand{\@sessione}{?}
-
-\newcommand{\materia}[1]{%
-  \renewcommand{\@materia}{{#1}}}
-\newcommand{\titolo}[1]{%
-  \renewcommand{\@titolo}{\uppercase{#1}}}
-
-\newcommand{\laureando}[1]{%
-  \renewcommand{\@laureando}{\uppercase{#1}}}
-
-\newcommand{\matricola}[1]{%
-    \renewcommand{\@matricola}{ - Matr. \emph{#1}}}
-
-\newcommand{\annoacc}[1]{%
-\renewcommand{\@annoacc}{\emph{a.a - #1}}}
+\def\materia#1{\gdef\@materia{#1}}
+\def\matricola#1{\gdef\@matricola{#1}}
+\def\titolo#1{\gdef\@titolo{#1}}
+\def\laureando#1{\gdef\@laureando{#1}}
+\def\relatore#1{\gdef\@relatore{#1}}
+\def\annoacc#1{\gdef\@annoacc{#1}}
+\def\correlatori#1{\gdef\@correlatori{Correlatori:\\#1}}
+\def\correlatore#1{\gdef\@correlatore{Correlatore:\\#1}}
+\def\@correlatori{*}
+\def\@correlatore{*}
 
 \newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}%
   \cleardoublepage}}
@@ -91,7 +78,7 @@
             \normalsize{Scuola di Ingegneria e Architettura}\\[0.5mm]%
             \normalsize{Corso di Laurea Magistrale Ingegneria e scienze informatiche}\\[0.7mm]%
             \rule{13.0cm}{1.5pt}\\[10mm]%
-            \large{\@materia}\\%
+            \huge{\@materia}\\%
         \end{tabular}%
     \end{minipage}%
     \vfill%
@@ -101,16 +88,16 @@
     \vfill%
     \begin{minipage}[t]{\textwidth}%
         \begin{tabular}{ll}%
-            %Relatore: \hspace{65mm} & Candidato: \\%
-            %\@relatore & \@candidato\\[5mm]%
-        \end{tabular}
+            Relatore: \hspace{65mm} & Candidato: \\%
+            \@relatore & \@laureando\\[5mm]%
+        \end{tabular}\\
         \begin{tabular}{l}%
             \if*\@correlatori
                 \if*\@correlatore \\[27mm]
                 \else \@correlatore \\[5mm] \fi
             \else \@correlatori \\ \fi
         \end{tabular} \\[5mm]%
-        \centerline{\@laureando\@matricola}
+        \centerline{Matricola: \textit{\@matricola}}
         \vspace{1mm}\centerline{\rule{6.5cm}{0.5pt}}\\%
         \centerline{\@annoacc} %
     \end{minipage}%
