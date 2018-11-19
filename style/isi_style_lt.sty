@@ -50,6 +50,7 @@
 \def\titolo#1{\gdef\@titolo{#1}}
 \def\laureando#1{\gdef\@laureando{#1}}
 \def\relatore#1{\gdef\@relatore{#1}}
+\def\tutor#1{\gdef\@tutor{#1}}
 \def\annoacc#1{\gdef\@annoacc{#1}}
 \def\correlatori#1{\gdef\@correlatori{Correlatori:\\#1}}
 \def\correlatore#1{\gdef\@correlatore{Correlatore:\\#1}}
@@ -73,10 +74,12 @@
     \null
     \begin{minipage}{\textwidth}%
         \begin{tabular}{c}%
-            \large{UNIVERSIT\`A DEGLI STUDI DI BOLOGNA}\\[3mm]%
-            \normalsize{Dipartimento di Informatica - Scienza e Ingegneria}\\[0.5mm]%
-            \normalsize{Scuola di Ingegneria e Architettura}\\[0.5mm]%
-            \normalsize{Corso di Laurea Magistrale Ingegneria e scienze informatiche}\\[0.7mm]%
+            \if*\@relatore
+                \large{UNIVERSIT\`A DEGLI STUDI DI BOLOGNA}\\[3mm]%
+                \normalsize{Dipartimento di Informatica - Scienza e Ingegneria}\\[0.5mm]%
+                \normalsize{Scuola di Ingegneria e Architettura}\\[0.5mm]%
+                \normalsize{Corso di Laurea Magistrale Ingegneria e scienze informatiche}\\[0.7mm]%
+            \fi
             \rule{13.0cm}{1.5pt}\\[10mm]%
             \huge{\@materia}\\%
         \end{tabular}%
@@ -88,8 +91,13 @@
     \vfill%
     \begin{minipage}[t]{\textwidth}%
         \begin{tabular}{ll}%
-            Relatore: \hspace{65mm} & Candidato: \\%
-            \@relatore & \@laureando\\[5mm]%
+            \if*\@relatore
+                Relatore: \hspace{65mm} & Candidato: \\%
+                \@relatore & \@laureando\\[5mm]%
+            \else
+                Tutor:\\
+                \@tutor\\
+            \fi
         \end{tabular}\\
         \begin{tabular}{l}%
             \if*\@correlatori
@@ -97,7 +105,11 @@
                 \else \@correlatore \\[5mm] \fi
             \else \@correlatori \\ \fi
         \end{tabular} \\[5mm]%
-        \centerline{Matricola: \textit{\@matricola}}
+        \if*\@relatore
+            \centerline{Matricola:~\textit{\@matricola}}
+        \else
+            \centerline{\@laureando~-~\textit{Matricola: \@matricola}}
+        \fi
         \vspace{1mm}\centerline{\rule{6.5cm}{0.5pt}}\\%
         \centerline{\@annoacc} %
     \end{minipage}%
