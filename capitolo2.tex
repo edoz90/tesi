@@ -478,7 +478,7 @@ Controllando però un numero sufficiente di nodi nella rete è possibile risalir
     \caption{Capacità di identificazione degli IP con protocollo \textit{gossip} su rete Bitcoin}
     \source{\href{https://github.com/bitcoin/bips/blob/master/bip-0156.mediawiki}{BIP 156}}
 \end{figure}
-Il nuovo protocollo, \textit{Dandelion} e la sua evoluzione \textit{Dandelion++}, modificano la metodologia di comunicazione e diffusione dei messaggi dei client con gli altri. La comunicazione avviene tramite due fasi: 
+Il nuovo protocollo, \textit{Dandelion} e la sua evoluzione \textit{Dandelion++}, modificano la metodologia di comunicazione e diffusione dei messaggi dei client con gli altri. La comunicazione avviene tramite due fasi:
 \begin{itemize}
     \item fase \textbf{stem}: il client invia ad un singolo nodo la transazione; i nodo destinatario procede con la stessa tecnica (\textit{1-1})
     \item fase \textbf{fluff}: dopo un tempo aleatorio la transazione viene inviata nella rete tramite \textit{broadcast}.
@@ -580,7 +580,16 @@ Il calcolo esatto diventa:
 \begin{equation}
     210000 * \sum_{i=0}^{32} \frac{50}{2^{i}}  = 210000 * 99.99999997671694 = 20999999.995110556
 \end{equation}
-In quanto però la difficoltà è in costante aumento il limite di disponibilità dei Bitcoin risulta essere un asintoto che molti ritengono non possa essere mai raggiunto.
+In quanto però la difficoltà è in costante aumento il limite di disponibilità dei Bitcoin risulta essere un asintoto che molti ritengono non possa essere mai raggiunto.\newline
+La probabilità di trovare il \textit{nonce} in un tempo $T$ è:
+\begin{equation}
+    P = \exp^{-T/10}
+\end{equation}
+Quindi, per $10$ minuti la percentuale è del $63\%$ e per $T=7$ la percentuale di trovare il nome entro questo tempo è del $50\%$. Nelle attuali condizioni della rete la probabilità di calcolare un blocco entro i $10$ minuti ($600$ secondi) è data dalla formula:
+\begin{equation}
+    P_h = H * 600/(2^{32}*D)
+\end{equation}
+Con $H$ l'hashrate (in $H/s$) del miner e $D$ la difficoltà attuale della rete.
 
 \subsection{Hashcash e Proof-Of-Work}
 L'algoritmo \textit{Hashcash} utilizzato per generare l'hash target per ciascun blocco della blockchain Bitcoin si basa sulla proprietà crittografica delle funzioni di hashing per cui risulta essere computazionalmente inefficiente il calcolo di $x$ conoscendo $y=H(x)$. Il totale dei tentativi necessari a trovare $x$ ha come difficoltà $O(2^k)$ con $k=256$ nel caso di SHA-256 (utilizzato come algoritmo di mining per Bitcoin).\newline
