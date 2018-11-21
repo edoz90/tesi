@@ -451,7 +451,7 @@ Il risultato è la creazione di due liste di chiavi pubbliche e di signature: la
 
 \subsection{Rete}
 La rete Bitcoin è una rete \textit{peer-2-peer} con topologia randomica e senza gerarchie tra i vari nodi ed è la chiave per raggiungere decentralizzazione e consenso distribuito.\newline
-Un nodo all'interno della rete peer-2-peer di Bitcoin comunica con gli altri tramite protocollo TCP (porta di default $8883$) per ricevere informazioni e comunicarle agli altri nodi tramite algoritmi di \textit{gossip}. In quanto si tratta di una topologia altamente dinamica è necessario che i nodi aggiornino frequentemente la lista degli altri nodi con cui comunicare: ad esempio molti software di wallet considerano un nodo offline quando non ci sono comunicazione per più di tre ore.\newline
+Un nodo all'interno della rete peer-2-peer di Bitcoin comunica con gli altri tramite protocollo TCP (porta di default $8883$) per ricevere informazioni e comunicarle agli altri nodi tramite algoritmi di \textit{gossip} [\ref{appendix:gossip}]. In quanto si tratta di una topologia altamente dinamica è necessario che i nodi aggiornino frequentemente la lista degli altri nodi con cui comunicare: ad esempio molti software di wallet considerano un nodo offline quando non ci sono comunicazione per più di tre ore.\newline
 La rete Bitcoin è utilizzata per diffondere le transazioni tramite algoritmi di \textit{flooding} per gossip. Ad esempio per una transazione tra Alice e Bob:
 \begin{enumerate}
     \item Alice crea la transazione come visto in \ref{sec:transazione};
@@ -564,13 +564,22 @@ L'attuale valore di difficoltà della rete è di $7182852313938$ volte maggiore 
     \source{bitcoinwisdom.com}
 \end{figure}
 L'incremento della difficoltà è dovuto alla crescente popolarità dei Bitcoin che porta maggiori utenti a credere nel progetto di Satoshi e quindi a farne aumentare il valore in termini di cambio BTC/\$. Un maggior valore di cambio comporta anche una maggior partecipazione dei miner che, apportando nuova potenza di calcolo alla rete, influenzano il valore della difficoltà.
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{images/diffvsblock.png}
     \caption{Tempo di calcolo di un blocco (Ottobre, 2018).}
     \source{bitcoinwisdom.com}
 \end{figure}
-In aggiunta la presenza di un limite massimo di Bitcoin in circolazione e il dimezzamento costante della \textit{reward} dato dalle attività di \texit{mining} comporta un notevole incentivo ad investire nella moneta. Satoshi non ha mai esplicitamente dichiarato il perché di un limite massimo nella produzione di Bitcoin ma è possibile giustificarlo come il valore massimo e abbastanza vicino alla rappresentazione dei numeri utilizzando una notazione a 64-bit e per evitare che la moneta venga inflazionata. In aggiunta un limite massimo comporta una speculazione maggiore tra miner ed investitori e quindi un aumento di valore più rapido.\newline
+La probabilità di trovare il \textit{nonce} in un tempo $T$ (minuti) è:
+\begin{equation}
+    P = \exp^{-T/10}
+\end{equation}
+Quindi, per $10$ minuti la percentuale è del $63\%$ e per $T=7$ la percentuale di trovare il nome entro questo tempo è del $50\%$. Nelle attuali condizioni della rete la probabilità di calcolare un blocco entro i $10$ minuti ($600$ secondi) è data dalla formula:
+\begin{equation}
+    P_h = H * 600/(2^{32}*D)
+\end{equation}
+Con $H$ l'hashrate (in $H/s$) del miner e $D$ la difficoltà attuale della rete.\newline
+La presenza di un limite massimo di Bitcoin in circolazione e il dimezzamento costante della \textit{reward} dato dalle attività di \texit{mining} comporta un notevole incentivo ad investire nella moneta. Satoshi non ha mai esplicitamente dichiarato il perché di un limite massimo nella produzione di Bitcoin ma è possibile giustificarlo come il valore massimo e abbastanza vicino alla rappresentazione dei numeri utilizzando una notazione a 64-bit e per evitare che la moneta venga inflazionata. In aggiunta un limite massimo comporta una speculazione maggiore tra miner ed investitori e quindi un aumento di valore più rapido.\newline
 Il calcolo del limite è effettuato tenendo conto che ogni blocco viene aggiunto alla blockchain in media ogni 10 minuti e che la minima unità spendibile è di $0.00000001$ (ovvero $1$ Satoshi) con un dimezzamento ogni $210000$ blocchi. Partendo quindi dal \textit{reward} iniziale di $50$ BTC è possibile continuare a dimezzarlo fino ad arrivare ad un numero di Bitcoin che non è possibile spendere e quindi ricevere tramite una transazione coinbase.
 \begin{equation}\label{eq:maxbtc}
     50 * 210000 + 50/2 * 210000 + 50/4 * 210000 + \dots + 50/n * 210000 = 210000 * \sum_{i=0}^{n} \frac{50}{2^{i}}
@@ -580,16 +589,7 @@ Il calcolo esatto diventa:
 \begin{equation}
     210000 * \sum_{i=0}^{32} \frac{50}{2^{i}}  = 210000 * 99.99999997671694 = 20999999.995110556
 \end{equation}
-In quanto però la difficoltà è in costante aumento il limite di disponibilità dei Bitcoin risulta essere un asintoto che molti ritengono non possa essere mai raggiunto.\newline
-La probabilità di trovare il \textit{nonce} in un tempo $T$ è:
-\begin{equation}
-    P = \exp^{-T/10}
-\end{equation}
-Quindi, per $10$ minuti la percentuale è del $63\%$ e per $T=7$ la percentuale di trovare il nome entro questo tempo è del $50\%$. Nelle attuali condizioni della rete la probabilità di calcolare un blocco entro i $10$ minuti ($600$ secondi) è data dalla formula:
-\begin{equation}
-    P_h = H * 600/(2^{32}*D)
-\end{equation}
-Con $H$ l'hashrate (in $H/s$) del miner e $D$ la difficoltà attuale della rete.
+In quanto però la difficoltà è in costante aumento il limite di disponibilità dei Bitcoin risulta essere un asintoto che molti ritengono non possa essere mai raggiunto.
 
 \subsection{Hashcash e Proof-Of-Work}
 L'algoritmo \textit{Hashcash} utilizzato per generare l'hash target per ciascun blocco della blockchain Bitcoin si basa sulla proprietà crittografica delle funzioni di hashing per cui risulta essere computazionalmente inefficiente il calcolo di $x$ conoscendo $y=H(x)$. Il totale dei tentativi necessari a trovare $x$ ha come difficoltà $O(2^k)$ con $k=256$ nel caso di SHA-256 (utilizzato come algoritmo di mining per Bitcoin).\newline

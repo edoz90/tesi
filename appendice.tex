@@ -1,6 +1,6 @@
 \appendix
 \begin{appendices}
-    \chapter{Satoshi Nakamoto}\label{app:satoshi}
+    \chapter{Satoshi Nakamoto}\label{appendix:satoshi}
     Satoshi Nakamoto è lo pseudonimo utilizzato dall'utente (o dal gruppo di utenti) che è stato utilizzato come autore per il white paper \textit{Bitcoin: A Peer-to-Peer Electronic Cash System}\cite{bitcoinwhite} e primo sviluppatore della blockchain.\newline
     Il paper fu pubblicato tramite la mailing list di cypherpunk \textit{metzdowd.com} nell'Ottobre del 2008 e la prima versione del software \texttt{bitcoind} fu rilasciata dallo stesso Nakamoto nel Gennaio del 2009.\newline
     L'identità dell'autore è tutt'ora ignota ma Satoshi si è presentato come un uomo nato il 5 Aprile 1975 che vive in Giappone. Molte speculazioni sono state fatte sulla possibile identità proponendo personaggi illustri della crittografia moderna o esperti di criptomonete tra cui \textit{Hal Finney}, \textit{Nick Szabo}, \textit{David Chaum}, \textit{Stuart Haber} e \textit{W. Scott Stornetta} in base alle conoscenze espresse da Nakamoto e allo stile di scrittura (analisi stilometrica).\newline
@@ -9,86 +9,86 @@
     Satoshi potrebbe aver preferito l'anonimità anche per sicurezza personale e del progetto: è noto che il wallet associato a Nakamoto abbia a disposizione un notevole ammontare di valuta ($\sim67$ BTC) ed un eventuale cambio in moneta corrente potrebbe far collassare la rete o rendere pubblica la sua identità.
 \end{appendices}
 
-%\begin{appendices}
-%    \chapter{Gossip}
-%    Il protocollo gossip è un tipo di protocollo \textit{epidemico} semplice ma efficace per diffondere informazioni. Il fattore chiave è l'utilizzo della randomizzazione per la propagazione dei dati.\newline
-%    La comunicazione può essere:
-%    \begin{itemize}
-%        \item \texttt{push}: il mittente decide quale nodo riceverà il messaggio
-%        \item \texttt{pull}: i destinatari scelgono come avviare una comunicazione con un altro nodo che invierà i dati
-%        \item \texttt{push-pull}: entrambi i nodi mittente e destinatario condividono i propri dati tramite gossip
-%    \end{itemize}
-%    In base al modello di utilizzo, SIR (\texttt{Susceptible - Infective - Recovered}) o SIS (\texttt{Susceptible - Infective - Susceptible}), è una pratica comune impiegare un meccanismo di cache dei messaggi detto SIRS (\texttt{Susceptible - Infective - Recovered - -Susceptible}).
-%    
-%    \section{Protocolli di diffusione}
-%    Ogni nodo riceve un messaggio e lo invia a tutti i nodi a cui è collegato, dopo averlo elaborato, se necessario. È quindi possibile che un nodo riceva più volte lo stesso messaggio (è un grafo) e che generi traffico ridondante nella rete; per evitare ciò è possibile introdurre un meccanismo di cache per i messaggi processati e si applica un tempo di vita per un messaggio nella rete (\texttt{TTL}).\newline
-%    I messaggi sono elaborati tramite tecnica \texttt{push} e i peer inviano messaggi solo ai nodi connessi di primo livello.\newline
-%    Per identificare un costo nella disseminazione dei messaggi è necessario misurare il rapporto di overhead $\rho$, calcolato come il rapporto tra i messaggi consegnati e il numero minimo di messaggi necessari per una copertura totale. In una rete con $n$ nodi e $m$ eventi generati questo valore è $\Omega(nm)$ (\textit{lower bound}).\newline
-%    La corretta inizializzazione del parametro \texttt{TTL} è un problema molto importante che impatta le performance del protocollo di disseminazione. Quando viene utilizzato un protocollo di \texit{flooding}, ad esempio, solitamente viene utilizzato un $TTL$ uguale al diametro della rete (che si basa però su un cammino minimo). Attualmente il \texttt{TTL} di default è impostato al 130\% del massimo diametro del grafo.
-%    
-%    \section{Trasmissione broadcast a probabilità fissa}
-%    La probabilità di gossip $\gamma$ è fissa ed indipendente da ogni altra caratteristica dei nodi connessi e rappresenta la probabilità che un messaggio sia inviato ad un vicino. Il valore è dato da $\gamma = 1/<q>$ (dove $<q>$ è il valore medio del grado di eccedenza (\textit{excess degree}\footnote{Indica il numero medio dei contatti ottenuti seguendo un collegamento.}).\newline
-%    Esiste una elevata probabilità di copertura in un grafo generato in maniera randomica quando è più probabile che ogni nodo trasmetta un messaggio ad almeno uno dei suoi $<k>$ (in media) nodi vicini; non viene però preso in considerazione il \texttt{TTL}.
-%    \begin{lstlisting}[caption=Pseudocodice dell'algoritmo di diffusione con $\gamma$ fisso]
-%    function INITIALIZATION()
-%        gamma <- CHOOSE_PROBABILITY()
-%    
-%    function DISSEMINATE(msg)
-%        for all nj in N do
-%            if RANDOM() < gamma then
-%                SEND(msg, nj)
-%            end if
-%        end for
-%    \end{lstlisting}
-%    
-%    \section{Trasmissione broadcast probabilistica}
-%    I nodi decidono di inoltrare il messaggio in base ad una certa probabilità $\beta$. Se il messaggio è stato generato dal nodo locale allora è inviato a tutti i nodi vicini.
-%    
-%    \begin{lstlisting}[caption=Pseudocodice dell'algoritmo di diffusione con a broadcast probabilistica]
-%    function INITIALIZATION()
-%        beta <- PROBABILITY_BROADCAST()
-%    
-%    function DISSEMINATE(msg)
-%        if (RANDOM() < beta OR FIRST_TRANSMISSION()) then
-%            for all nj in N do
-%                SEND(msg, nj)
-%            end for
-%        end if
-%    \end{lstlisting}
-%    
-%    \section{Trasmissione broadcast dipendente dal grado}
-%    La probabilità di gossip dipende dal grado dei nodi: se un nodo $m$ ha grado $i$ riceve un messaggio dal proprio vicino con una probabilità $\gamma(i)$. La funzione $\gamma(i)$ è espressa in base ad un parametro $\alpha$ in due funzioni:
-%    \begin{equation}
-%        \gamma_1(i) = \begin{cases} 1, & \mbox{if } i=1,2 \\ \frac{1}{i^{\alpha}}, & \mbox{if } i\gt2\end{cases}
-%    \end{equation}
-%    \begin{equation}
-%        \gamma_2(i) - \begin{cases} \frac{1}{ln(\alpha i)}, & \mbox{if } i\gt \max(2, e/\alpha) \\ 1, & \mbox{otherwise}\end{cases}
-%    \end{equation}
-%    L'obiettivo è diffondere i messaggi a nodi con un basso grado in modo da fornire una maggior ed efficiente diffusione nelle sotto-reti formate da questi nodi. Al fine di aggiornare i nodi sul proprio grado è necessario che comunichino tra di loro condividendo le informazioni necessarie: questo minimo overhead è sufficiente a garantire una efficienza molto alta nella disseminazione delle informazioni.
-%    \begin{lstlisting}[caption=Pseudocodice dell'algoritmo di diffusione con a broadcast dipendente dal grado]
-%    function INITIALIZATION()
-%        beta <- PROBABILITY()
-%    
-%    function CALCULATE_GAMMA(node)
-%        alpha = CHOOSE_PARAMETER()
-%        n_degree = NODE_DEGREE(node)
-%        if (n_degree > 2) then
-%            return gamma = 1/(n_degree ^ alpha)
-%        else
-%            return gamma = 1
-%        end if
-%    
-%    function DISSEMINATE(msg)
-%        for all nj in N do
-%            gamma =   CALCULATE_GAMMA(nj)
-%            if (gamma == 1) then
-%                SEND(msg, nj)
-%            elseif (gamma > beta OR FIRST_TRANSMISSION()) then           
-%                SEND(msg, nj)
-%            else
-%            end if
-%        end for
-%    \end{lstlisting}
-%\end{appendices}
+\begin{appendices}
+    \chapter{Gossip}\label{appendix:gossip}
+    Il protocollo gossip è un tipo di protocollo \textit{epidemico} semplice ma efficace per diffondere informazioni. Il fattore chiave è l'utilizzo della randomizzazione per la propagazione dei dati.\newline
+    La comunicazione può essere:
+    \begin{itemize}
+        \item \texttt{push}: il mittente decide quale nodo riceverà il messaggio
+        \item \texttt{pull}: i destinatari scelgono come avviare una comunicazione con un altro nodo che invierà i dati
+        \item \texttt{push-pull}: entrambi i nodi mittente e destinatario condividono i propri dati tramite gossip
+    \end{itemize}
+    In base al modello di utilizzo, SIR (\texttt{Susceptible - Infective - Recovered}) o SIS (\texttt{Susceptible - Infective - Susceptible}), è una pratica comune impiegare un meccanismo di cache dei messaggi detto SIRS (\texttt{Susceptible - Infective - Recovered - -Susceptible}).
+    
+    \section{Protocolli di diffusione}
+    Ogni nodo riceve un messaggio e lo invia a tutti i nodi a cui è collegato, dopo averlo elaborato, se necessario. È quindi possibile che un nodo riceva più volte lo stesso messaggio (è un grafo) e che generi traffico ridondante nella rete; per evitare ciò è possibile introdurre un meccanismo di cache per i messaggi processati e si applica un tempo di vita per un messaggio nella rete (\texttt{TTL}).\newline
+    I messaggi sono elaborati tramite tecnica \texttt{push} e i peer inviano messaggi solo ai nodi connessi di primo livello.\newline
+    Per identificare un costo nella disseminazione dei messaggi è necessario misurare il rapporto di overhead $\rho$, calcolato come il rapporto tra i messaggi consegnati e il numero minimo di messaggi necessari per una copertura totale. In una rete con $n$ nodi e $m$ eventi generati questo valore è $\Omega(nm)$ (\textit{lower bound}).\newline
+    La corretta inizializzazione del parametro \texttt{TTL} è un problema molto importante che impatta le performance del protocollo di disseminazione. Quando viene utilizzato un protocollo di \texit{flooding}, ad esempio, solitamente viene utilizzato un $TTL$ uguale al diametro della rete (che si basa però su un cammino minimo). Attualmente il \texttt{TTL} di default è impostato al 130\% del massimo diametro del grafo.
+    
+    \section{Trasmissione broadcast a probabilità fissa}
+    La probabilità di gossip $\gamma$ è fissa ed indipendente da ogni altra caratteristica dei nodi connessi e rappresenta la probabilità che un messaggio sia inviato ad un vicino. Il valore è dato da $\gamma = 1/<q>$ (dove $<q>$ è il valore medio del grado di eccedenza (\textit{excess degree}\footnote{Indica il numero medio dei contatti ottenuti seguendo un collegamento.}).\newline
+    Esiste una elevata probabilità di copertura in un grafo generato in maniera randomica quando è più probabile che ogni nodo trasmetta un messaggio ad almeno uno dei suoi $<k>$ (in media) nodi vicini; non viene però preso in considerazione il \texttt{TTL}.
+    \begin{lstlisting}[caption=Pseudocodice dell'algoritmo di diffusione con $\gamma$ fisso]
+    function INITIALIZATION()
+        gamma <- CHOOSE_PROBABILITY()
+    
+    function DISSEMINATE(msg)
+        for all nj in N do
+            if RANDOM() < gamma then
+                SEND(msg, nj)
+            end if
+        end for
+    \end{lstlisting}
+    
+    \section{Trasmissione broadcast probabilistica}
+    I nodi decidono di inoltrare il messaggio in base ad una certa probabilità $\beta$. Se il messaggio è stato generato dal nodo locale allora è inviato a tutti i nodi vicini.
+    
+    \begin{lstlisting}[caption=Pseudocodice dell'algoritmo di diffusione con a broadcast probabilistica]
+    function INITIALIZATION()
+        beta <- PROBABILITY_BROADCAST()
+    
+    function DISSEMINATE(msg)
+        if (RANDOM() < beta OR FIRST_TRANSMISSION()) then
+            for all nj in N do
+                SEND(msg, nj)
+            end for
+        end if
+    \end{lstlisting}
+    
+    \section{Trasmissione broadcast dipendente dal grado}
+    La probabilità di gossip dipende dal grado dei nodi: se un nodo $m$ ha grado $i$ riceve un messaggio dal proprio vicino con una probabilità $\gamma(i)$. La funzione $\gamma(i)$ è espressa in base ad un parametro $\alpha$ in due funzioni:
+    \begin{equation}
+        \gamma_1(i) = \begin{cases} 1, & \mbox{if } i=1,2 \\ \frac{1}{i^{\alpha}}, & \mbox{if } i\gt2\end{cases}
+    \end{equation}
+    \begin{equation}
+        \gamma_2(i) - \begin{cases} \frac{1}{ln(\alpha i)}, & \mbox{if } i\gt \max(2, e/\alpha) \\ 1, & \mbox{otherwise}\end{cases}
+    \end{equation}
+    L'obiettivo è diffondere i messaggi a nodi con un basso grado in modo da fornire una maggior ed efficiente diffusione nelle sotto-reti formate da questi nodi. Al fine di aggiornare i nodi sul proprio grado è necessario che comunichino tra di loro condividendo le informazioni necessarie: questo minimo overhead è sufficiente a garantire una efficienza molto alta nella disseminazione delle informazioni.
+    \begin{lstlisting}[caption=Pseudocodice dell'algoritmo di diffusione con a broadcast dipendente dal grado]
+    function INITIALIZATION()
+        beta <- PROBABILITY()
+    
+    function CALCULATE_GAMMA(node)
+        alpha = CHOOSE_PARAMETER()
+        n_degree = NODE_DEGREE(node)
+        if (n_degree > 2) then
+            return gamma = 1/(n_degree ^ alpha)
+        else
+            return gamma = 1
+        end if
+    
+    function DISSEMINATE(msg)
+        for all nj in N do
+            gamma =   CALCULATE_GAMMA(nj)
+            if (gamma == 1) then
+                SEND(msg, nj)
+            elseif (gamma > beta OR FIRST_TRANSMISSION()) then           
+                SEND(msg, nj)
+            else
+            end if
+        end for
+    \end{lstlisting}
+\end{appendices}
 
 % NeoTex: mainfile=main.tex:
