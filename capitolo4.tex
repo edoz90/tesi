@@ -89,7 +89,8 @@ Al contrario di un attacco del \textit{51\%} la potenza e le risorse necessarie 
 \end{figure}
 Nel caso in cui i nodi implementino livelli di sicurezza più bassi di un \textit{full node} (i.e. \textit{SPV}) l'attaccante può anche generare delle transazioni invalide come transazioni \textit{coinbase} con un output maggiorato, utilizzo di \textit{UTXO} ed input errati.\newline
 L'unico modo per riuscire nell'attacco è di controllare tutti i collegamenti nel tempo in cui nodo è online. Alcuni nodi non accettano richieste di connessione  e quindi è necessario che il nodo vittima richieda la connessione ai peer controllati dall'attaccante. Nel caso in cui invece sia possibile apportare un attacco di \textit{MITM} al nodo vittima la possibilità di successo è massima (le connessioni \textit{p2p} non sono cifrate o autenticate) ma la plausibilità di uno scenario simile è minima (l'attaccante deve aver compromesso la rete utilizzata dalla vittima o il sistema stesso).\newline
-Una soluzione a questo tipo di attacco comporta la costruzione di una lista di nodi considerati sicuri ed onesti, aggiornata periodicamente, e evitare di utilizzare connessioni non sicure per transazioni online.
+Una soluzione a questo tipo di attacco comporta la costruzione di una lista di nodi considerati sicuri ed onesti, aggiornata periodicamente, e evitare di utilizzare connessioni non sicure per transazioni online.\newline
+Il software \texttt{bitcoind} accetta in totale $125$ connessioni di cui fino ad $8$ come canali di uscita e le restanti come ingressi. È stato inoltre progettato per evitare di connettersi in uscita a più di un \textit{IP} che nello stesso blocco (\texttt{/16}, fonte: \href{https://en.bitcoin.it/wiki/Weaknesses#Sybil_attack}{bitcoin.it}).
 
 \section{Selfish Mining Attack}
 Una volta che un miner è riuscito a trovare il \textit{nonce} corretto il blocco viene propagato nella rete ed accettato dagli altri peer come successivo nella catena.\newline
