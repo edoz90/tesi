@@ -552,7 +552,7 @@ dove \texttt{original\_target} è il target del blocco di genesi e vale:
     00000000ffff0000000000000000000000000000000000000000000000000000
 \end{equation}
 Il calcolo della nuova difficoltà è effettuato da ciascun nodo e prende in considerazione il tempo $T$, totale dato dai timestamp di calcolo di 2016 blocchi, e la precedente difficoltà $D$:
-\begin{equation}
+\begin{equation}\label{eq:difficulty}
     D_{next} = (20160 / T) * D
 \end{equation}
 Satoshi non ha specificato la durata media di calcolo di un blocco seguendo qualche regola matematica ma ha ritenuto che fosse un tempo accettabile sia dai miner che dagli utilizzatori della rete.\newline
@@ -574,7 +574,7 @@ La probabilità di trovare il \textit{nonce} in un tempo $T$ (minuti) è:
 \begin{equation}
     P = \exp^{-T/10}
 \end{equation}
-Quindi, per $10$ minuti la percentuale è del $63\%$ e per $T=7$ la percentuale di trovare il nome entro questo tempo è del $50\%$. Nelle attuali condizioni della rete la probabilità di calcolare un blocco entro i $10$ minuti ($600$ secondi) è data dalla formula:
+Quindi, per $10$ minuti la percentuale è del $63\%$ e per $T=7$ la percentuale di trovare il \textit{nonce} entro questo tempo è del $50\%$. Nelle attuali condizioni della rete la probabilità di calcolare un blocco entro i $10$ minuti ($600$ secondi) è data dalla formula:
 \begin{equation}
     P_h = H * 600/(2^{32}*D)
 \end{equation}
