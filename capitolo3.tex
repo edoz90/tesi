@@ -27,7 +27,7 @@ Il codice può essere usato come libreria (sia statica che dinamica) con cui pot
 Il simulatore, implementando dalla base l'intero stack di rete, permette una elevata personalizzazione e molteplici gradi di libertà nelle scelte progettuali: applicazioni, dispositivi di rete, modelli di movimento, modelli di propagazione, API per chiamate a primitive di basso livello. Ad esempio è possibile definire quale dispositivo di rete è utilizzato dai nodi (rete cablata o wireless), la latenza delle comunicazioni, la versione del protocollo (ad esempio \textit{802.11n} o \textit{802.11b}).\newline
 Il caso preso in esame per la valutazione del simulatore \textit{NS-3} comprende le modifiche apportate da \textit{Arthur Gervais et al.} per uno studio sul consenso distribuito e come caratteristiche della rete e del protocollo affliggono la scalabilità e la sicurezza del \textit{POW} applicato alla blockchain Bitcoin.\newline
 Alcuni risultati ottenuti dallo studio realizzato utilizzando questo simulatore ha portato risultati interessanti come l'impatto della dimensione del blocco, della latenza di rete, del numero di miner sia in condizioni normali che in condizioni di presenza di attori malevoli.
-\begin{table}[H]
+\begin{table}
     \centering
     \caption{Numero di blocchi \textit{stale} e transazioni per secondo raggiungibili con 16 miner nella rete e diverse dimensioni dei blocchi}
     \resizebox{\textwidth}{!}{\begin{tabular}{|c|c|c|c|}
@@ -47,14 +47,15 @@ Alcuni risultati ottenuti dallo studio realizzato utilizzando questo simulatore 
 \end{table}
 In quanto il simulatore prende in considerazione tutti gli elementi dello stack di rete, l'esecuzione dei test risulta essere pesante e poco efficiente dal punto di vista di consumo delle risorse: un test con $10100$ nodi e circa $5000$ miner \footnote{Il numero è relativo alla reale rilevazione dei nodi conosciuti, il numero potrebbe essere superiore (fonte: \href{https://bitnodes.earn.com/nodes/}{https://bitnodes.earn.com/nodes/}).}, numeri realistici ed attuali, non è andato a buon fine su un device ad alte prestazioni.\newline
 Tenendo conto della pesantezza e poca scalabilità del simulatore \textit{NS-3} per strutture molto estese e con poche esigenze di personalizzazione a basso livello si è deciso di trovare una alternativa. In aggiunta il codice utilizzato come estensione per la simulazione della Blockchain Bitcoin non è stato aggiornato dal 2016 e quindi non risulta essere compatibile con le nuove versioni del simulatore o cambiamenti ed evoluzione del protocollo.\newline
-\begin{figure}[H]
+\begin{figure}
     \includegraphics[width=\textwidth]{images/blocks_propagation.png}
     \caption{Propagazione dei blocchi negli ultimi due anni in \textit{millisecondi}, i dati sono stati campionati utilizzando i messaggi \texttt{inv} (messaggi inviati come aggiornamento su blocchi o transazioni tra i nodi, Novembre, 2018).}
     \source{bitnodes.earn.com}
 \end{figure}
 
 \section{\textit{LUNES}: Large Unstructured Network Simulator}
-Nonostante la superiorità del simulatore \textit{NS-3} questo non è stato scelto come base per il progetto di tesi in quanto, come descritto sopra, sono necessarie alcune caratteristiche fondamentali che il simulatore \textit{LUNES} potrebbe rispettare.\newline
+La completezza del simulatore \textit{NS-3} lo rende estremamente utile ma anche altamente complesso e poco performante in casi di reti molto grandi.\newline
+Nonostante la superiorità del simulatore \textit{NS-3} questo non è stato scelto come base per il progetto di tesi in quanto, come descritto sopra, sono necessarie alcune caratteristiche fondamentali che il simulatore \textit{LUNES} rispetta.\newline
 \textit{LUNES}\cite{gdalunes} è stato sviluppato da \textit{Gabriele D'Angelo}, \textit{Stefano Ferretti} e \textit{Michele Bracuto} presso l'Università di Bologna, Dipartimento di Ingegneria e Scienze Informatiche (\textit{DISI}) per garantire il massimo dell'efficienza in simulazioni di protocollo complessi su reti in larga scala e non strutturata.\newline
 Il simulatore si basa su una architettura distribuita e parallela basata su agenti e fornisce la possibilità di importare delle topologie di rete create anche con altri tool (e.g. \texttt{igraph}) ed astrae le complicazioni dovute alla gestione della rete \textit{p2p} implementando internamente i vari algoritmi di \textit{data dissemination}. \textit{LUNES} è stato progettato per dividere le operazioni di simulazione in tre fasi primarie:
 \begin{enumerate}
