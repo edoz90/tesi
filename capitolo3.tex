@@ -56,7 +56,7 @@ Tenendo conto della pesantezza e poca scalabilità del simulatore \textit{NS-3} 
 \section{\textit{LUNES}: Large Unstructured Network Simulator}
 La completezza del simulatore \textit{NS-3} lo rende estremamente utile ma anche altamente complesso e poco performante in casi di reti molto grandi.\newline
 Nonostante la superiorità del simulatore \textit{NS-3} questo non è stato scelto come base per il progetto di tesi in quanto, come descritto sopra, sono necessarie alcune caratteristiche fondamentali che il simulatore \textit{LUNES} rispetta.\newline
-\textit{LUNES}\cite{gdalunes} è stato sviluppato da \textit{Gabriele D'Angelo}, \textit{Stefano Ferretti} e \textit{Michele Bracuto} presso l'Università di Bologna, Dipartimento di Ingegneria e Scienze Informatiche (\textit{DISI}) per garantire il massimo dell'efficienza in simulazioni di protocollo complessi su reti in larga scala e non strutturata.\newline
+\textit{LUNES}\cite{gdalunes} è stato sviluppato da una gruppo di ricerca presso l'Università di Bologna, Dipartimento di Ingegneria e Scienze Informatiche (\textit{DISI}) per garantire il massimo dell'efficienza in simulazioni di protocollo complessi su reti in larga scala e non strutturata.\newline
 Il simulatore si basa su una architettura distribuita e parallela basata su agenti e fornisce la possibilità di importare delle topologie di rete create anche con altri tool (e.g. \texttt{igraph}) ed astrae le complicazioni dovute alla gestione della rete \textit{p2p} implementando internamente i vari algoritmi di \textit{data dissemination}. \textit{LUNES} è stato progettato per dividere le operazioni di simulazione in tre fasi primarie:
 \begin{enumerate}
     \item creazione della topologia di rete;
@@ -77,8 +77,8 @@ La simulazione è \textit{time-step} in quanto il tempo viene suddiviso in fasi 
         \hline
         Probabilità Fissa               & 3.00 (4.65) & 2.74 (4.86) & 1.80 (6.10) & 1.20 (7.62)\\
         Probabilistico                  & 3.00 (4.65) & 2.84 (4.76) & 2.03 (5.54) & 1.38 (6.49)\\
-        Dipendente dal grafo $\gamma_1$ & 2.99 (4.66) & 2.24 (5.59) & 1.48 (7.72) & 1.06 (9.11)\\
-        Dipendente dal grafo $\gamma_2$ & 2.99 (4.67) & 2.16 (5.88) & 1.48 (7.74) & 1.07 (8.99)\\
+        Dipendente dal grado $\gamma_1$ & 2.99 (4.66) & 2.24 (5.59) & 1.48 (7.72) & 1.06 (9.11)\\
+        Dipendente dal grado $\gamma_2$ & 2.99 (4.67) & 2.16 (5.88) & 1.48 (7.74) & 1.07 (8.99)\\
         \hline
     \end{tabular}}
     \caption{Overhead (e ritardo) di copertura per ciascun algoritmo per una rete di $500$ nodi, $1000$ archi, diametro to $10$, \texttt{TTL}$=16$ e cache fissa a $256$ simulata tramite \textit{LUNES}}
@@ -136,6 +136,6 @@ In quanto i runtime possono risultare poco trasparenti all'utente finale durante
 \texttt{GAIA}\cite{padssite} è un framework l'ottimizzazione dell'esecuzione della simulazione. Il framework di riutilizzare le entità riducendo i tempi di esecuzione e l'overhead generato dalle comunicazioni sviluppate utilizzando \texttt{ARTÌS}.\newline
 Una serie di euristiche valutano il pattern di comunicazione ed eventualmente schedulano una riallocazione degli oggetti.
 Il framework supporta il paradigma  multiagente \texttt{MAS} (\textit{multi-agent system}) e la possibilità di eseguire su cluster eterogenei.
-Un sistema multiagente è un sistema composto da molteplici agenti che interagiscono tra loro; questo approccio permette che ogni singolo agente sia autonomo, che abbia solo una visione locale e che il sistema complessivamente sia decentralizzato. Una delle più diffuse applicazioni per questi sistemi è l'utilizzo in tecnologie mobili e di rete per garantire bilanci di carico automatici e dinamici, alta scalabilità e fault tollerance.
+Un sistema multiagente è un sistema composto da molteplici agenti che interagiscono tra loro; questo approccio permette che ogni singolo agente sia autonomo, che abbia solo una visione locale e che il sistema complessivamente sia decentralizzato. Una delle più diffuse applicazioni per questi sistemi è l'utilizzo in tecnologie mobili e di rete per garantire un bilanciamento del carico automatico e dinamico, alta scalabilità e fault tollerance.
 
 % NeoTex: mainfile=main.tex:

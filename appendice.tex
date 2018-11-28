@@ -6,7 +6,7 @@
     L'identità dell'autore è tutt'ora ignota ma Satoshi si è presentato come un uomo nato il 5 Aprile 1975 che vive in Giappone. Molte speculazioni sono state fatte sulla possibile identità proponendo personaggi illustri della crittografia moderna o esperti di criptomonete tra cui \textit{Hal Finney}, \textit{Nick Szabo}, \textit{David Chaum}, \textit{Stuart Haber} e \textit{W. Scott Stornetta} in base alle conoscenze espresse da Nakamoto e allo stile di scrittura (analisi stilometrica).\newline
     Satoshi è rimasto attivo nei primi due anni di vita del progetto Bitcoin ma a partire dal 2010, con l'ingresso di nuovi sviluppatori e manutentori, le comunicazioni con la community si sono interrotte.\newline
     In quanto all'identità di Nakamoto non è raro che attivisti del movimento cypherpunk vogliano rimanere anonimi; la scelta potrebbe essere anche dettata da alcune preoccupazioni come la possibilità di ripercussioni legali per violazione di alcuni brevetti o associazione ad altri episodi di riciclaggio di denaro emersi proprio poco prima della pubblicazione del paper.\newline
-    Satoshi potrebbe aver preferito l'anonimità anche per sicurezza personale e del progetto: è noto che il wallet associato a Nakamoto abbia a disposizione un notevole ammontare di valuta ($\sim67$ BTC) ed un eventuale cambio in moneta corrente potrebbe far collassare la rete o rendere pubblica la sua identità.
+    Satoshi potrebbe aver preferito l'anonimità anche per sicurezza personale e del progetto: è noto che il wallet associato a Nakamoto abbia a disposizione un notevole ammontare di valuta ($\sim1100800$ BTC\footnote{Fonte: \url{https://news.bitcoin.com/people-keep-sending-satoshi-nakamoto-bitcoin/}}) ed un eventuale cambio in moneta corrente potrebbe far collassare la rete o rendere pubblica la sua identità.
 \end{appendices}
 
 \begin{appendices}
@@ -56,7 +56,7 @@
         end if
     \end{lstlisting}
     
-    \section{Trasmissione broadcast dipendente dal grado}
+    \section{Trasmissione broadcast dipendente dal grado}\label{app:sec:ddf}
     La probabilità di gossip dipende dal grado dei nodi: se un nodo $m$ ha grado $i$ riceve un messaggio dal proprio vicino con una probabilità $\gamma(i)$. La funzione $\gamma(i)$ è espressa in base ad un parametro $\alpha$ in due funzioni:
     \begin{equation}
         \gamma_1(i) = \begin{cases} 1, & \mbox{if } i=1,2 \\ \frac{1}{i^{\alpha}}, & \mbox{if } i\gt2\end{cases}
