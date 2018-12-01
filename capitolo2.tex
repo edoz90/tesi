@@ -32,11 +32,10 @@ A differenza delle funzioni di hashing presentate nel capitolo \ref{sec:funzioni
 Utilizzando le funzioni di hashing è possibile quindi evitare di fornire l'intero documento ad un servizio per timestamp e quindi garantire la privacy del documento stesso: il contenuto intellettuale non è divulgato pubblicamente.\newline
 Una volta che l'hash del documento è stato generato è possibile applicargli una firma digitale.\newline
 Una prima soluzione proposta prevede l'utilizzo di un servizio di terze parti (\textit{Time-Stamping Service}) per elaborare e firmare il documento ma sorge il problema della falsificazione: è necessario implementare una soluzione che sia assente da terze parti per garantire il massimo della fiducia.
-\begin{figure}
+\begin{figure}\label{fig:haberstornetta}
     \centering
     \includegraphics[width=\textwidth]{images/haberstornetta.png}
     \caption{Linking di documenti presso un servizio di timestamp}
-    \label{fig:haberstornetta}
 \end{figure}
 Due possibili scenari possono essere realizzati o combinati:
 \begin{enumerate}[1.]
@@ -159,15 +158,14 @@ L'aggiunta di un blocco alla blockchain risulta essere molto dispendiosa e, quin
 La struttura \textit{Merkle Tree} sfrutta le funzioni di hashing per creare un albero binario contenente tutte le transazioni del blocco.\newline
 L'albero è costruito partendo dalle foglie: le transazioni, inserite nel blocco in ordine di arrivo, sono raggruppate in coppie e per ogni gruppo ne viene calcolato l'hash. Gli hash creati costituiscono il nuovo livello dell'albero che a loro volta vengono divisi in gruppi di due e, calcolati i rispettivi hash, formeranno il livello successivo.
 Le operazioni vengono ripetute finchè non si ottiene un singolo hash come radice dell'albero.\newline
-\begin{figure}
+\begin{figure}\label{fig:merkle}
     \centering
     \includegraphics[width=0.9\textwidth]{./images/merkle.png}
     \caption{In un albero \textit{Merkle} i blocchi di dati sono raggrupati in coppie e l'hash di ciascuno è salvato nel nodo padre. I nodi padre sono valutati in coppie e i loro hash sono salvati nel livello dell'albero superiore fino alla radice.}
-    \label{fig:merkle}
 \end{figure}
 In questo modo si ha la certezza che i dati non vengano cambiati: non è possibile cambiare una transazione una volta resa pubblica in quanto è necessario aggiornare l'albero di Merkle e quindi l'header del blocco.
 Un altro vantaggio dato dalla struttura dati ad albero è l'efficienza nel provare che una transazione appartenga a quel blocco e quindi al Merkle Tree: dati $n$ nodi in un albero è necessario conoscere $log(n)$ valori per poter provare la presenza di una transazione.\newline
-Per dimostrare, ad esempio, la presenza della transazione $T_C$ nella Figura \ref{fig:merkle} è sufficiente conoscere $T_C$, $H_{(C||D)}$ e $H_{(A||B||C||D)}$; in questo modo in tempo  $log(n)$ è possibile calcolare e validare i singoli hash.\newline
+Per dimostrare, ad esempio, la presenza della transazione $T_C$ nella Figura~\ref{fig:merkle} è sufficiente conoscere $T_C$, $H_{(C||D)}$ e $H_{(A||B||C||D)}$; in questo modo in tempo  $\log(n)$ è possibile calcolare e validare i singoli hash.\newline
 Ogni transazione $P2PKH$ è composta in diversi passaggi:
 \begin{enumerate}[1.]
     \item identificare una precedente transazione che contiene UTXO che l'utente controlla (valuta spendibile);
@@ -212,11 +210,10 @@ Un esempio di transazione in formato esadecimale è:
     \end{tabular}
 \end{table}
 Questo è il formato che verrano utilizzato come rappresentazione della transazione all'interno del blocco e quindi all'interno del \textit{Merkle Tree}.
-\begin{figure}[H]
+\begin{figure}[H]\label{fig:tx}
     \centering
     \includegraphics[width=\textwidth]{./images/tx.png}
     \caption{Struttura di una transazione di $0.00390582$ BTC.}
-    \label{fig:tx}
 \end{figure}
 Dalla Figura \ref{fig:tx} è possibile vedere che la transazione presa in esame ha:
 \begin{itemize}
@@ -583,7 +580,7 @@ In caso di squilibro tra i due valori di $D$ ed $H$ si parla di rete \textit{ste
 \begin{equation}
     P = H * 600 / (2^{32} * D) = 0.89342%
 \end{equation}
-La presenza di un limite massimo di Bitcoin in circolazione e il dimezzamento costante della \textit{reward} dato dalle attività di \texit{mining} comporta un notevole incentivo ad investire nella moneta. Satoshi non ha mai esplicitamente dichiarato il perché di un limite massimo nella produzione di Bitcoin ma è possibile giustificarlo in quanto si tratta di un numero vicino al massimo rappresentabile con una notazione a 64-bit. Oltre al problema tecnologico la scelta di limitare il numero di Bitcoin è utile per evitare che la moneta si inflazioni. Un limite massimo comporta una speculazione maggiore tra miner ed investitori e quindi un aumento di valore più rapido e duraturo.\newline
+La presenza di un limite massimo di Bitcoin in circolazione e il dimezzamento costante della \textit{reward} dato dalle attività di \textit{mining} comporta un notevole incentivo ad investire nella moneta. Satoshi non ha mai esplicitamente dichiarato il perché di un limite massimo nella produzione di Bitcoin ma è possibile giustificarlo in quanto si tratta di un numero vicino al massimo rappresentabile con una notazione a 64-bit. Oltre al problema tecnologico la scelta di limitare il numero di Bitcoin è utile per evitare che la moneta si inflazioni. Un limite massimo comporta una speculazione maggiore tra miner ed investitori e quindi un aumento di valore più rapido e duraturo.\newline
 Il calcolo del limite è effettuato tenendo conto che ogni blocco viene aggiunto alla blockchain in media ogni 10 minuti e che la minima unità spendibile è di $0.00000001$ (ovvero $1$ Satoshi) con un dimezzamento ogni $210000$ blocchi. Partendo quindi dal \textit{reward} iniziale di $50$ BTC è possibile continuare a dimezzarlo fino ad arrivare ad un numero di Bitcoin che non è possibile spendere e quindi ricevere tramite una transazione coinbase.
 \begin{equation}\label{eq:maxbtc}
     50 * 210000 + 50/2 * 210000 + 50/4 * 210000 + \dots + 50/n * 210000 = 210000 * \sum_{i=0}^{n} \frac{50}{2^{i}}

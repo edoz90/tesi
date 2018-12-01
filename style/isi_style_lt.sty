@@ -114,4 +114,41 @@
     \newpage
     \cleardoublepage
 }
+
+\def\dedicapage{
+        \null\vfill
+        \begin{flushright}
+                \large
+                \@dedica
+        \end{flushright}
+        \vfill\null\vfill\newpage}
+
+\def\dedica#1{   
+        \pagestyle{plain}
+        \null\vfill
+        \begin{flushright}
+                \large
+                #1
+        \end{flushright}
+        \vfill\null\vfill\newpage
+        \cleardoublepage
+}
+
+\def\ringraziamenti{
+    \newpage 
+    \cleardoublepage
+    \pagestyle{plain}
+    \ifx\lingua\undefined
+        \chapter*{Ringraziamenti}
+        \addcontentsline{toc}{chapter}{Ringraziamenti}
+    \else
+        \ifthenelse{\equal{\lingua}{english}}{
+            \chapter*{Acknowledgments}
+            \addcontentsline{toc}{chapter}{Acknowledgments}}{}
+        \ifthenelse{\equal{\lingua}{italian}}{  
+            \chapter*{Ringraziamenti}
+            \addcontentsline{toc}{chapter}{Ringraziamenti}}{}
+     \fi
+}
+
 % NeoTex: mainfile=main.tex:

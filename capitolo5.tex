@@ -12,12 +12,16 @@ Utilizzando il \textit{Simulation Manager} di \textit{ARTÌS} e \textit{GAIA} no
 \textit{LUNES} fornisce alcune implementazioni dei maggiori algoritmi di \textit{gossip} [\ref{appendix:gossip}] come \textit{broadcast}, \textit{broadcast probabilistico} e \textit{broadcast dipendente dal grado}. Non è presente però l'algoritmo \texttt{Dandelion} utilizzato nella reale implementazione dei client per Bitcoin. Questa mancanza non risulta essere bloccante in quanto è dimostrato\cite{gdalunes} che le implementazioni degli algoritmi di \textit{gossip} messi a disposizione da \textit{LUNES} consentono di raggiungere il $100\%$ di copertura della rete con un ridotto volume di \textit{overhead}.
 
 \texttt{Dandelion} non è stato progettato per garantire sicurezza aggiuntiva ma per ovviare al problema della parziale anonimità di Bitcoin; risulta, quindi, non necessario ai fini del lavoro di tesi l'utilizzo di tale algoritmo.
-La possibilità di scelta dell'algoritmo di broadcast è utile per cercare ottimizzazioni per ridurre i tempi di propagazione e limitare l'overhead.
+La possibilità di scelta dell'algoritmo di broadcast è utile per cercare ottimizzazioni per ridurre i tempi di propagazione e limitare l'overhead.\newline\newline
+L'implementazione della simulazione e dei test con i vari scenari di attacco è stata effettuata in \textit{C} utilizzando le API messe a disposizione da \textit{GAIA} tramite \textit{LUNES}.\newline
+L'intera progettazione è avvenuta per fasi: la prima fase ha avuto come obiettivo la creazione di un sistema che simulasse una blockchain generica; la seconda fase ha imposto alcuni vincoli al sistema per modellarlo come la blockchain per Bitcoin; l'ultima fase ha raccolto l'implementazione dei vari test di attacco.\newline
+La divisione in fasi distinte ha permesso al sistema di crescere senza l'ausilio sovrastrutture garantendo un'alta modularità.\newline
+I parametri di configurazione della rete, dei nodi, dei test e degli algoritmi di propagazione sono gestiti esternamente tramite variabili d'ambiente del sistema. Questo permette di evitare modifiche al codice e compilazione durante molteplici esecuzioni. La modularità e granularità del progetto è incrementata anche utilizzando dei parametri che evitano la produzione di log e messaggi non inerenti alla singola simulazione. Ad esempio, nel caso in cui la simulazione debba essere eseguita per verificare solamente il numero di messaggi di broadcast dei blocchi, i nodi non producono messaggi relativi alle transazioni create o ricevute.\newline
 
 \section{Dimensionamento}
 Il numero di \textit{peer} totali stimato appartenenti alla rete Bitcoin è di circa $10400$ \cite{bitnodes}\footnote{Bitnodes è stato sviluppato per stimare la dimensione della rete Bitcoin cercando gli host raggiungibili. La metodologia utilizzata prevede l'invio di messaggi \texttt{getaddr} ricorsivamente per scoprire tutti noti della rete partendo da un insieme di peer conosciuti. Il \textit{crawler} è stato implementato in Python ed è disponibile con licenza \textit{MIT} su GitHub} ma non è possibile effettuare una stima esatta data la dinamicità e vastità della rete. I nodi attivi non costituiscono tutti dei \textit{miner} in quanto non è necessario che i peer debbano partecipare attivamente al processo di creazione dei blocchi. Tutti i nodi però contribuiscono alla ricezione, validazione e broadcast delle transazioni e dei blocchi mantenendo sempre aggiornata la propria blockchain. I \textit{miner}, infatti, sono stimati essere circa $1$ milione ma quasi la totalità si affida ad un pool per distribuire il carico di lavoro ed avere maggior probabilità di guadagno dalle transazioni \textit{coinbase} e non sono dei \textit{full node}.\newline
 Ai fini di questo progetto di tesi non vengono considerati i singoli miner presenti all'interno dei pool in quanto i vari scenari di attacco non sono eseguibili. Un \textit{miner}, ad esempio, con il $51\%$ di potenza di calcolo globale aumenterebbe le probabilità di guadagno del pool e degli altri utilizzatori; un \textit{double spending} risulterebbe impossibile in quanto il pool agisce come intermediario tra i \textit{miner} e la rete come un \textit{full node}.\newline
-Sono, quindi, considerati i \textit{miner} singoli e i pool nella loro interezza come dei \texit{full node}: ogni nodo della rete partecipa alla trasmissione dei messaggi ed al mantenimento della propria blockchain.
+Sono, quindi, considerati i \textit{miner} singoli e i pool nella loro interezza come dei \textit{full node}: ogni nodo della rete partecipa alla trasmissione dei messaggi ed al mantenimento della propria blockchain.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{images/bitnodes.png}
@@ -28,7 +32,7 @@ L'implementazione permette anche di definire sia la percentuale di nodi \textit{
 
 \section{Mining}
 La simulazione del processo di \textit{mining} dei nodi è modellata in modo tale che rispetti difficoltà ed andamento paragonabili a quelli reali ma senza l'esigenza computazionale e temporale richiesta dal protocollo Bitcoin. Nel protocollo Bitcoin i blocchi sono pubblicati e creati in un intervallo di tempo di circa $10$ minuti mentre all'interno della simulazione ogni step è considerato $1$ minuto. Dopo circa $10$ step un blocco è calcolato e propagato all'interno della rete. Per ovviare al problema dell'aumento dell'\textit{hashrate} dell'intera rete, Bitcoin implementa un meccanismo di \textit{difficoltà} secondo il quale ogni $2016$ blocchi la probabilità di trovare il \textit{nonce} corretto varia proporzionalmente alla potenza di calcolo dell'intera rete. Un maggior \textit{hashrate} comporta una frequenza nei blocchi minore di $10$ minuti e quindi, al successivo ricalcolo, la difficoltà risulterà proporzionalmente maggiore.\newline
-Il valore della difficoltà \texttt{D} varia in base all'equazione \ref{eq:difficulty}; di conseguenza la probabilità di calcolo del \textit{nonce} corretto per un tempo \texttt{T} (minuti) è esponenziale:
+Il valore della difficoltà \texttt{D} varia in base all'equazione~\ref{eq:difficulty}; di conseguenza la probabilità di calcolo del \textit{nonce} corretto per un tempo \texttt{T} (minuti) è esponenziale:
 \begin{equation}
     P = \exp^{-T/10}
 \end{equation}
@@ -38,13 +42,14 @@ Ai fini della simulazione è interessante calcolare la probabilità di calcolo d
 \end{equation}
 Dove \texttt{D} è il valore della \textit{difficoltà} allo stato attuale della rete con un \textit{hashrate} totale \texttt{H} espresso in $G/s$ o $G/min$ (di conseguenza \texttt{T} è espresso in secondi o minuti). $2^{32}$ è il numero di possibili combinazioni utilizzate da \textit{Hashcash}.\newline
 Utilizzando un \textit{ASIC} con potenza di calcolo di $13~TH/s$ (potenza di uno degli \textit{ASIC} più utilizzati: \textit{Antiminer S9}) la probabilità di calcolare un blocco in $10$ minuti è del $0.00000027295900726337\%$ (dati gli attuali valori di \texttt{H} e \texttt{D}, Novembre 2018).\newline
-Conoscendo la distribuzione della probabilità nel tempo per ogni nodo è possibile evitare ogni tipo di attività di calcolo del \textit{nonce} tramite \textit{Hashcash} e facilitarne la simulazione: ad ogni step i \textit{miner} hanno una possibilità di calcolare e pubblicare un blocco data dall'equazione \ref{eq:mining}.
+Conoscendo la distribuzione della probabilità nel tempo per ogni nodo è possibile evitare ogni tipo di attività di calcolo del \textit{nonce} tramite \textit{Hashcash} e facilitarne la simulazione: ad ogni step i \textit{miner} hanno una possibilità di calcolare e pubblicare un blocco data dall'equazione~\ref{eq:mining}.
 In quanto la rete Bitcoin risulta essere molto variabile spesso i valori \texttt{D} ed \texttt{H} non sono sempre bilanciati; in questo caso si dice che la rete non è in uno stato \textit{steady}. Con i precedenti valori di \texttt{D} e \texttt{H} infatti la probabilità $P_m$ è inferiore al $100\%$.
 \begin{equation}
     P = H * 600 / (2^{32} * D) = 0.90972%
 \end{equation}
 Questo significa che il tempo medio per ogni blocco è superiore ai $10$ minuti e che la difficoltà va decrementata al successivo checkpoint.
 Nel caso in cui la rete fosse bilanciata la probabilità di trovare un blocco utilizzando tutta la potenza di calcolo possibile dopo $10$ minuti è del $100\%$.
+\clearpage
 \begin{code}
     \captionof{listing}{Funzione di calcolo della probabilità \texttt{P} dato un tempo \texttt{T} e una percentuale di \textttt{H}.}
 \begin{minted}{c}
@@ -115,6 +120,7 @@ struct _trans_msg {
 } TransMsg;
 \end{minted}
 \end{code}
+L'utilizzo di molteplici \texttt{struct} annidate permette di avere una alta configurabilità delle entità del sistema e modularità, a discapito però della leggibilità.
 I campi comuni a tutti i messaggi sono:
 \begin{itemize}
     \item \texttt{type}: utilizzato per definire il tipo del messaggio;
@@ -197,7 +203,7 @@ typedef struct hash_t {
 } hash_t;
 \end{minted}
 \end{code}
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.3\textwidth]{images/collaboration_hasht.png}
     \caption{\textit{Collaboration diagram} per la struttura dati \texttt{hash\_t}}
@@ -224,7 +230,7 @@ static void generate_hashrates(int n) {
 \end{code}
 Ogni nodo deve anche replicare la struttura dati di una blockchain per mantenere aggiornata la propria lista di blocchi e transazioni. La struttura dati della blockchain è inizialmente vuota e non sono stati previsti meccanismi di validazione tramite \textit{hashing} in quanto risulterebbe troppo dispendioso in termini di potenza computazionale e non necessario ai fini della simulazione. La blockchain è implementata come una lista contenuta nella parte statica del nodo: \texttt{s\_state}. Un blocco (un elemento della lista) contiene tutte le transazioni ricevute in una lista. I limiti della dimensione delle liste sono stati definiti prendendo il numero medio di transazioni per blocco nella reale rete dei Bitcoin ed un limite massimo di blocchi adatto ad eseguire la simulazione senza perdita di dati o eccessiva occupazione di memoria.
 \begin{code}
-    \captionof{listing}{}
+    \captionof{listing}{Struttura dati utilizzata come blockchain in cui sono salvati blocchi e transazioni.}
 \begin{minted}{c}
 typedef struct blockchain_element {
     int         id;          // ID of the block
@@ -232,7 +238,6 @@ typedef struct blockchain_element {
     Transaction trans[1500]; // Mean # of transactions per block
 } Block;
 
-/* Static part of the SE state */
 typedef struct static_data_t {
     char  changed;            // ON if there has been a state
                               // change in the last timestep
@@ -255,7 +260,7 @@ Una volta completata la fase di inizializzazione il simulatore può ricevere gli
     \item \texttt{EOS} (\textit{End Of Step}): il corrente step della simulazione è terminato (è passata una unità di tempo);
     \item \texttt{UNSET}: è stato ricevuto un evento gestito all'interno delle singole entità (eventi creati all'interno della simulazione: \texttt{BlockMsg}, \texttt{TransMSg}, etc.).
 \end{itemize}
-I messaggi \texttt{EOS} ricevuti dal manager sono utilizzati per tener traccia del tempo, raccogliere statistiche da \textit{GAIA} e avviare un nuovo ciclo di esecuzione tramite la funzione \texttt{Generate\_Computation\_and\_Interactions}. Ad ogni nuovo ciclo vengono eseguite le routine di creazione di eventuale creazione dei messaggi che sono inviati e ricevuti a partire dal successivo step.\newline
+I messaggi \texttt{EOS} ricevuti dal manager sono utilizzati per tener traccia del tempo, raccogliere statistiche (numero di messaggi inviati e ricevuti distinti per categoria) da \textit{GAIA} e avviare un nuovo ciclo di esecuzione tramite la funzione \texttt{Generate\_Computation\_and\_Interactions}. Ad ogni nuovo ciclo vengono eseguite le routine di creazione di eventuale creazione dei messaggi che sono inviati e ricevuti a partire dal successivo step.\newline
 I messaggi che compongono l'interazione tra i nodi sono gestiti nella funzione \texttt{user\_model\_events\_handler}. I messaggi di tipo \texttt{UNSET} costituiscono un wrapper dei messaggi scambiati tra i nodi. I simulatore si occupa di gestire i messaggi di tipo \texttt{UNSET} senza conoscerne il contenuto mentre ogni nodo è capace di elaborare solo i messaggi definiti dal programmatore in base al tipo definito all'interno del campo \texttt{type}.\newline
 Poiché i nodi sono modellati tramite agenti, è necessario definirne il comportamento pro-attivo.\newline
 I nodi abilitati al \textit{mining} devono ad ogni step tentare si calcolare un blocco. Se, tramite il calcolo della probabilità, il blocco è stato validato allora il nodo può inviarlo all'intera rete utilizzando un protocollo di \textit{broadcast}. Questo algoritmo genera un maggior overhead nella rete (messaggi ridondanti) ma garantisce una copertura più rapida. Questo comportamento è desiderabile in quanto:
@@ -266,8 +271,8 @@ I nodi abilitati al \textit{mining} devono ad ogni step tentare si calcolare un 
 \end{enumerate}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{./images/graphcall_node_routine.png}
-    \caption{Diagramma delle chiamate a funzione eseguite durante un ciclo di esecuzione di un nodo.}
+    \includegraphics[width=0.9\textwidth]{./images/graphcall_node_routine.png}
+    \caption{Diagramma delle chiamate a funzione eseguite durante uno step di esecuzione di un nodo.}
 \end{figure}
 Nel caso in cui invece il nodo \textit{miner} non riesca a validare il blocco in questo step allora verrà inviata una richiesta ai proprio \textit{neighbors} di eventuali aggiornamenti sulla blockchain tramite il messaggio \texttt{AskMsg}. Questo messaggio non è inoltrato dagli altri nodi e può non ricevere una risposta. La semantica della richiesta è: 
 \begin{itemize}
@@ -281,11 +286,5 @@ Tutti i nodi, invece, possono creare e pubblicare delle transazioni tramite \tex
     \includegraphics[width=\textwidth]{./images/graphcall_trans.png}
     \caption{Diagramma delle chiamate a funzione eseguite durante la ricezione di un messaggio \texttt{TransMsg}.}
 \end{figure}
-
-\section{Realizzazione}
-L'implementazione dei test con i vari scenari di attacco è stata effettuata in \textit{C} utilizzando le API messe a disposizione da \textit{GAIA} tramite \textit{LUNES}.\newline
-L'utilizzo di molteplici \texttt{struct} annidate permette di avere una alta configurabilità delle entità del sistema e modularità, a discapito però della leggibilità. L'intera progettazione è avvenuta per fasi: la prima fase ha avuto come obiettivo la creazione di un sistema che simulasse una blockchain; la seconda fase ha imposto alcuni vincoli al sistema per modellarlo come la blockchain Bitcoin; l'ultima fase ha raccolto l'Implementazione dei vari test di attacco.\newline
-La divisione in fasi distinte ha permesso al sistema di crescere senza l'ausilio sovrastrutture garantendo una alta modularità.\newline
-I parametri di configurazione della rete, dei nodi, dei test e degli algoritmi di propagazione sono gestiti esternamente tramite variabili d'ambiente del sistema. Questo permette di evitare modifiche al codice e compilazione durante molteplici esecuzioni.\newline
 
 % NeoTex: mainfile=main.tex:
